@@ -1,0 +1,49 @@
+Trong những ngày đầu của lập trình web, các lập trình viên đã sử dụng URL rewriting
+và các trường ẩn để theo dõi các phiên làm việc. Ngày nay, bạn có thể sử dụng API servlet
+để theo dõi các phiên làm việc. Tuy nhiên, bạn vẫn có thể sử dụng URL rewriting và các
+trường ẩn để truyền tham số giữa trình duyệt và máy chủ.
+
+Cụ thể, URL rewriting và các trường ẩn rất hữu ích nếu bạn cần truyền dữ liệu cho
+một yêu cầu duy nhất. Thay vì lưu trữ loại dữ liệu đó trong đối tượng phiên làm việc,
+làm tốn bộ nhớ, bạn có thể sử dụng URL rewriting và các trường ẩn để truyền dữ liệu từ
+trang này sang trang khác.
+
+Cách sử dụng URL rewriting để truyền tham số được minh họa trong hình 7-11.
+Điều này sẽ rất quen thuộc với bạn vì đây là cách các tham số được truyền từ các tài liệu HTML
+tới một servlet khi sử dụng phương thức HTTP GET.
+
+<a href="cart?productCode=8601">Add To Cart</a>
+Ví dụ đầu tiên cho thấy cách mã hóa một liên kết để thêm một sản phẩm vào giỏ hàng.
+Ở đây, URL gọi servlet được ánh xạ đến URL "/cart" và truyền một tham số có tên là productCode
+với giá trị là 8601. Vì liên kết luôn sử dụng phương thức HTTP GET, điều này làm cho tham số
+productCode được hiển thị trong trình duyệt như được hiển thị trong hình.
+localhost:8080/ch07cart/cart?productCode=8601
+
+
+<form action="cart?productCode=jrOl" method="post">
+Ví dụ thứ hai cho thấy bạn cũng có thể sử dụng URL rewriting trong một thẻ form. Ở đây, thuộc tính
+method của thẻ form xác định phương thức HTTP POST. Do đó, tham số productCode không được đính kèm vào
+cuối URL hiển thị trong trình duyệt.
+
+<a href="cart?productCode=${productCode}">Add To Cart</a>
+Ví dụ thứ ba cho thấy bạn có thể sử dụng EL để truyền một giá trị vào URL. Ở đây, EL cung cấp một
+mã sản phẩm được đánh giá tại thời điểm chạy.
+
+<a href="download?action=checkUser&amp;productCode=8601">D0wnload</a>
+Ví dụ thứ tư cho thấy cách thêm nhiều tham số vào URL. Ở đây, mã này sử dụng thực thể HTML
+cho dấu &amp; để tách các tham số. Mặc dù dấu & đơn giản (&) hoạt động trong hầu hết các trường hợp,
+bạn cần sử dụng thực thể HTML nếu bạn muốn viết HTML5 hợp lệ.
+
+
+Tuy vậy, URL rewriting có một số hạn chế. Để vượt qua các hạn chế này, bạn có thể sử dụng các trường ẩn
+như được hiển thị trong hình tiếp theo. Tuy nhiên, như bạn sẽ thấy, các trường ẩn cũng có một số hạn chế.
+
+Vì URL rewriting lưu trữ giá trị tham số trong URL, nó cũng có một số rủi ro về bảo mật.
+Trước tiên, các giá trị tham số có thể rò rỉ đến các trang web của bên thứ ba như Google Analytics
+hoặc Facebook. Thứ hai, các giá trị này được lưu trong lịch sử trình duyệt. Do đó, bạn không nên
+sử dụng URL rewriting cho bất kỳ giá trị nào chứa thông tin nhạy cảm.
+
+Một vấn đề khác là các công cụ tìm kiếm gọi các URL này khi crawl trang web của bạn.
+Trong hình này, điều đó sẽ tạo và điền một hoặc nhiều giỏ hàng mua hàng không cần
+thiết cho máy chủ của bạn.
+

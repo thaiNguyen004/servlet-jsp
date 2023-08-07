@@ -1,0 +1,33 @@
+Cách xem và xóa cookie
+Khi bạn đang kiểm tra hoặc gỡ lỗi một ứng dụng, bạn có thể muốn xem tất cả các cookie của trình duyệt
+để đảm bảo rằng các cookie đúng được lưu trữ. Tương tự, bạn có thể muốn xóa tất cả các cookie từ
+trình duyệt để thêm cookie mới vào. Hoặc nếu bạn biết tên của một cookie, bạn có thể muốn hiển thị
+giá trị của nó. Hình 7-8 cho thấy cách thực hiện ba nhiệm vụ này.
+
+Hình 7-8. Xem và xóa cookie
+Hiển thị name và value của tất cả các cookie
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <c:forEach var="c" items="${cookie}">
+    <tr>
+        <td>${c.value.name}</td>
+        <td>${c.value.value}</td>
+    </tr>
+    </c:forEach>
+</table>
+
+Xóa tất cả các cookie
+Cookie[] cookies = request.getCookies();
+for (Cookie cookie : cookies) {
+    cookie.setMaxAge(O); // xóa cookie
+    cookie.setPath("/"); // bất kỳ đường dẫn nào
+    response.addCookie(cookie); // trả về trình duyệt
+}
+
+JSP Code để hiển thị giá trị của một cookie có tên là emailCookie
+<p>Email cookie value: ${cookie.emailCookie.value}</p>
+

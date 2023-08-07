@@ -1,0 +1,214 @@
+Một khóa học nhanh về EL và JSTL
+
+EL (Expression Language - Ngôn ngữ biểu thức) 
+và JSTL (JSP Standard Tag Library - Thư viện thẻ tiêu chuẩn JSP) được giới thiệu 
+cùng với đặc tả JSP 2.0. Các thẻ này có một số lợi ích so với các thẻ JSP cũ 
+được sử dụng trước đặc tả JSP 2.0. Kết quả là, nếu bạn đang phát triển ứng dụng 
+web Java mới, bạn sẽ muốn sử dụng EL và JSTL.
+
+Chủ đề này cung cấp đủ EL và JSTL để bạn bắt đầu. Tuy nhiên, chương tiếp theo 
+cung cấp một ví dụ khác sử dụng EL và JSTL. Sau đó, chương 8 cung cấp thông tin 
+chi tiết về EL và chương 9 cung cấp thông tin chi tiết về JSTL. 
+Vì thường bạn sử dụng EL với JavaBeans, chủ đề này bắt đầu bằng cách chỉ cho bạn cách 
+viết mã cho một JavaBean
+
+- Cách viết mã cho một JavaBean
+- Cách dùng EL để get attribute and JavaBean properties
+- Làm thế nào để kích hoạt thư viện JSTL cốt lõi
+
+
+1.
+Cách viết mã cho một JavaBean
+
+Hình 6-1
+package murach.business; 
+
+import java.io.Serializable; 
+
+public class User implements Serializable {
+    private String firstName; 
+    private String lastName; 
+    private String email; 
+    public User() { 
+        firstName = "";
+        lastName = "";
+        email = "";
+    } 
+
+    public User(String firstName, String lastName, String email) { 
+        this.firstName = firstName; 
+        this.lastName = lastName; 
+        this.email = email; 
+    } 
+
+    public String getFirstName() { 
+        return firstName; 
+    } 
+    public void setFirstName(String firstName) { 
+        this.firstName = firstName; 
+    } 
+    public String getLastName() { 
+        return lastName; 
+    } 
+    public void setLastName(String lastName) { 
+        this.lastName = lastName; 
+    } 
+    public String getEmail() { 
+        return email; 
+    } 
+    public void setEmail(String email) { 
+        this.email = email; 
+    }
+}
+
+Chương 2 đã giới thiệu các quy tắc viết mã cho một JavaBean. Bây giờ, hình 6-1 
+đánh giá lại các quy tắc này. Ở đây, lớp User là một JavaBean, hay bean, vì nó 
+tuân thủ ba quy tắc mà tất cả các JavaBean phải tuân thủ.
+
+Đầu tiên, một JavaBean phải chứa một constructor không chấp nhận bất kỳ đối số nào. 
+Ở hình này, ví dụ, constructor không có đối số sử dụng ba câu lệnh để đặt tất cả ba biến thể 
+thành các chuỗi rỗng. Kết quả là, một đối tượng User mới được tạo lưu trữ các chuỗi rỗng 
+cho các biến thể của nó thay vì giá trị null, điều này thường là mong muốn.
+
+Thứ hai, một JavaBean phải chứa các phương thức get và set cho tất cả các thuộc tính 
+mà JSP cần truy cập. Ở hình này, ví dụ, các phương thức cung cấp truy cập vào tất cả các 
+biến thể của lớp User, vì vậy lớp này đủ điều kiện để là một bean. Tất nhiên, bạn cũng 
+có thể viết các phương thức get và set để cung cấp truy cập vào các thuộc tính khác trong một bean.
+
+Quy tắc thứ ba là một JavaBean phải triển khai giao diện Serializable hoặc Externalizable. 
+Giao diện Serializable là một giao diện đánh dấu trong gói java.io chỉ ra rằng một lớp chứa 
+các phương thức get, set và is mà một lớp khác có thể sử dụng để đọc và ghi các biến thể 
+của đối tượng vào và từ nguồn dữ liệu lưu trữ. Ở hình này, ví dụ, lớp User triển khai giao diện 
+Serializable và chứa tất cả các phương thức get và set cần thiết. Kết quả là, một số máy chủ servlet 
+có thể lưu trữ và khôi phục đối tượng này nếu cần thiết. Ví dụ, bộ điều khiển Tomcat có thể 
+lưu trạng thái của đối tượng User trước khi tắt và khôi phục trạng thái của đối tượng User 
+khi bắt đầu lần tiếp theo.
+
+Mô tả
+• Một JavaBean, hay bean, là một lớp Java mà (1) cung cấp một constructor 
+không chấp nhận đối số, (2) cung cấp các phương thức get và set cho tất cả các biến thể 
+của nó theo quy tắc đặt tên chuẩn của Java, và (3) triển khai giao diện Serializable hoặc Externalizable.
+• Vì JavaBeans chỉ là các lớp Java, chúng là một loại đối tượng Java cũ thông thường (POJO).
+
+
+
+2.
+Cách dùng EL để get attribute and JavaBean properties
+Ngôn ngữ biểu thức JSP (EL) cung cấp một cú pháp gọn nhẹ cho phép bạn truy cập vào 
+các attributes và properties của JavaBean từ một đối tượng yêu cầu. 
+Điều này được minh họa trong hình 6-2.
+
+Hình 6-2
+1. Cách hiển thị một attribute
+Systax : ${attribute}
+
+Servlet code: 
+GregorianCalendar currentDate = new GregoriaCalendar();
+int currentYear = currentDate.get(Calendar.YEAR);
+request.setAttribute("currentYear", currentYear);
+
+JSP code: 
+<p>The current year is ${currentYear} </p>
+
+2. Cách hiển thị property của một attribute
+Systax: ${attribute.property}
+
+Servlet code:
+User user = new User(firstName, lastName, email);
+request.setAttribute("user", user);
+
+JSP code: 
+<p>Hello ${user.firstName}</p>
+
+page : Bean được lưu trữ trong đối tượng PageContext ngụ ý
+request : Bean được lưu trữ trong đối tượng HttpServletRequest
+session : Bean được lưu trữ trong đối tượng HttpSesstion
+application : Bean được lưu trữ trong đối tượng ServletContext
+
+
+Khi sử dụng EL, bạn bắt đầu bằng việc viết một dấu đô la ($) 
+tiếp theo là một dấu ngoặc mở ({) và một dấu ngoặc đóng (}). 
+Sau đó, bạn viết biểu thức trong dấu ngoặc nhọn.
+
+Ví dụ đầu tiên trong hình này cho thấy cách lấy một thuộc tính cho một đối tượng 
+đơn giản như một đối tượng String hoặc Date. Ở đây, mã servlet sử dụng một đối tượng 
+GregorianCalendar để tạo một biến int có tên currentYear lưu trữ năm hiện tại. 
+Sau đó, mã servlet lưu giá trị int này làm thuộc tính của đối tượng yêu cầu. 
+Cuối cùng, mã JSP sử dụng EL để truy cập vào thuộc tính này, chuyển đổi nó thành chuỗi và hiển thị nó.
+
+Ví dụ thứ hai cho thấy cách hiển thị một thuộc tính của một thuộc tính cho một JavaBean. 
+Ở đây, mã servlet tạo một JavaBean cho người dùng và lưu trữ bean này làm thuộc tính của yêu cầu. 
+Sau đó, mã JSP sử dụng EL để truy cập vào thuộc tính này và sử dụng toán tử chấm để chỉ định thuộc tính 
+của JavaBean mà nó sẽ hiển thị.
+
+Khi bạn lưu một thuộc tính trong đối tượng HttpServletRequest, thuộc tính đó chỉ có sẵn cho 
+yêu cầu hiện tại. Điều này được gọi là phạm vi yêu cầu. Tuy nhiên, nếu bạn muốn thuộc tính 
+có sẵn cho tất cả các servlet, bạn có thể đặt thuộc tính trong đối tượng ServletContext. 
+Điều này được gọi là phạm vi ứng dụng. Hoặc, nếu bạn muốn thuộc tính có sẵn cho tất cả các servlet 
+trong phiên hiện tại của người dùng, bạn có thể đặt thuộc tính trong đối tượng HttpSession. 
+Điều này được gọi là phạm vi phiên. Bạn sẽ tìm hiểu cách thực hiện điều đó trong chương tiếp theo. 
+Tuy nhiên, lưu ý rằng phạm vi ứng dụng không an toàn đối với luồng.
+
+Khi sử dụng EL, bạn không cần chỉ định phạm vi. Thay vào đó, EL tự động tìm kiếm qua tất cả các 
+phạm vi bắt đầu từ phạm vi nhỏ nhất (phạm vi trang) và di chuyển về phạm vi lớn nhất (phạm vi ứng dụng).
+
+Mô tả:
+Ngôn ngữ biểu thức JSP (EL) làm cho việc truy cập vào các thuộc tính và 
+thuộc tính của JavaBean từ một đối tượng yêu cầu trở nên dễ dàng.
+
+• Khi bạn sử dụng toán tử chấm với một JavaBean, mã bên trái của toán tử chỉ định JavaBean 
+và mã bên phải của toán tử chỉ định một thuộc tính của JavaBean.
+• Khi bạn sử dụng cú pháp này, EL tìm kiếm thuộc tính bắt đầu từ phạm vi nhỏ nhất (phạm vi trang) 
+và di chuyển về phạm vi lớn nhất (phạm vi ứng dụng).
+• Các thuộc tính có phạm vi ứng dụng không an toàn đối với luồng.
+
+3. 
+Làm thế nào để kích hoạt thư viện JSTL cốt lõi
+Trước khi bạn có thể sử dụng các thẻ JSTL trong một ứng dụng, bạn phải làm cho 
+thư viện JSTL có sẵn cho ứng dụng. Với NetBeans IDE, ví dụ, bạn có thể thêm thư viện JSTL 1.2 
+vào ứng dụng bằng cách nhấp chuột phải vào thư mục Thư viện của dự án, chọn lệnh Thêm Thư viện 
+và chọn thư viện. 
+
+Hình 6-3
+//Chỉ thị taglib
+The taglib directive that specifies the JSTL core library
+<%c taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+Một thẻ 'if' JSTL hiển thị hoặc ẩn thông báo xác nhận:
+<c:if test="${message != null}">
+    <p><i>${message}</i></p>
+</c:if>
+
+Một thẻ if JSTL kiểm tra giá trị chuỗi:
+<c:if test="${stringVariable eq 'desiredValue'}"> //desiredValue : giá trị mong muốn
+    <!-- Mã HTML hoặc logic xử lý khác -->
+</c:if>
+
+Trong hình 6-3, ví dụ, thư viện JSTL 1.2 đã được thêm vào dự án, và các tệp jstl-impl.jar 
+và jstl-api.jar được hiển thị dưới thư mục Thư viện. JSTL được chia thành nhiều thư viện. 
+Trong số các thư viện này, thư viện JSTL cốt lõi là thư viện được sử dụng phổ biến nhất. 
+Trước khi bạn có thể sử dụng các thẻ JSTL từ thư viện này, bạn phải viết một chỉ thị taglib 
+để chỉ định URI và tiền tố cho thư viện này. Trong hình này, chỉ thị taglib chỉ định URI 
+cho thư viện JSTL cốt lõi với tiền tố là "c", đây là tiền tố thường được sử dụng cho thư viện này. 
+Trên thực tế, tất cả các ví dụ trong chương này đều giả định rằng trang bao gồm một chỉ thị taglib 
+như này trước các thẻ JSTL. 
+Mặc dù bạn có thể sử dụng một tiền
+Mặc dù tố khác, chúng tôi khuyến nghị sử dụng "c" làm tiền tố cho thư viện cốt lõi.
+
+Mô tả
+- Thư viện JSP Standard Tag Library (JSTL) cung cấp các thẻ cho các tác vụ phổ biến trên JSP.
+
+- Trước khi bạn có thể sử dụng các thẻ JSTL trong một ứng dụng, bạn phải làm cho các 
+tệp jstl-impl.jar và jstl-api.jar có sẵn cho ứng dụng.
+
+- Để thêm thư viện JSTL vào một dự án NetBeans, chuyển sang tab Projects, 
+nhấp chuột phải vào thư mục Libraries, chọn lệnh Add Library và chọn thư viện JSTL.
+
+- Trước khi bạn có thể sử dụng các thẻ JSTL trong một JSP, bạn phải viết một chỉ thị 
+taglib để xác định thư viện JSTL và tiền tố của nó.
+
+- Bạn có thể sử dụng thẻ if để thực hiện xử lý điều kiện tương tự như một câu 
+lệnh if trong Java. Trong thẻ if, bạn có thể sử dụng thuộc tính test để chỉ định điều 
+kiện Boolean cho câu lệnh if.
+
+- JSTL cung cấp nhiều thẻ khác mà bạn sẽ tìm hiểu khi tiến bộ qua cuốn sách này.

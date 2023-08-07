@@ -1,0 +1,55 @@
+Kỹ năng cần thiết để làm việc với EL
+Bây giờ bạn đã có một ý tưởng chung về cách EL có thể đơn giản hóa và cải thiện mã JSP của bạn, bạn đã sẵn sàng
+để tìm hiểu chi tiết về cách làm việc với nó.
+
+Cách sử dụng toán tử dấu chấm để làm việc với JavaBeans và maps
+Như bạn đã học trong các chương 5 và 7, bạn có thể sử dụng phương thức setAttribute của đối tượng HttpServletRequest
+và HttpSession để lưu trữ một đối tượng với phạm vi request hoặc session. Nếu bạn cần một phạm vi lớn hơn, bạn có thể
+sử dụng phương thức setAttribute của đối tượng ServletContext để lưu trữ một đối tượng với phạm vi ứng dụng
+(application scope).
+Hoặc, nếu bạn cần một phạm vi nhỏ hơn, bạn có thể sử dụng phương thức setAttribute của đối tượng PageContext
+ngầm định để lưu trữ một đối tượng với phạm vi trang (page scope). Sau đó, bạn có thể sử dụng phương thức
+getAttribute của đối tượng tương ứng để lấy lại thuộc tính.
+
+Hình 8-2 cho thấy cách sử dụng EL để truy cập một thuộc tính của một ứng dụng web. Khi bạn sử dụng EL,
+bạn bắt đầu bằng cách viết ký hiệu đô la ($) theo sau là dấu ngoặc mở ({) và dấu ngoặc đóng (}).
+Sau đó, bạn viết biểu thức trong dấu ngoặc.
+
+Ví dụ đầu tiên trong hình này cho thấy cách lấy lại một thuộc tính cho một đối tượng đơn giản như một đối tượng
+String hoặc Date. Ở đây, mã servlet tạo một đối tượng Date có tên là "currentDate" để lưu trữ ngày hiện tại.
+Sau đó, mã servlet lưu trữ đối tượng này như một thuộc tính của đối tượng request. Cuối cùng, mã JSP sử dụng EL
+để truy cập thuộc tính này, chuyển đổi nó thành một chuỗi và hiển thị nó.
+------------------
+An example that accesses the currentDate attribute
+Syntax
+${attribute}
+
+Servlet code
+Date currentDate = new Date();
+request. setAttribute ("currentDate", currentDate);
+
+JSP code
+<p>The current date is ${currentDate}</p>
+
+------------------
+An example that accesses the firstName property of the user attribute
+Syntax
+${attribute.property}
+Servlet code
+User user = new User(firstName, lastName, email);
+session.setAttribute{"user", user);
+JSP code
+<p>Hello ${user.firstName}</p>
+
+
+Lưu ý ở đây rằng bạn không cần phải chỉ định phạm vi khi sử dụng EL. Thay vào đó, EL tự động tìm kiếm qua tất cả
+các phạm vi bắt đầu từ phạm vi nhỏ nhất (page scope) và di chuyển đến phạm vi lớn nhất (application scope).
+
+Ví dụ thứ hai cho thấy cách hiển thị một thuộc tính của một thuộc tính cho một đối tượng phức tạp hơn như một
+JavaBean hoặc một map. Ở đây, mã servlet tạo một JavaBean User và lưu trữ bean này như một thuộc tính của phiên (session).
+Sau đó, mã JSP sử dụng EL để truy cập thuộc tính này và sử dụng toán tử dấu chấm để chỉ định thuộc tính của JavaBean
+mà nó sẽ hiển thị.
+
+Bạn có thể sử dụng cùng một kỹ thuật để làm việc với một map. Trong trường hợp đó, bạn viết tên của khóa sau
+toán tử dấu chấm để lấy đối tượng liên quan được lưu trữ trong bản đồ. Bạn sẽ thấy việc này được sử dụng trong hình tiếp theo.
+

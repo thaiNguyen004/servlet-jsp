@@ -1,0 +1,111 @@
+Cách làm việc với các đối tượng EL ẩn (implicit) khác
+
+Các đối tượng Implicit EL
+param: Một map trả về giá trị cho tên tham số yêu cầu cụ thể.
+paramValues: Một map trả về mảng giá trị cho tên tham số yêu cầu cụ thể.
+header: Một map trả về giá trị cho tiêu đề HTTP yêu cầu cụ thể. Xem chương 18 để biết danh sách các tiêu đề yêu cầu HTTP.
+headerValues: Một bản đồ trả về mảng giá trị cho tiêu đề HTTP yêu cầu cụ thể.
+cookie: Một map trả về đối tượng Cookie cho cookie cụ thể.
+initParam: Một map trả về giá trị cho tên tham số trong phần tử context-param của tệp web.xml.
+pageContext: Tham chiếu đến đối tượng pageContext ẩn mặc định có sẵn từ bất kỳ JSP nào.
+
+
+How to get parameter values from the request 
+An HTML form that has two parameters with the same name 
+<form action="emailList" method="post "> 
+<p>First name: <input type="text " name="firstName"></p>
+<p>Email address 1: <input type="text" name="email"></p>
+<p>Email address 2: <input type="text" name="email"></p>
+</form> 
+JSP code 
+<p>First name: ${param.firstName}<br>
+Email address 1: ${paramValues.email[O]}<br>
+Email address 2: ${paramValues.email[1]}
+</p>
+
+How to get an HTTP header
+JSP code
+<p>MIME types: ${header.accept}<br>
+Compression types: $ {header["accept-encoding"]}
+</p>
+The text that a browser might display
+Văn bản mà trình duyệt có thể hiển thị
+MIME types: text/html,application/xml;q=0.9,image/webp,*/*;q=0.8
+Compression types: gzip,deflate,sdch
+
+How to work with cookies 
+Servlet code 
+Cookie c = new Cookie("emailCookie", email);
+c.setMaxAge{60*60); //set its age to 1 hour 
+c.setPath("/"); //allow the entire application to access it
+response.addCookie(c);
+JSP code 
+<p>The email cookie: ${cookie.emailCookie.value}</p>
+
+
+Trong hình 8-3, bạn đã học cách sử dụng các đối tượng Implicit EL để xác định phạm vi. Bây giờ, hình 8-7
+trình bày một số đối tượng EL ẩn khác mà bạn có thể sử dụng để thực hiện các tác vụ khác trong một trang JSP.
+Tuy nhiên, nếu bạn sử dụng mô hình MVC (Model-View-Controller), thì thường bạn sẽ không cần sử dụng các đối tượng ẩn này.
+
+Ví dụ đầu tiên trong hình này cho thấy cách sử dụng các đối tượng ẩn để làm việc với các tham số yêu cầu.
+Ở đây, biểu mẫu HTML có một tham số có tên là firstName cho hộp văn bản tên đầu tiên và một tham số có tên
+là email cho hai hộp văn bản tiếp theo. Nói cách khác, biểu mẫu này cho phép bạn nhập một tên đầu tiên và
+hai địa chỉ email. Sau đó, mã JSP cho thấy cách bạn có thể sử dụng đối tượng `param` để lấy giá trị của tham số firstName.
+Ngoài ra, mã JSP này cho thấy cách bạn có thể sử dụng đối tượng `paramValues` để lấy một mảng chuỗi chứa các giá trị của
+tham số email.
+
+Ví dụ thứ hai cho thấy cách bạn có thể sử dụng đối tượng `header` để lấy dữ liệu từ tiêu đề HTTP.
+Ở đây, bạn có thể sử dụng toán tử dấu chấm để lấy giá trị cho bất kỳ tiêu đề yêu cầu nào có tên chỉ gồm một từ.
+Ví dụ, bạn có thể sử dụng toán tử dấu chấm để lấy giá trị của tiêu đề Accept.
+
+Nếu một tiêu đề yêu cầu có nhiều hơn một từ trong tên, bạn có thể sử dụng toán tử [] để lấy giá trị của nó.
+Ví dụ, bạn có thể sử dụng toán tử này để lấy giá trị của tiêu đề Accept-Encoding. Tạm thời, đừng lo lắng nếu bạn
+chưa hiểu rõ cách hoạt động của tiêu đề yêu cầu HTTP, bởi vì bạn sẽ học thêm về nó trong chương 18.
+
+Khi bạn học thêm về các tiêu đề yêu cầu HTTP, bạn sẽ thấy rằng một số tiêu đề yêu cầu HTTP trả về một danh sách giá trị.
+Ví dụ, tiêu đề Accept trả về một danh sách các kiểu MIME mà trình duyệt có thể chấp nhận. Nếu bạn muốn trả về danh sách
+này dưới dạng một mảng, bạn có thể sử dụng đối tượng EL ẩn `headerValues`. Sau đó, bạn có thể sử dụng mảng được
+trả về để xử lý các giá trị này.
+
+Ví dụ thứ ba cho thấy cách sử dụng đối tượng EL ẩn `cookie` để lấy giá trị của một cookie.
+Ở đây, mã servlet tạo một đối tượng Cookie với tên là `emailCookie` và lưu trữ một địa chỉ email trong cookie đó.
+Sau đó, mã JSP sử dụng đối tượng EL ẩn `cookie` để lấy đối tượng Cookie, và sử dụng thuộc tính `value` của cookie
+để lấy địa chỉ email được lưu trữ trong cookie.
+
+Cách làm việc này hoạt động vì lớp Cookie tuân theo tất cả các quy tắc cho một JavaBean và bao gồm một phương thức có
+tên `getValue` có thể được sử dụng để lấy giá trị được lưu trữ trong cookie. Nếu cần thiết, bạn có thể sử dụng mã
+tương tự để lấy các thuộc tính khác của cookie. Ví dụ, bạn có thể sử dụng thuộc tính `maxAge` để lấy tuổi tối đa của cookie.
+
+
+XML in the web.xml file
+<context-param>
+    <param-name>custServEmail</param-name>
+    <param-value>custserv@murach.com</param-value>
+</context-param>
+JSP code
+<p>The context init param: ${initParam.custServEmail}</p>
+
+Ví dụ thứ tư trong hình 8-7 cho thấy cách sử dụng đối tượng initParam để lấy tham số khởi tạo ngữ cảnh.
+Ở đây, tệp web.xml sử dụng phần tử context-param để lưu trữ một tham số khởi tạo ngữ cảnh có tên là "custServEmail"
+với giá trị là "custserv@murach.com". Sau đó, mã JSP sử dụng đối tượng initParam để lấy giá trị cho tham số này.
+Lưu ý rằng tham số này là một tham số khởi tạo ngữ cảnh có sẵn cho toàn bộ ứng dụng web, không phải là tham số
+khởi tạo servlet chỉ có sẵn cho servlet hiện tại.
+
+
+How to use the pageContext object
+JSP code
+<p>HTTP request method: ${pageContext.request.method}<br>
+HTTP response type: ${pageContext.response.contentType}<br>
+HTTP session ID: ${pageContext.session.id}<br>
+HTTP contextPath: ${pageContext.servletContext.contextPath}<br>
+</p>
+The text that a browser might display
+HTTP request method: POST
+HTTP response type: text/html
+HTTP session ID: 4C1CFDB54B0339B53BE3AC8E9BADCOFS
+HTTP servletContext path: /ch8email
+
+Ví dụ thứ năm cho thấy cách sử dụng đối tượng pageContext ẩn có sẵn từ bất kỳ JSP nào. Vì đối tượng pageContext
+tuân theo quy tắc của một JavaBean, bạn có thể dễ dàng truy cập bất kỳ thuộc tính nào của nó. Ngoài ra,
+các thuộc tính của đối tượng pageContext cho phép bạn truy cập các đối tượng phạm vi yêu cầu (request),
+phản hồi (response), phiên (session) và ứng dụng (application).

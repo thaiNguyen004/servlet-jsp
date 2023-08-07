@@ -1,0 +1,176 @@
+Mã cho servlet
+
+package murach.download;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import murach.business.User;
+import murach.data.UserIO;
+import murach.util.CookieUtil;
+
+public class DownloadServlet extends HttpServlet {
+@Override
+public void doGet{HttpServletRequest request, HttpServletResponse response)
+                    throws IOException, ServletException {
+    // get current action
+    String action = request.getParameter{"action");
+    if (action == null) {
+        action = "viewAlbums"; // default action
+    }
+    // perform action and set URL to appropriate page
+    String url = "/index.jsp";
+    if (action.equals ("viewAlbums")) {
+        url = "/index .jsp";
+    } else if (action.equals("checkUser")) {
+        url = checkUser(request, response);
+    }
+
+    //forward to the view
+    getServletContext()
+        .getRequestDispatcher(url)
+        .forward(request, response);
+
+    @Override
+    public void doPost{HttpServletRequest request, HttpServletResponse response)
+                    throws IOException, ServletException {
+
+    String action = request.getParameter("action");
+    // perform action and set URL to appropriate page
+    String url = "/index.jsp";
+    if (action.equals("registerUser")) {
+        url = registerUser(request, response);
+    }
+    // forward to the view
+    getServletContext()
+        .getRequestDispatcher(url)
+        .forward{request, response);
+
+Phần 6 trình bày mã cho lớp DownloadServlet, nơi đóng vai trò là bộ điều khiển
+cho ứng dụng Tải xuống. Mã này bắt đầu bằng việc khai báo phương thức doGet để xử lý
+các yêu cầu sử dụng phương thức HTTP GET.
+
+Trong phương thức doGet, mã bắt đầu bằng việc lấy tham số action. Nếu tham số action
+chưa được thiết lập, mã này đặt nó thành giá trị mặc định là "view Albums".
+
+Sau khi đặt biến action, mã này sử dụng câu lệnh if/else để thực hiện hành động thích hợp và
+chuyển tiếp đến JSP tương ứng. Để xem các album, mã chỉ đơn giản đặt biến có tên là url
+thành trang Index. Để kiểm tra người dùng, mã này gọi phương thức checkUser
+được hiển thị trong phần 7 của hình này và truyền các đối tượng request và response cho nó.
+Phương thức này kiểm tra xem người dùng đã đăng ký chưa và trả về một URL phù hợp.
+Nếu người dùng chưa đăng ký, ví dụ, phương thức này trả về URL cho trang Đăng ký.
+Ngược lại, phương thức này trả về URL cho trang Tải xuống phù hợp.
+
+
+Dù cho trường hợp nào, câu lệnh cuối cùng trong phương thức chuyển tiếp yêu cầu và phản
+hồi tới URL được chỉ định.
+
+Phương thức doPost hoạt động tương tự như phương thức doGet. Tuy nhiên, nó chỉ xử lý
+hành động đăng ký người dùng. Để đăng ký người dùng, mã gọi phương thức registerUser
+được hiển thị trong phần 8 của hình này và truyền các đối tượng request và response cho nó.
+Phương thức này đăng ký người dùng và trả về một URL cho trang Tải xuống phù hợp.
+Vì phương thức doPost không xử lý các hành động khác, bạn không thể sử dụng phương thức HTTP POST
+để xem các album hoặc kiểm tra người dùng. Ngược lại, vì phương thức doGet không xử lý hành động
+đăng ký người dùng, bạn phải sử dụng phương thức HTTP POST để đăng ký người dùng.
+Vì việc đăng ký người dùng viết dữ liệu vào máy chủ, điều này thường là điều bạn muốn.
+
+
+
+private String checkUser(HttpServletRequest request, HttpServletResponse response) {
+    String productCode = request.getParameter("productCode");
+    HttpSession session = request.getSession();
+    session.setAttribute("productCode", productCode);
+    User user = (User) session.getAttribute("user");
+    String url;
+    // if User object doesn't exist, check email cookie
+    if (user == null) {
+        Cookie[] cookies = request.getCookies();
+        String emailAddress =
+                    CookieUtil.getCookieValue(cookies, "emailCookie");
+        // if cookie doesn't exist, go to Registration page
+        if (emailAddress == null || emailAddress.equals("")) {
+            url = "/register.jsp";
+        }
+        // if cookie exists, create User object and go to Downloads page
+        else {
+            ServletContext sc = getServletContext();
+            String path = sc.getRealPath("/WEB-INF/EmailList.txt");
+            user = UserIO.getUser(emailAddress, path);
+            session.setAttribute("user", user);
+            url = "/" + productCode + "_download.jsp";
+        }
+    }
+    // if User object exists, go to Downloads page
+    else {
+        url = "/" + productCode + "_download.jsp";
+    }
+    return url;
+}
+
+Trong phần 7, phương thức checkUser bắt đầu bằng việc lấy mã sản phẩm từ đối tượng request đã được truyền từ trang Index.
+Sau đó, nó tạo một đối tượng Session bằng cách gọi phương thức getSession của đối tượng request và đặt mã sản phẩm như
+một thuộc tính của đối tượng session. Từ điểm này trở đi, mã sản phẩm này có thể được lấy từ đối tượng session.
+
+Sau đó, mã tạo một đối tượng User mới và cố gắng lấy dữ liệu cho đối tượng này từ thuộc tính User của đối tượng phiên.
+Nếu đối tượng phiên chứa một đối tượng User, đối tượng User mới nhận dữ liệu từ đối tượng phiên. Điều này cho biết người
+dùng đã gọi servlet này ít nhất một lần trước đó trong phiên này. Nếu không, phương thức getAttribute trả về giá trị null
+và đối tượng User được đặt thành null. Điều này cho biết người dùng đang gọi servlet này lần đầu tiên.
+
+Các câu lệnh if lồng nhau tiếp theo cung cấp ba khả năng. Trước tiên, nếu đối tượng User là null và một cookie có tên
+emailCookie không có sẵn từ các phiên trước đó, người dùng chưa đăng ký trước đây. Do đó, mã đặt biến có tên url
+thành URL trỏ tới trang Đăng ký.
+
+Thứ hai, nếu đối tượng User là null nhưng cookie tồn tại, người dùng đã đăng ký trước đây. Do đó, mã (1) sử dụng phương
+thức getUser của lớp UserIO để lấy dữ liệu cho đối tượng User từ một tệp,
+(2) đặt đối tượng User như một thuộc tính của đối tượng phiên và (3) đặt biến url thành JSP Tải xuống phù hợp.
+Thứ ba, nếu đối tượng User tồn tại, người dùng đã đăng ký trước đây. Do đó, mã đặt biến url thành JSP Tải xuống phù hợp.
+Cuối cùng, sau các câu lệnh if lồng nhau, câu lệnh cuối cùng trả về biến url.
+
+Nếu bạn nghiên cứu mã này, bạn nên có thể hiểu được nó. Tuy nhiên, điều có thể giúp hiểu, là phương thức checkUser
+tạo một đối tượng User từ các thông tin đăng ký của người dùng và thêm đối tượng này vào đối tượng phiên.
+Nó cũng tạo một emailCookie và thêm nó vào đối tượng phản hồi. Kết quả là, nếu trình duyệt của bạn đã bật cookie,
+bạn không cần phải đăng ký lần tiếp theo khi sử dụng ứng dụng này. Nếu không, bạn sẽ phải đăng ký mỗi khi sử dụng ứng dụng này.
+
+
+Trong phần 8, phương thức registerUser bắt đầu bằng việc lấy các tham số mà người dùng nhập trên trang Đăng ký.
+Sau đó, phương thức này tạo một đối tượng User từ những tham số này và sử dụng lớp UserIO để ghi đối tượng User
+vào một tệp được lưu trữ trong thư mục WEB-INF. Sau khi ghi tệp, phương thức này lưu trữ đối tượng User trong đối tượng
+phiên và tạo một cookie bền vững lưu trữ địa chỉ email của người dùng trong hai năm. Tiếp theo, phương thức này lấy
+thuộc tính productCode đã được lưu trữ trong đối tượng phiên và sử dụng nó để tạo một biến có tên là url trỏ tới
+trang Tải xuống phù hợp. Cuối cùng, câu lệnh cuối cùng trong phương thức này trả về biến url.
+
+private String registerUser(HttpServletRequest request,
+        HttpServletResponse response) {
+    // get the user data
+    String email = request.getParameter("email");
+    String firstName = request.getParameter("firstName");
+    String lastName = request.getParameter("lastName");
+
+    // store the data in a User object
+    User user = new User();
+    user.setFirstName(firstName);
+    user.setLastName(lastName);
+    user.setEmail(email);
+    // write the User object to a file
+    ServletContext sc = getServletContext();
+    String path = sc.getRealPath("/WEB-INF/EmailList.txt");
+    UserIO.add(user, path);
+    // store the User object as a session attribute
+    HttpSession session = request.getSession();
+    session.setAttribute("user", user);
+    // add a cookie that stores the user's emailAddress to the browser
+    Cookie c = new Cookie("emailCookie", emailAddress);
+    c.setMaxAge(60 * 60 * 24 * 365 * 2); // set age to 2 years
+    c.setPath("/"); // allow entire app to access it
+    response.addCookie(c);
+    // create and return a URL for the appropriate Download page
+    String url = "/" + productCode + "_download.jsp";
+    return url;
+}
+
+Phương thức registerUser bắt đầu bằng việc lấy các tham số mà người dùng nhập trên trang Đăng ký. Sau đó, phương thức này
+tạo một đối tượng User từ những tham số này và sử dụng lớp UserIO để ghi đối tượng User vào một tệp được lưu trữ trong
+thư mục WEB-INF. Sau khi ghi tệp, phương thức này lưu trữ đối tượng User trong đối tượng phiên và tạo một cookie bền
+vững lưu trữ địa chỉ email của người dùng trong hai năm. Tiếp theo, phương thức này lấy thuộc tính productCode đã được
+lưu trữ trong đối tượng phiên và sử dụng nó để tạo một biến có tên là url trỏ tới trang Tải xuống phù hợp.
+Cuối

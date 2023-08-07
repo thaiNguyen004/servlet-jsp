@@ -1,0 +1,149 @@
+Cách sử dụng JSP tag
+Cách sử dụng các thẻ JSP
+Các thẻ JSP được mô tả trong chủ đề này đã là một phần của JSP từ khi nó ra đời. 
+Những thẻ này cho phép bạn nhúng các lệnh Java trực tiếp vào một trang JSP. 
+Tuy nhiên, khi bạn sử dụng những thẻ này trong một trang JSP, thường dẫn đến 
+một sự kết hợp lộn xộn giữa Java và HTML. Do đó, thông thường, được coi là 
+tốt nhất là tránh sử dụng những thẻ này trừ khi bạn đang duy trì một ứng dụng 
+web cũ và muốn tiếp tục sử dụng chúng vì tính nhất quán
+
+
+Sumary
+- Cách viết directives (chỉ thị), scriptlet và expression (biểu thức)
+- Cách viết chú thích trong một trang JSP 
+=======
+- Cách viết directives (chỉ thị), scriptlet và expression (biểu thức)
+
+1.
+Cách viết directives (chỉ thị), scriptlet và expression (biểu thức)
+
+Hình 6-4 Các loại thẻ JSP:
+
+1. JSP directive (JSP chỉ thị)
+<%@ %> : Dùng để đặt điều kiện cho toàn bộ JSP
+
+2. JSP scriptlet 
+<% %> : Dùng để chèn một khối lệnh java
+
+3. JSP expresstion
+<%= %>: Dùng để hiển thị giá trị chuỗi cho một biểu thức
+
+4. JSP comment
+<%-- --%> : Comment code
+
+5. JSP declaration (khai báo)
+<%! %> : Khai báo một biến thành viên và phương thức trong JSP
+
+Phần đầu của hình 6-4 tóm tắt năm loại thẻ JSP. Trong số các thẻ này, 
+ba thẻ đầu tiên (directive, scriptlet và expression) là những thẻ được 
+sử dụng phổ biến nhất. Vì không phải là một thực hành tốt để sử dụng 
+thẻ thứ năm (declaration), sách này không hướng dẫn cách sử dụng nó.
+
+Bạn có thể sử dụng một chỉ thị để nhập các class vào một trang JSP. 
+Trong ví dụ trước, bạn đã học cách sử dụng chỉ thị taglib để nhập 
+thư viện JSTL core. Trong ví dụ này, ví dụ đầu tiên cho thấy cách 
+sử dụng chỉ thị trang để nhập các lớp. Để làm điều đó, bạn có thể 
+viết một chỉ thị trang như được hiển thị ở dòng đầu tiên của ví dụ này.
+
+<%@ page import="java.util.GregorianCalendar, java.util.Calendar"%>
+<%
+    GregorianCalendar currentDate = new GregorianCalendar();
+    int currentYear = currentDate.get(Calendar.YEAR);
+%>
+<p>&copy; Copyright <%= currentYear %> Mike murach &amp; Associate </p>
+
+
+
+Đầu tiên, bạn viết thẻ mở đầu và từ khóa “page” theo sau là thuộc tính import. 
+Sau đó, bạn viết dấu bằng và một cặp dấu ngoặc kép. Trong dấu ngoặc kép, bạn 
+viết tên của các lớp Java mà bạn muốn nhập, phân tách mỗi lớp bằng dấu phẩy. 
+Trong ví dụ này, chỉ thị trang nhập hai lớp trong gói java.util. 
+Hoặc, bạn có thể sử dụng ký tự đại diện để nhập cả hai lớp như sau:
+<%@ page import= “java.util.*” %>
+
+Sau khi chỉ thị trang nhập các lớp, trang JSP có thể truy cập vào các lớp 
+GregorianCalendar và Calendar mà không cần gọi đầy đủ tên.
+
+Để viết các thẻ JSP scriptlet bạn viết lệnh Java kết thúc bằng dấu chấm phẩy 
+trong các thẻ scriptlet. Trong ví dụ đầu tiên, ví dụ đó chứa hai lệnh sử dụng 
+các lớp GregorianCalendar và Calendar để lấy giá trị int cho currentYear.
+
+Để viết một biểu thức, bạn viết bất kỳ biểu thức Java nào mà đánh giá thành 
+một kiểu dữ liệu nguyên thủy như giá trị int hoặc một đối tượng như một 
+đối tượng String. Nếu một biểu thức đánh giá thành một kiểu nguyên thủy 
+như giá trị int, JSP tự động chuyển đổi kiểu nguyên thủy thành một chuỗi biểu 
+thị giá trị. Trong ví dụ thứ hai, ví dụ đó hoạt động vì JSP tự động chuyển đổi 
+giá trị int thành một chuỗi. Nếu, ngược lại, biểu thức đánh giá thành một đối tượng, 
+JSP gọi phương thức toString của đối tượng để lấy một chuỗi biểu thị đối tượng.
+
+Ví dụ thứ hai cho thấy cách sử dụng một đoạn mã scriptlet và một biểu thức để hiển thị 
+hoặc ẩn một thông báo xác nhận. Điều này thực hiện cùng một nhiệm vụ như thẻ if JSTL 
+được hiển thị trong ví dụ trước. Tuy nhiên, JSTL được hiển thị trong ví dụ trước yêu cầu 
+ít mã hơn và trông giống HTML hơn.
+
+Ví dụ sử dụng JSP scriptlet và một expression để ẩn hiện thông báo xác nhận
+<% 
+     String message = (String) request.getAttribute("message");
+     if(message != null) {
+%>
+     <p><i><%= message%></i></p>
+<% } %>
+
+
+
+2.
+Cách viết chú thích trong một trang JSP 
+
+Hình 6-5
+Một chú thích HTML trong JSP
+<!--
+<p>This email address was added to our list on <%= new Date()%></p>
+-->
+
+Một chú thích JSP 
+<%--
+<p>This email address was added to our list on <%= new Date()%></p>
+--%>
+
+Chú thích Java trong một JSP scriptlet
+<% 
+// get parameters from the request 
+String firstName = request.getParameter("firstName"); 
+String lastName = request.getParameter ("lastName");
+String emailAddress = request.getParameter("emailAddress"); 
+/* 
+User user = new User(firstName, lastName, emailAddress); 
+UserDB.insert(user); 
+*/
+%>
+
+
+
+
+Hình 6-5 mô tả cách viết chú thích trong một trang JSP. Để bắt đầu, ví dụ 
+đầu tiên sử dụng một chú thích HTML để chú thích một dòng chứa một biểu thức JSP 
+hiển thị ngày. Sau đó, ví dụ thứ hai sử dụng một chú thích JSP để chú thích cùng một dòng.
+
+Khi bạn viết chú thích HTML và JSP, bất kỳ mã Java nào trong một chú thích HTML 
+sẽ được biên dịch và thực thi, nhưng trình duyệt không hiển thị nó. 
+Ví dụ, ví dụ đầu tiên tạo một đối tượng Date mới mặc dù nó không hiển thị ngày 
+trong trình duyệt. Trên thực tế, giá trị cho đối tượng ngày được trả về cho 
+trình duyệt dưới dạng một chú thích HTML. Để kiểm tra điều này, bạn có thể xem mã 
+HTML cho trang được trả về cho trình duyệt.
+
+Ngược lại, bất kỳ mã Java nào trong một chú thích JSP không được biên dịch 
+hoặc thực thi hoặc trả về cho trình duyệt bằng bất kỳ cách nào.
+Ví dụ, ví dụ thứ hai không tạo một đối tượng Date và không trả về nó cho 
+trình duyệt như một chú thích. Kết quả là, nếu bạn muốn chú thích một đoạn mã 
+chứa các thẻ HTML và JSP, thì thường bạn sử dụng một chú thích JSP. 
+Điều này quan trọng nếu mã bạn đang chú thích thực hiện các tác vụ mà bạn 
+không muốn thực hiện nữa. Ví dụ, nếu mã cập nhật một biến mà bạn không còn 
+muốn cập nhật nữa, bạn cần chắc chắn sử dụng một chú thích JSP.
+
+Ví dụ thứ ba cho thấy cách bạn có thể viết chú thích Java trong một đoạn mã scriptlet. 
+Ở đây, một chú thích trên một dòng được viết trước ba câu lệnh lấy các tham số yêu cầu. 
+Sau đó, đoạn mã này sử dụng một chú thích trên nhiều dòng để chú thích hai câu lệnh 
+tạo đối tượng User và ghi nó vào cơ sở dữ liệu. Vì loại chú thích này hoạt động 
+giống như chúng hoạt động với mã Java thông thường, bạn không nên gặp bất kỳ 
+vấn đề nào khi sử dụng chúng.
+

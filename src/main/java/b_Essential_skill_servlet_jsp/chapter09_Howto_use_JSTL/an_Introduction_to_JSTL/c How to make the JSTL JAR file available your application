@@ -1,0 +1,13 @@
+Cách làm cho các tệp JAR của JSTL có sẵn cho ứng dụng của bạn
+Trước khi bạn có thể sử dụng các thẻ JSTL trong một ứng dụng, bạn phải làm cho các tệp jstl-impl.jar và jstl-api.jar
+có sẵn cho ứng dụng. Với IDE NetBeans ví dụ, bạn có thể thêm thư viện JSTL 1.2 vào ứng dụng như được hiển thị
+trong hình 3-14 trong chương 3. Sau đó, các tệp jst1-impl.jar và jstl-api.jar sẽ được hiển thị dưới thư mục
+Libraries trong cửa sổ Projects.
+
+Đối với InteliJ IDEA bạn có thể tạo dự án Maven và thêm vào tệp pom.xml
+<dependency>
+    <groupId>org.apache.taglibs</groupId>
+    <artifactId>taglibs-standard-impl</artifactId>
+    <version>1.2.5</version>
+</dependency>
+

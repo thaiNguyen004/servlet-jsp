@@ -1,0 +1,48 @@
+Tóm tắt
+- Một ứng dụng web là một tập hợp các trang web được tạo ra để đáp ứng yêu cầu của người dùng.
+
+- Để chạy một ứng dụng web, client cần một trình duyệt web và máy chủ cần phần mềm máy chủ web.
+Máy chủ cũng có thể yêu cầu hệ thống quản lý cơ sở dữ liệu (DBMS).
+
+- Ngôn ngữ Đánh dấu Siêu Văn bản (HTML) là ngôn ngữ mà trình duyệt chuyển đổi thành các trang web
+của ứng dụng web, trong khi Giao thức Truyền tải Siêu Văn bản (HTTP) là giao thức mà trình duyệt web
+và máy chủ web sử dụng để giao tiếp.
+
+- Một trình duyệt web yêu cầu một trang từ máy chủ web bằng cách gửi một yêu cầu HTTP. Máy chủ web
+trả lời bằng cách gửi một phản hồi HTTP trở lại trình duyệt.
+
+- Một trang web tĩnh được tạo ra từ một tài liệu HTML không thay đổi, trong khi một trang web động
+được tạo ra bởi một ứng dụng web dựa trên các tham số được bao gồm trong yêu cầu HTTP.
+
+- Tiêu chuẩn Java Enterprise Edition (Java EE) mô tả cách máy chủ web có thể tương tác với tất cả
+các công nghệ web Java.
+
+- Máy chủ servlet/JSP là phần mềm cho phép máy chủ web làm việc với phần servlet/JSP của tiêu chuẩn Java EE.
+
+- Tomcat là một trong những máy chủ servlet/JSP phổ biến nhất, và hầu hết các ứng dụng servlet/JSP
+sử dụng Tomcat như là máy chủ web và máy chủ servlet/JSP.
+
+- Máy chủ ứng dụng là phần mềm cho phép máy chủ web làm việc với toàn bộ tiêu chuẩn Java EE.
+
+- Để chạy các ứng dụng web Java, máy chủ yêu cầu Bộ phát triển Java (JDK), một máy chủ web và một máy chủ
+servlet/JSP. Điều này cho phép máy chủ xử lý yêu cầu HTTP và trả về một phản hồi HTTP.
+
+- Hầu hết các ứng dụng servlet/JSP sử dụng một cơ sở dữ liệu như MySQL để lưu trữ dữ liệu được sử dụng
+bởi ứng dụng.
+
+- Khi phát triển một ứng dụng web Java, bạn cố gắng chia các lớp của nó thành ba tầng:
+Presentation Layer, Business Rules Layer và Data Access Layer. Điều này giúp dễ dàng bảo trì ứng dụng.
+
+- Thư mục cấp cao nhất cho một ứng dụng web được gọi là thư mục gốc của nó.
+
+- NetBeans và Eclipse là những IDE phổ biến cho phát triển web Java. Cả hai đều là mã nguồn mở, miễn phí
+và hoạt động trên tất cả các hệ điều hành hiện đại.
+
+- Để triển khai ứng dụng web của bạn trên Internet, bạn có thể sử dụng một nhà cung cấp dịch vụ Internet
+(ISP) cung cấp dịch vụ lưu trữ web hỗ trợ servlets và JSPs.
+
+- Khi một ứng dụng web chạy trên Internet, nó có một địa chỉ IP (Internet Protocol) như 64.71.179.86 và
+một tên miền như www.murach.com. Những địa chỉ này cung cấp hai cách để xác định duy nhất trang web.
+
+- Để chuyển các tệp của ứng dụng web của bạn lên máy chủ web, bạn có thể sử dụng một giao thức truyền tệp
+(FTP) như ứng dụng FileZilla.

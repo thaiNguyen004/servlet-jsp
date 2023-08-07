@@ -1,0 +1,26 @@
+Cách sử dụng JSTL
+Chương 6 đã giới thiệu bạn về Thư viện Thẻ Chuẩn JSP (JSTL) và các thẻ if và import của nó.
+Sau đó, chương 7 đã giới thiệu bạn về thẻ for Each. Bây giờ, trong chương này, bạn sẽ xem xét lại những thẻ đó
+và bạn sẽ học cách sử dụng các thẻ JSTL khác. Những thẻ này cung cấp một cách để giảm lượng mã script trong
+ứng dụng của bạn. Đối với hầu hết các ứng dụng, bạn có thể sử dụng JSTL và EL để loại bỏ toàn bộ mã script.
+
+Một lời giới thiệu về JSTL
+    Thư viện JSTL
+    Cách làm cho các tệp JAR của JSTL có sẵn cho ứng dụng của bạn
+    Cách viết thẻ chỉ thị taglib
+    Cách viết một thẻ JSTL
+    Cách xem tài liệu cho một thư viện
+Cách làm việc với thư viện lõi JSTL
+    Cách sử dụng thẻ out
+    Cách sử dụng thẻ forEach
+    Cách sử dụng thẻ forTokens
+    Bốn thuộc tính khác cho vòng lặp
+    Cách sử dụng thẻ if
+    Cách sử dụng thẻ choose
+    Cách sử dụng thẻ url
+    Các thẻ khác trong thư viện lõi JSTL
+Ứng dụng Cart
+    Giao diện người dùng
+    Mã cho các lớp kinh doanh
+    Mã cho các servlet và JSP
+Góc nhìn

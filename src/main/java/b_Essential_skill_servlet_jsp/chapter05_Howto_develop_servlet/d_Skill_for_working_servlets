@@ -1,0 +1,210 @@
+sumary: 
+- Kỹ năng để làm việc với servlets
+- Làm thế nào để lấy đường dẫn thực tế của một tệp
+- Làm thế nào để lấy và đặt các thuộc tính yêu cầu (request attributes)?
+- Làm thế nào để chuyển tiếp các yêu cầu (forward requests)
+- Làm thế nào để chuyển hướng các phản hồi (redirect responses)
+
+1.
+Kỹ năng để làm việc với servlets
+Trong các hình trước, bạn đã học cách tạo một servlet, ánh xạ nó với một URL và 
+yêu cầu nó. Bây giờ, bạn sẽ tìm hiểu một số kỹ năng để xử lý yêu cầu.
+
+Cách lấy giá trị của các tham số
+Hình 5-6
+ - getParameter(String param):
+Trả về giá trị của tham số được chỉ định dưới dạng một chuỗi nếu nó tồn tại, 
+hoặc trả về null nếu không tồn tại. Thường, đây là giá trị được xác định trong 
+thuộc tính giá trị của điều khiển (<input>) trong tệp HTML hoặc JSP.
+ - getParameterValues(String param):
+Trả về một mảng các đối tượng String chứa tất cả các giá trị của tham số yêu cầu 
+đã cho hoặc null nếu tham số không có bất kỳ giá trị nào.
+
+Hình 5-6 tóm tắt hai phương thức được cung cấp bởi đối tượng HttpServletRequest, 
+thường được đặt tên là request. Đối tượng này có sẵn trong cả hai phương thức 
+doGet và doPost của một servlet, và bạn có thể sử dụng các phương thức của đối tượng 
+này để lấy giá trị của các tham số trong yêu cầu.
+
+Để lấy văn bản mà người dùng đã nhập vào một ô văn bản, bạn có thể gọi phương thức 
+getParameter từ đối tượng request và chỉ định thuộc tính name của ô văn bản. 
+Ví dụ: 
+    String firstName = request.getParameter{"firstName"); 
+Ví dụ này lấy văn bản được lưu trữ trong ô văn bản có thuộc tính tên là "firstName". 
+Bạn có thể sử dụng một kỹ thuật tương tự để làm việc với các điều khiển khác. 
+Ví dụ, bạn có thể sử dụng kỹ thuật này để lấy giá trị đã chọn từ một combobox 
+hoặc một nhóm nút radio.
+
+Đối với các checkbox có thuộc tính giá trị, phương thức getParameter 
+trả về giá trị đó nếu checkbox được chọn và giá trị null nếu không được chọn. 
+Tuy nhiên, nếu checkbox không có thuộc tính giá trị, phương thức getParameter 
+trả về giá trị "on" nếu checkbox được chọn và giá trị null nếu không được chọn. 
+Do đó, bạn có thể xác định xem người dùng đã chọn một checkbox hay không bằng 
+cách kiểm tra xem giá trị của nó có phải là null hay không như ví dụ thứ hai.
+
+// returns the value or "on" if checked, null otherwise. 
+String rockCheckBox = request.getParameter{"rock"); 
+if {rockCheckBox != null) { 
+    // rock music was checked 
+} 
+
+Để lấy nhiều giá trị cho cùng một tham số name, bạn có thể sử dụng phương thức 
+getParameterValues như ví dụ sau minh họa. 
+
+// returns the values of the items selected in a list box. 
+String[] selectedCountries = request.getParameterValues("country"); 
+for (String country : selectedCountries) { 
+// code that processes each country 
+} 
+Điều này hữu ích cho các input như <select> cho phép lựa chọn nhiều. 
+Sau khi sử dụng phương thức getParameterValues để trả về một mảng các đối tượng String, 
+bạn có thể sử dụng vòng lặp để lấy giá trị từ mảng như được thể hiện trong ví dụ bên trên.
+
+
+2. 
+Làm thế nào để lấy đường dẫn thực tế của một tệp
+
+Khi làm việc với servlet, bạn thường sử dụng đường dẫn tương đối để tham chiếu đến 
+các tệp nằm trong ứng dụng web. Tuy nhiên, đôi khi bạn cần lấy đường dẫn thực tế 
+cho một trong những tệp này.
+
+Để làm điều đó, bạn có thể sử dụng kỹ thuật được hiển thị trong đoạn code dưới. 
+ServletContext sc = this.getServletContext{); 
+String path = sc.getRealPath("/WEB-INF/EmailList.txt"); 
+
+Đầu tiên, bạn gọi phương thức getServletContext để lấy một đối tượng ServletContext. 
+Sau đó, bạn gọi phương thức getRealPath của đối tượng ServletContext để trả về đường dẫn 
+thực tế cho tệp được chỉ định. Khi sử dụng phương thức getRealPath, dấu gạch chéo trước 
+điều hướng đến thư mục gốc cho ứng dụng hiện tại, vì vậy getRealPath("/EmailList.txt") 
+chỉ định tệp EmailList.txt trong thư mục gốc của ứng dụng hiện tại.
+
+Trong hình này, ví dụ đầu tiên lấy đường dẫn thực tế cho một tệp có tên là EmailList.txt 
+được lưu trữ trong thư mục WEB-INF của ứng dụng. Ở đây, phương thức getRealPath 
+trả về một chuỗi đối với một đường dẫn tuyệt đối đến tệp này. 
+=> trả về  : C:\murach\servlet_and_jsp\netbeans\book_apps\chOSemail\build\web\WEB-INF\ 
+EmailList.txt 
+
+
+String path = this.getServletContext().getRealPath("/WEB-INF/EmailList.txt");
+Ví dụ trên cho thấy một cách ngắn gọn hơn để mã hóa ví dụ đầu tiên. 
+Ở đây, mã không cung cấp tên cho đối tượng ServletContext. Thay vào đó, nó gọi 
+phương thức getRealPath trực tiếp từ phương thức getServletContext. 
+Vì kỹ thuật này gọi một phương thức từ một phương thức khác, nó được gọi là method chaining. 
+Thường, kỹ thuật này dẫn đến mã ngắn hơn và dễ đọc hơn. Nhược điểm duy nhất là nó không 
+tạo ra tên biến cho đối tượng ServletContext mà bạn có thể sử dụng nhiều lần trong mã của bạn. 
+Tuy nhiên, nếu mã của bạn chỉ sử dụng đối tượng ServletContext một lần, thông thường việc 
+sử dụng method chaining là hợp lý.
+
+Nếu bạn lưu trữ một tệp trong một thư mục có thể truy cập qua web, chẳng hạn như thư mục 
+gốc cho một ứng dụng web, bất kỳ người dùng nào nhập URL chính xác đều có thể truy cập 
+vào tệp đó. 
+Tuy nhiên, thư mục WEB-INF và các thư mục con của nó không trực tiếp có thể truy cập qua web. 
+Do đó, nếu bạn muốn giữ một tệp riêng tư, bạn có thể lưu trữ nó trong thư mục WEB-INF 
+hoặc một trong các thư mục con của nó. Hoặc, bạn có thể hạn chế quyền truy cập vào tệp 
+hoặc thư mục như được mô tả trong chương 16.
+
+Nếu bạn sử dụng phương thức getRealPath, bạn nên nhận thức rằng nó có thể hoạt động 
+khác nhau trên các hệ thống khác nhau. Ví dụ, với Tomcat 8, bạn phải bắt đầu tham số 
+đường dẫn bằng dấu gạch chéo trước ('/'). Tuy nhiên, với Tomcat 7, dấu gạch chéo trước 
+này không yêu cầu. Tương tự, phương thức getRealPath sẽ thất bại và trả về giá trị null 
+nếu bạn cố gắng lấy đường dẫn đến một tài nguyên nằm bên trong tệp WAR hoặc nếu bạn 
+cố gắng lấy đường dẫn đến một tài nguyên nằm trong hoặc trên một hệ thống tệp tin ảo.
+
+
+3. 
+Làm thế nào để lấy và đặt các thuộc tính yêu cầu (request attributes)?
+
+Hình 5-8
+- setAttribute(String name, Object o) : Lưu trữ bất kỳ đối tượng nào trong yêu cầu (request) 
+dưới dạng thuộc tính và chỉ định tên cho thuộc tính đó. Các thuộc tính được đặt lại giữa các yêu cầu.
+- getAttribute(String name): Phương thức này trả về giá trị của thuộc tính được chỉ định 
+dưới dạng kiểu Object. Nếu không có thuộc tính nào tồn tại với tên đã chỉ định, phương thức 
+này trả về giá trị null.
+
+Để lưu trữ bất kỳ đối tượng nào trong đối tượng yêu cầu (request object)
+bạn có thể sử dụng phương thức `setAttribute` như được thể hiện trong hình 5-8. 
+Ở ví dụ đầu tiên, 
+User user = new User(firstName, lastName, email); 
+request.setAttribute("user", user);
+một đối tượng User được tạo ra và lưu trữ trong đối tượng yêu cầu 
+với tên là "user". Sau khi lưu trữ một đối tượng trong đối tượng yêu cầu, 
+
+Bạn có thể sử dụng phương thức `getAttribute` để lấy đối tượng đó. Trong hình này, 
+ví dụ thứ hai lấy đối tượng User đã được lưu trữ trong ví dụ đầu tiên. 
+User user = (User) request.getAttribute("user");
+
+Vì phương thức `getAttribute` trả về giá trị kiểu Object, nên kiểu này phải được 
+ép kiểu thành kiểu User.
+Khi làm việc với thuộc tính yêu cầu, bạn cần nhận ra rằng các thuộc tính này sẽ được 
+đặt lại giữa các yêu cầu. Do đó, nếu bạn lưu trữ một đối tượng User như một thuộc tính 
+yêu cầu và chuyển tiếp yêu cầu đó đến một JSP, thì đối tượng User chỉ khả dụng cho JSP 
+đó và không khả dụng sau đó trong phiên làm việc (session). 
+
+Trong chương 7, bạn sẽ tìm hiểu cách lưu trữ một đối tượng để nó khả dụng cho bất kỳ 
+servlet hoặc JSP nào trong phiên làm việc hiện tại.
+
+
+
+4. 
+Làm thế nào để chuyển tiếp các yêu cầu (forward requests)
+method: 
+- getRequestDispatcher(String path): Trả về một đối tượng RequestDispatcher cho 
+đường dẫn được chỉ định
+
+- forward(ServletRequest request, ServletResponse response): Chuyển tiếp yêu cầu và
+phản hồi tới một tài nguyên máy chủ khác (thường là JSP hoặc servlet) 
+
+Hình 5-9
+- Chuyển tiếp một request đến một trang HTML
+String url = "/index.html"; 
+getServletContext().getRequestDispatcher(url).forward(request, response);
+
+- Chuyển tiếp một request đến một JSP
+String url = "/thanks.jsp";
+getServletContext().getRequestDispatcher(url).forward(request, response); 
+
+- Chuyển tiếp một request đến một Servlet khác
+String url = "/cart/displayinvoice"; 
+getServletContext().getRequestDispatcher(url) 
+.forward(request, response);
+
+Hình 5-9 mô tả cách chuyển tiếp một yêu cầu từ một servlet đến một trang HTML, 
+một JSP hoặc một servlet khác. Để làm điều đó, bạn bắt đầu bằng cách gọi phương 
+thức getServletContext từ lớp HttpServlet để trả về một đối tượng ServletContext. 
+Sau đó, bạn gọi phương thức getRequestDispatcher của đối tượng ServletContext để 
+trả về một đối tượng RequestDispatcher. Trong phương thức này, bạn phải viết mã URL 
+bắt đầu bằng dấu gạch chéo để nó tương đối với thư mục gốc của ứng dụng web hiện tại. 
+Sau đó, bạn sử dụng phương thức forward để chuyển tiếp các đối tượng yêu cầu và phản 
+hồi đến trang HTML, JSP hoặc servlet được chỉ định bởi URL.
+
+Trong các ví dụ trong hình này, câu lệnh đầu tiên đặt chuỗi URL. 
+Sau đó, câu lệnh thứ hai lấy đối tượng ServletContext, lấy đối tượng RequestDispatcher 
+cho URL và chuyển tiếp yêu cầu. Trong các ví dụ này, câu lệnh thứ hai sử dụng 
+phương thức chaining như đã được mô tả trước đó trong chương này.
+
+
+
+4.
+Làm thế nào để chuyển hướng các phản hồi (redirect responses)
+method: 
+sendRedirect(String path): Gửi một phản hồi chuyển hướng tạm thời đến khách hàng 
+sử dụng URL địa điểm chuyển hướng được chỉ định.
+
+Hình này cũng mô tả cách chuyển hướng một phản hồi. Để làm điều đó, bạn sử dụng phương thức 
+`sendRedirect` của đối tượng phản hồi (response object). Thông thường, bạn sử dụng kỹ thuật 
+này khi bạn muốn chuyển quyền kiểm soát cho một URL nằm bên ngoài ứng dụng của bạn. 
+Để sử dụng phương thức này, bạn thường cung cấp một URL tuyệt đối. Tuy nhiên, bạn cũng có 
+thể cung cấp một URL tương đối vì máy chủ servlet có thể chuyển đổi nó thành URL tuyệt đối. 
+Nếu bạn bắt đầu đường dẫn bằng một dấu gạch chéo, máy chủ servlet hiểu rằng đường dẫn đó là 
+tương đối với thư mục gốc của máy chủ servlet.
+
+Khi bạn gọi phương thức `sendRedirect`, máy chủ gửi một URL tuyệt đối đến trình duyệt. 
+Sau đó, trình duyệt gửi yêu cầu đến URL đó. Vì quá trình này xảy ra phía khách hàng 
+(trình duyệt) thay vì phía máy chủ, nên nó không hiệu quả như chuyển tiếp yêu cầu 
+như được thể hiện trước đó trong hình này. Hơn nữa, phương thức `sendRedirect` không 
+chuyển giao các đối tượng yêu cầu và phản hồi. Do đó, bạn chỉ nên sử dụng phương thức 
+`sendRedirect` khi bạn muốn chuyển hướng đến một URL mà có sẵn từ ứng dụng web khác.
+Ví dụ: 
+response.sendRedirect("email"); 
+response.sendRedirect("/musicStore/email/");
+response.sendRedirect("http://www.murach.com/email/");
+

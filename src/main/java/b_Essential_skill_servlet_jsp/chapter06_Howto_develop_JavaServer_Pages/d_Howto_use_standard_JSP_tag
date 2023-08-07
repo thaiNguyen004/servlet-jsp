@@ -1,0 +1,196 @@
+Cách sử dụng các thẻ JSP tiêu chuẩn với JavaBeans
+
+Trước khi có phiên bản quy định JSP 2.0, các thẻ JSP tiêu chuẩn dùng để làm việc 
+với JavaBeans đã được sử dụng rộng rãi. Do đó, nếu bạn cần duy trì mã cho một 
+ứng dụng web Java cũ hơn, bạn có thể cần biết cách sử dụng những thẻ này.
+
+Sumary
+- Giới thiệu về các thẻ JSP tiêu chuẩn
+- Cách sử dụng thẻ useBean
+- Cách viết mã cho thẻ getProperty và thẻ setProperty
+
+
+Giới thiệu về các thẻ JSP tiêu chuẩn
+Lợi ích chính mà bạn nhận được khi viết các lớp kinh doanh của mình sao cho 
+phù hợp với JavaBeans là bạn có thể sử dụng EL hoặc các thẻ JSP tiêu chuẩn để 
+làm việc với các bean này. Điều này được minh họa bởi mã JSP trong hình 6-6.
+
+hình 6-6: 
+Đoạn code sử dụng thẻ JSP để truy cập vào 1 bean User
+
+<Sử dụng thẻ chỉ thị để import bean User>
+<%@ page import="murach.business.User"%>
+<%
+    User user = (User) request.getAttribute("user");
+    if(user == null) {  
+        user = new User();
+    }
+%>
+
+<label>Email:</label> 
+<span><%= user.getEmail() %></span><br> 
+<label>First Name:</label> 
+<span><%= user.getFirstName() %></span><br> 
+<label>Last Name:</label> 
+<span><%= user.getLastName() %></span><br>
+
+Đoạn code tương tự nhưng sử dụng thẻ JSP tiêu chuẩn
+<jsp:useBean id="user" scope="request" class="murach.business.User"/>
+<label>Email:</label>
+<span><jsp:getProperty name="user" property="email"></span><br>
+<label>First name:</label>
+<span><jsp:getProperty name="user" property="firstName"></span><br>
+<label>Last name:</label>
+<span><jsp:getProperty name="user" property="lastName"></span><br>
+
+Lưu ý: name trong thẻ jsp:getProperty sẽ phụ thuộc vào id của thẻ jsp:useBean
+
+
+Đoạn code tương tự nhưng sử dụng EL
+<label>Email:</label>
+<span>${user.email}</span>
+<label>First name:</label>
+<span>${user.firstName}</span>
+<label>Last name:</label>
+<span>${user.lastName}</span>
+
+
+Ví dụ đầu tiên cho thấy cách sử dụng một chỉ thị, một đoạn mã scriptlet và 
+ba biểu thức để hiển thị dữ liệu cho bean User. Ở đây, chỉ thị import lớp User. 
+Tiếp theo, đoạn mã scriptlet lấy đối tượng User được lưu trữ trong đối tượng yêu cầu. 
+Hoặc nếu đối tượng yêu cầu không chứa đối tượng User, mã này tạo một đối tượng User mới. 
+Tiếp theo, ba thẻ biểu thức hiển thị dữ liệu được lưu trữ trong đối tượng User. 
+Mặc dù mã này hoạt động, nó là một sự kết hợp không dễ sử dụng của mã Java và HTML.
+
+Ví dụ thứ hai sử dụng các thẻ JSP tiêu chuẩn để thực hiện cùng một tác vụ. 
+Ở đây, thẻ useBean truy cập đối tượng User được lưu trữ trong đối tượng yêu cầu. 
+Hoặc nếu đối tượng User không tồn tại trong đối tượng yêu cầu, thẻ này tạo đối tượng 
+bằng cách gọi constructor không tham số của lớp User. Tiếp theo, ba thẻ getProperty 
+hiển thị giá trị của các thuộc tính đã được thiết lập trong đối tượng User.
+
+Nếu bạn so sánh ví dụ thứ hai với ví dụ đầu tiên, bạn sẽ thấy dễ dàng nhìn 
+thấy cách sử dụng các thẻ JSP tiêu chuẩn có thể làm cho mã JSP của bạn dễ dàng hơn 
+để viết và duy trì. Trên thực tế, ví dụ thứ hai không đòi hỏi bất kỳ mã Java nào. Điều này 
+làm cho việc làm việc trên JSP dễ dàng hơn đối với nhà thiết kế web và những người 
+không phải là lập trình viên.
+
+Tuy nhiên, EL được hiển thị trong ví dụ thứ ba cũng không yêu cầu bất kỳ mã Java nào. 
+Hơn nữa, EL ngắn gọn và đơn giản hơn cả các thẻ JSP tiêu chuẩn. 
+Kết quả là, việc làm việc trên JSP sử dụng EL còn dễ dàng hơn đối với nhà thiết kế web 
+và các lập trình viên khác.
+
+Các thẻ JSP tiêu chuẩn có một số ưu điểm so với EL. Đầu tiên, thẻ useBean tạo ra 
+JavaBean ngay cả khi nó chưa tồn tại. Thứ hai, bạn cũng có thể sử dụng thẻ setProperty 
+để thiết lập các thuộc tính của một JavaBean. Tuy nhiên, khi bạn sử dụng mô hình MVC, 
+servlet thường tạo ra JavaBean và thiết lập các thuộc tính của nó. Nói cách khác, 
+khi bạn sử dụng mô hình MVC, không có nhiều lợi ích khi sử dụng các thẻ JSP tiêu chuẩn.
+
+
+Ưu điểm của các thẻ JSP tiêu chuẩn:
+- Các thẻ JSP tiêu chuẩn tạo một JavaBean nếu nó chưa tồn tại.
+- Các thẻ JSP tiêu chuẩn cung cấp cách để thiết lập các thuộc tính.
+
+Ưu điểm của EL:
+- EL có cú pháp thanh lịch và gọn nhẹ hơn.
+- EL cho phép bạn truy cập các thuộc tính lồng nhau.
+- EL xử lý giá trị null tốt hơn.
+- EL cung cấp nhiều chức năng hơn.
+
+
+
+2.
+Cách sử dụng thẻ useBean
+
+Hình 6-7 :
+Systax:
+<jsp:useBean id="beanName" class="package.Class" scope="scopeValue" />
+Example:
+<jsp:useBean id="user" class="murach.business.User" scope="request" />
+
+Hình 6-7 mô tả cách viết mã thẻ useBean để truy cập vào một bean. 
+Mặc dù thẻ này trông và hoạt động tương tự như một thẻ HTML, nhưng tất cả 
+các thẻ JSP để làm việc với JavaBeans sử dụng cú pháp XML. Do đó, khi viết mã 
+cho các thẻ này, bạn phải sử dụng các ký tự viết thường và viết hoa theo 
+cách được hiển thị trong hình này; bạn phải viết dấu gạch chéo phía trước để 
+đánh dấu kết thúc thẻ mở hoặc bắt đầu một thẻ đóng; và bạn phải đặt dấu nháy đơn 
+hoặc dấu nháy kép xung quanh tất cả các thuộc tính của một thẻ.
+
+Để viết một thẻ useBean đơn giản, bạn viết tên thẻ sau đó là các thuộc tính của thẻ. 
+Trong ví dụ này: 
+1. Thuộc tính id xác định tên được sử dụng để truy cập vào bean. 
+<!>Đây cũng là thuộc tính xác định thẻ này có tham chiếu tới một đối tượng được lưu trữ trong
+đối tượng request không, nếu không thì nó sẽ tạo đối tượng bằng cách gọi constructor không tham số, 
+và bạn phải đảm bảo là nó để scope là "request"
+2. Thuộc tính class xác định gói và lớp của bean. 
+3. Thuộc tính scope xác định phạm vi của bean.
+
+Khi viết thuộc tính scope, bạn có thể chỉ định một trong bốn giá trị: 
+page, request, session và application. 
+Giá trị của thuộc tính scope xác định đối tượng lưu trữ bean và xác định thời gian 
+mà bean có sẵn cho phần còn lại của ứng dụng. 
+Ví dụ, ví dụ đặt thuộc tính scope là request, điều này lưu trữ bean trong đối tượng request. 
+Do đó, bất kỳ JSP hoặc servlet nào có quyền truy cập vào đối tượng request 
+đều có quyền truy cập vào bean này. Nếu bạn không chỉ định thuộc tính Scope, 
+giá trị mặc định của scope sẽ được đặt là "page", có nghĩa là bean chỉ có sẵn cho JSP hiện tại.
+
+Nếu một bean khớp với các thuộc tính được chỉ định trong thẻ useBean, 
+thẻ này sẽ tạo một tham chiếu đến đối tượng đó. 
+Nếu không, thẻ useBean sẽ tạo một đối tượng mới bằng cách gọi constructor không tham số 
+của lớp được chỉ định.
+
+Hiện tại, đừng lo lắng nếu bạn không hiểu rõ cách thức hoạt động của scope session. 
+Bạn sẽ tìm hiểu thêm về nó trong chương tiếp theo.
+
+
+
+3.
+Cách viết mã cho thẻ getProperty và thẻ setProperty
+Sau khi bạn đã viết một thẻ useBean để truy cập hoặc tạo một đối tượng bean, 
+bạn có thể sử dụng thẻ getProperty để lấy giá trị được lưu trong đối tượng bean 
+và sử dụng thẻ setProperty để thiết lập giá trị trong đối tượng bean. 
+Hình 6-8 cho thấy cách thực hiện điều này.
+
+Hình 6-8:
+Thẻ getProperty
+Syntax:
+<jsp:getProperty name="beanName" property="propertyName" />
+Example: 
+<jsp:getProperty name="user" property="email" />
+
+Thẻ setProperty
+Syntax:
+<jsp:setProperty name="beanName" property="propertyName" value="value" />
+Example:
+<jsp:setProperty name="user" property="email" value="nguyenntph33935@fpt.edu.vn" />
+
+
+Để lấy giá trị của một thuộc tính được lưu trữ trong đối tượng bean, bạn viết một thẻ getProperty. 
+Ở đây, thuộc tính name xác định tên của đối tượng bean, nên phải trùng khớp với thuộc tính id của thẻ useBean. 
+Ví dụ, nếu bạn đặt thuộc tính name là "user", thuộc tính này truy cập vào đối tượng User được chỉ định 
+bởi thẻ useBean trong hình trước. Sau đó, thuộc tính property xác định tên của thuộc tính mà bạn muốn truy cập. 
+Ví dụ, nếu giá trị là "firstName", nó truy cập vào thuộc tính firstName của đối tượng User.
+
+Để thiết lập một thuộc tính của đối tượng bean, bạn viết một thẻ setProperty. 
+Trong thẻ này, bạn viết thuộc tính name và thuộc tính property để xác định tên của đối tượng bean và 
+thuộc tính mà bạn muốn thiết lập. Sau đó, bạn viết thuộc tính value để xác định giá trị mà bạn muốn thiết lập cho thuộc tính.
+
+Nếu bạn cần viết một trong các ký tự đặc biệt được hiển thị trong hình này là một phần của thuộc tính value, 
+bạn có thể sử dụng các chuỗi ký tự thoát hiển thị ở đây. Ví dụ, nếu bạn sử dụng dấu nháy đơn để xác định 
+các thuộc tính của mình, bạn có thể sử dụng chuỗi ký tự thoát như trong ví dụ chuỗi ký tự thoát đầu tiên 
+để thiết lập thuộc tính lastName của đối tượng User thành "O'Neil". 
+Tuy nhiên, bạn thường có thể tránh việc sử dụng chuỗi ký tự thoát bằng cách thay đổi 
+loại dấu ngoặc kép mà bạn sử dụng để xác định thuộc tính.
+
+Kí tự    Kí tự thoát
+'           \'
+"           \"
+\           \\
+<%          <\% 
+%>          %\>
+
+Khi làm việc với thẻ getProperty, bạn nên nhận thức rằng nó sẽ không lấy giá trị của một thuộc tính 
+nếu giá trị là null hoặc một chuỗi rỗng.
+
+Tương tự, bạn không thể sử dụng thẻ setProperty để thiết lập giá trị của một thuộc tính thành null 
+hoặc một chuỗi rỗng. Tuy nhiên, nếu bạn cần làm điều đó, bạn có thể thực hiện nó trong constructor 
+của đối tượng bean hoặc trong một servlet truy cập đối tượng bean.

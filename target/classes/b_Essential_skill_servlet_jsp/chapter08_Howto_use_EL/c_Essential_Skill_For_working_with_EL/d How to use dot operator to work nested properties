@@ -1,0 +1,35 @@
+Cách sử dụng toán tử dấu chấm để truy cập các thuộc tính lồng nhau
+
+An example that accesses a nested property 
+Syntax 
+${attribute.property1.property2}
+Servlet code 
+Product p = new Product();
+p.setCode("pf01");
+LineItem lineItem = new LineItem(p, 10);
+session.setAttribute("item", lineItem);
+JSP code 
+<p>Product code: ${item.product.code}</p>
+
+Another way to access the same property 
+Syntax 
+${attribute["property1"].property2}
+Servlet code 
+Product p = new Product();
+p.setCode ("pf01");
+LineItem lineItem = new LineItem(p, 10);
+session.setAttribute("item", lineItem);
+JSP code 
+<p>Product code: ${item["product"].code}</p>
+
+Ví dụ đầu tiên trong hình 8-5 minh họa cú pháp được sử dụng phổ biến nhất để truy cập các thuộc tính lồng nhau.
+Ở đây, mã servlet tạo một đối tượng Product có một thuộc tính có tên là code. Sau đó, mã servlet lưu trữ đối tượng
+Product này trong một đối tượng LineItem và lưu trữ đối tượng LineItem này như một thuộc tính phiên có tên là item.
+Vì cả hai lớp LineItem và Product đều tuân theo các quy tắc cho JavaBeans, mã JSP sau đó có thể sử dụng EL để lấy
+thuộc tính code cho đối tượng Product được lưu trữ trong thuộc tính item. Mặc dù hình này chỉ cho thấy cách làm việc
+với một thuộc tính lồng nhau, nhưng không có giới hạn về số lượng các thuộc tính lồng nhau mà bạn có thể truy cập
+bằng toán tử dấu chấm.
+
+Ví dụ thứ hai cho thấy bạn có thể sử dụng toán tử dấu chấm sau toán tử []. Ở đây, điều quan trọng là đối tượng được
+trả về bởi toán tử [] phải là một JavaBean hoặc một bản đồ. Trong ví dụ này, điều này hoạt động vì toán tử [] trả
+về cùng một đối tượng Product như ví dụ đầu tiên.

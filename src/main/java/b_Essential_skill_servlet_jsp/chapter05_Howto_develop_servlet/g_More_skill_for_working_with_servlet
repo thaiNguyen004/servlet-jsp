@@ -1,0 +1,263 @@
+Thêm kỹ năng làm việc với servlets
+Bây giờ bạn đã hiểu cơ bản về cách viết mã servlet, bạn sẵn sàng để tìm hiểu một số 
+khái niệm nền tảng khác để làm việc với servlets. Hiểu những khái niệm này có thể giúp 
+bạn tránh một số lỗi phổ biến.
+- Thứ nhất, việc ghi đè phương thức service của một servlet thông thường được coi 
+là một thói quen không tốt. 
+Thứ hai, việc viết biến thành viên (instance variables) cho một servlet thông thường 
+được coi là một thói quen không tốt.
+
+Sumary: 
+- Cách thức hoạt động của các phương thức trong một servlet
+- Tại sao không nên sử dụng biến thành viên trong servlet
+- Cách làm việc với lỗi servlet
+- Cách in dữ liệu gỡ lỗi ra màn hình console
+- Cách in dữ liệu gỡ lỗi ra một log file
+- Perspective(Quan điểm)
+
+
+1. 
+Cách thức hoạt động của các phương thức trong một servlet
+Hình 5-14 - các phương thức thông thường của lớp HttpServlet:
+public void init() throws ServletException
+public void service(HttpServletRequest request, HttpServletResponse response) 
+    throws IOException, ServletException
+public void doGet(HttpServletRequest request, HttpServletResponse response) 
+    throws IOException, ServletException
+public void doPost(HttpServletRequest request, HttpServletResponse response) 
+    throws IOException, ServletException
+public void destroy()
+
+Hình 5-14 trình bày một số phương thức thông thường của lớp HttpServlet. Khi bạn viết mã 
+cho những phương thức này, bạn cần hiểu rằng máy chủ servlet chỉ tạo ra một phiên bản 
+duy nhất của servlet. Điều này thường xảy ra khi máy chủ servlet bắt đầu hoặc khi servlet 
+được yêu cầu lần đầu tiên. 
+Sau đó, mỗi yêu cầu gửi đến servlet sẽ khởi chạy (hoặc "tạo ra") một luồng (thread) 
+có thể truy cập vào phiên bản duy nhất của servlet đó.
+
+Khi máy chủ servlet tạo ra phiên bản của servlet, nó gọi phương thức init. 
+Vì phương thức này chỉ được gọi một lần duy nhất, bạn có thể ghi đè nó trong servlet 
+của mình để cung cấp bất kỳ mã khởi tạo nào cần thiết như được hiển thị trong hình tiếp theo.
+Sau khi máy chủ servlet tạo ra phiên bản duy nhất của servlet, mỗi yêu cầu gửi đến servlet 
+đó sẽ khởi chạy một luồng gọi phương thức service của servlet. Phương thức này kiểm tra 
+phương thức được chỉ định trong yêu cầu HTTP và gọi phương thức doGet hoặc doPost tương ứng.
+Khi bạn viết mã servlet, bạn không nên ghi đè phương thức service. Thay vào đó, bạn nên ghi đè 
+phương thức doGet hoặc doPost tương ứng. Ví dụ, để xử lý một yêu cầu sử dụng phương thức GET, 
+bạn có thể ghi đè phương thức doGet. Tuy nhiên, nếu bạn muốn xử lý một yêu cầu sử dụng phương thức POST, 
+bạn có thể ghi đè phương thức doPost. Để sử dụng cùng một mã để xử lý cả hai loại yêu cầu, 
+bạn có thể ghi đè cả hai phương thức và cho phương thức này gọi đến phương thức khác như được hiển thị trước đó
+Nếu một servlet không hoạt động trong một thời gian hoặc nếu máy chủ servlet bị tắt, 
+máy chủ servlet sẽ gỡ bỏ các phiên bản của servlet mà nó đã tạo ra. Trước khi gỡ bỏ servlet,
+nó sẽ gọi phương thức destroy của servlet. Nếu bạn muốn cung cấp một số mã dọn dẹp, 
+chẳng hạn như ghi một biến vào một tập tin, bạn có thể ghi đè phương thức này. 
+Tuy nhiên, phương thức destroy không thể được gọi nếu máy chủ gặp sự cố. Do đó, bạn không nên phụ thuộc 
+vào nó để thực thi bất kỳ mã nào quan trọng đối với ứng dụng của bạn.
+
+Mô tả
+- Một máy chủ tải và khởi tạo servlet bằng cách gọi phương thức init.
+- Servlet xử lý mỗi yêu cầu từ trình duyệt bằng cách gọi phương thức service. 
+Phương thức này sau đó gọi một phương thức khác để xử lý loại yêu cầu HTTP cụ thể.
+- Máy chủ gỡ bỏ servlet bằng cách gọi phương thức destroy. Điều này xảy ra khi 
+servlet không hoạt động trong một thời gian hoặc khi máy chủ được tắt.
+
+Ghi chú
+- Tất cả các phương thức được hiển thị ở trên đều nằm trong lớp HttpServlet trừu tượng. 
+Do đó, bạn có thể ghi đè các phương thức này trong servlet của riêng bạn.
+- Việc ghi đè phương thức service thông thường được coi là một thói quen không tốt. 
+Thay vào đó, bạn nên ghi đè một phương thức như doGet hoặc doPost để xử lý một loại yêu cầu HTTP cụ thể.
+
+
+
+2.
+Tại sao không nên sử dụng biến thành viên trong servlet
+
+Hình 5-15:
+package murach.email;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class EmailListServlet extends HttpServlet {
+    // Khai báo một biến thành viên
+    private int globalCount; // Biến thành viên không an toàn cho luồng
+    
+    @Overide
+    public void init() throws ServletException
+    {
+        //..
+    }
+}
+Hình 5-15 cho thấy một ví dụ về cách biến thành viên được sử dụng trong servlets. 
+Tuy nhiên, việc sử dụng biến thành viên không phải là một phương pháp chấp nhận được. 
+Vấn đề với biến thành viên là chúng không an toàn đối với việc đa luồng và có thể dẫn đến 
+việc mất cập nhật và các vấn đề nghiêm trọng khác. Hơn nữa, không có cách dễ dàng để
+biến thành viên trở nên an toàn đối với việc đa luồng. 
+Kết quả là, bạn không nên viết code biến thành viên cho một servlet. 
+Tuy nhiên, khi bạn tiến bộ qua cuốn sách này, bạn sẽ học được một số kỹ thuật an toàn đối 
+với việc đa luồng để làm việc với các biến toàn cục, do đó bạn không cần phải sử dụng biến thành viên.
+
+
+
+3.
+Cách làm việc với lỗi servlet
+Khi phát triển servlets, bạn sẽ không tránh khỏi gặp phải lỗi. Đó là lý do tại sao 
+chủ đề này cung cấp cho bạn một số ý tưởng về cách giải quyết các vấn đề phổ biến và 
+cách in dữ liệu gỡ lỗi ra màn hình console hoặc ghi vào tệp nhật ký.
+
+Hình 5-16:
+- The servlet won't compile: Đảm bảo trình biên dịch có truy cập vào các tệp JAR cho tất cả các API cần thiết.
+- The servlet won't run: Make sure the web server is running; Make sure you're using the correct URL.
+- Changes to the servlet aren't showing up (Các thay đổi trong servlet không được hiển thị): Hãy đảm bảo rằng 
+việc tải lại servlet đã được bật; Triển khai lại ứng dụng.
+- The page doesn't display correctly (Trang không hiển thị đúng cách): Sử dụng trình duyệt của bạn để xem mã HTML 
+của trang. Sau đó, bạn có thể kiểm tra mã HTML để xác định vấn đề và có thể sửa vấn đề đó trong servlet.
+
+Cách giải quyết các vấn đề phổ biến của servlets
+Hình 5-16 liệt kê bốn vấn đề phổ biến có thể xảy ra khi bạn làm việc với servlets. Sau đó, nó liệt kê một 
+số giải pháp khả dĩ cho mỗi vấn đề này. Thật không may, các giải pháp cho những vấn đề này khác nhau 
+tùy thuộc vào IDE (môi trường phát triển tích hợp) mà bạn đang sử dụng. Do đó, các giải pháp được trình bày 
+ở đây chỉ được mô tả theo cách tổng quát.
+
+Nếu servlet của bạn không thể biên dịch, thông báo lỗi hiển thị sẽ cho bạn một ý tưởng về lý do 
+tại sao servlet không thể biên dịch. Ví dụ, nếu trình biên dịch không thể tìm thấy một lớp nằm 
+trong một trong các API của Java, bạn có thể cần phải làm cho API đó có sẵn cho ứng dụng của bạn. 
+Để làm điều đó, bạn thường có thể sử dụng IDE để thêm thư viện hoặc tệp JAR thích hợp vào ứng dụng.
+
+Nếu servlet biên dịch nhưng không chạy, có thể do máy chủ servlet không hoạt động. Để giải quyết 
+vấn đề này, tất nhiên, bạn có thể khởi động lại máy chủ servlet. Tuy nhiên, nếu máy chủ servlet 
+đã đang chạy, bạn nên kiểm tra lại URL để đảm bảo rằng nó được ánh xạ chính xác với servlet. 
+Một lỗi phổ biến, ví dụ, là thay đổi tên của servlet nhưng quên cập nhật ánh xạ cho servlet trong tệp web.xml.
+
+Nếu bạn thay đổi một servlet nhưng những thay đổi không hiển thị khi chạy servlet, có thể do 
+máy chủ servlet chưa tải lại lớp đã sửa đổi. Trong trường hợp này, bạn có thể bật tính năng tải lại servlet. 
+Điều này cho phép máy chủ servlet tự động phát hiện các thay đổi trong servlet và tải lại chúng. 
+Hoặc, bạn có thể triển khai lại ứng dụng, và nhiều IDE thực hiện điều này tự động khi bạn chạy ứng dụng web. 
+Cuối cùng, nếu mọi cách khác đều không thành công, bạn có thể tắt Tomcat và khởi động lại để Tomcat phải 
+tải lại tất cả các ứng dụng đang chạy trên nó.
+
+Nếu trang HTML được trả về bởi servlet không hiển thị đúng khi được trình duyệt hiển thị, 
+có thể là do servlet gửi HTML không đúng đến trình duyệt. Để khắc phục vấn đề này, bạn có thể sử dụng 
+trình duyệt của mình để xem mã HTML được gửi tới nó. Thủ tục để làm điều này khác nhau từ trình duyệt 
+này sang trình duyệt khác, nhưng bạn thường có thể tìm thấy một lệnh trong hệ thống menu cho phép bạn 
+xem mã HTML của trang. Sau đó, bạn có thể xác định vấn đề và sửa đổi servlet hoặc JSP để khắc phục nó.
+
+
+
+4. 
+Cách in dữ liệu gỡ lỗi ra màn hình console
+
+Hình 5-17:
+public void doPost(HttpServletRequest request, HttpServletResponse response) 
+    throws IOException, ServletException 
+    { 
+        // code 
+        String email = request.getParameter("email"); 
+        System.out.println("EmailListServlet email: " + email); 
+        // more code 
+    } 
+    
+The output that's printed to the Tomcat console 
+EmailListServlet email: jsmith@gmail.com
+
+Bạn có thể in các thông báo gỡ lỗi ra màn hình console cho máy chủ servlet như được thể hiện 
+trong hình 5-17. Để làm điều đó, bạn có thể sử dụng phương thức println của đối tượng System.out 
+và System.err. Bạn có thể sử dụng những thông báo này để giúp theo dõi các phương thức được 
+thực thi hoặc xem giá trị của một biến.
+
+Khi bạn sử dụng câu lệnh println để kiểm tra giá trị của một biến, thường bạn muốn 
+bao gồm tên của lớp và tên của biến. Điều này giúp thông điệp của bạn dễ hiểu hơn. Điều này cũng 
+giúp dễ dàng tìm và loại bỏ các câu lệnh println sau khi đã gỡ lỗi xong.
+
+Khi bạn sử dụng câu lệnh println để in dữ liệu gỡ lỗi ra màn hình console, dữ liệu này có thể 
+được in ra các vị trí khác nhau tùy thuộc vào môi trường phát triển của bạn. 
+Ví dụ, nếu bạn đang sử dụng IDE NetBeans, dữ liệu sẽ được in ra tab Tomcat của cửa sổ Output. 
+Tuy nhiên, nếu bạn sử dụng Tomcat trong môi trường độc lập, dữ liệu sẽ được in ra một bảng điều khiển Tomcat.
+
+
+
+5.
+Cách in dữ liệu gỡ lỗi ra một log file (tệp nhật ký)
+
+Hai phương thức của lớp HttpServlet được sử dụng để ghi nhật ký lỗi:
+- log(String message): Ghi thông báo cụ thể vào tệp nhật ký của máy chủ.
+- log(String message, Throwable t): Ghi thông báo cụ thể vào tệp nhật ký của máy chủ, 
+kèm theo chuỗi stack trace cho ngoại lệ.
+
+Hình 5-18:
+Mã servlet để in giá trị của một biến vào tệp nhật ký: 
+    log("email = " + email);
+    
+    - Dữ liệu được viết vào tệp log
+    Jun 29, 2014 6:26:04 PM org.apache.catalina.core.ApplicationContext log 
+    INFO: EmailListServlet: email=jsmith@gmail.com 
+
+Mã servlet in một stack trace vào 1 tệp log
+    try {
+        UserIO.add(user, path);
+    } catch(IOException e) {
+        log("An IOException occurred.", e);
+    }
+    
+    - Dữ liệu được viết vào tệp log
+    Jun 29, 2014 6:30:38 PM org.apache.catalina.core.StandardWrapperValve invoke 
+    WARNING: Servlet.service() for servlet EmailListServlet threw exception 
+    java.io.FileNotFoundException: C:\murach\servlet_and_jsp\netbeans\chOSemail\ 
+    build\web\WEB-INF\EmailList.txt (Access is denied) 
+        at java.io.FileOutputStream.openAppend{Native Method) 
+        at java.io.FileOutputStream.<init>(FileOutputStream.java:177) 
+        at java.io.FileWriter.<init>(FileWriter.java:90) 
+        at murach.data.UserIO.add(UserIO.java:11) 
+        at murach.email.EmailListServlet.doPost(EmailListServlet.java:38)
+
+Vị trí mặc định của tệp nhật ký Tomcat thông thường là:
+C:\tomcat\logs\localhost.2014-06-29.log 
+
+Nếu bạn muốn giữ một lịch sử cố định của một số dữ liệu gỡ lỗi quan trọng, bạn có thể 
+in dữ liệu gỡ lỗi vào một tệp nhật ký như được thể hiện trong hình 5-18. 
+Mặc dù mỗi máy chủ servlet sử dụng các tệp nhật ký một cách khác nhau, bạn nên có thể sử dụng 
+các phương thức nhật ký này với bất kỳ máy chủ servlet nào. Tuy nhiên, bạn có thể cần kiểm tra 
+tài liệu cho máy chủ servlet của bạn để xem cách hoạt động của các phương thức này.
+
+Để ghi dữ liệu vào một tệp nhật ký, bạn có thể sử dụng hai phương thức nhật ký của lớp HttpServlet. 
+Nếu bạn chỉ muốn ghi một thông báo vào tệp nhật ký, bạn có thể sử dụng phương thức nhật ký đầu tiên. 
+Tuy nhiên, nếu bạn muốn ghi một thông báo vào tệp nhật ký cùng với stack trace cho một ngoại lệ, 
+bạn có thể sử dụng phương thức nhật ký thứ hai. Một stack trace là một chuỗi thông báo hiển thị 
+chuỗi cuộc gọi phương thức trước phương thức hiện tại.
+
+Ví dụ đầu tiên trong hình này sử dụng phương thức nhật ký đầu tiên để ghi giá trị của biến 
+emailAddress vào tệp nhật ký. Ở đây, Tomcat tự động ghi thêm thông tin bổ sung trước thông báo. 
+Đầu tiên, nó ghi một dấu thời gian hiển thị ngày và giờ mà dữ liệu này được ghi vào tệp nhật ký. 
+Sau đó, nó viết từ INFO theo sau là tên lớp servlet. Lưu ý, thông tin này có thể thay đổi từ máy chủ 
+servlet này sang máy chủ servlet khác.
+
+Ví dụ thứ hai trong hình này sử dụng phương thức nhật ký thứ hai để ghi một thông báo và một stack trace 
+cho một IOException. Trong trường hợp này, Tomcat bỏ qua thông báo và không ghi nó vào tệp nhật ký. 
+Thay vào đó, Tomcat ghi một số thông tin khác vào tệp nhật ký. Đầu tiên, nó ghi một dấu thời gian hiển thị 
+ngày và giờ mà stack trace này được ghi vào tệp nhật ký. Sau đó, nó viết từ WARNING theo sau là 
+tên phương thức ném ra ngoại lệ và tên lớp servlet. Cuối cùng, nó ghi stack trace. Lưu ý rằng stack trace 
+cho thấy ngoại lệ được ném từ dòng 11 của lớp UserIO. Do đó, điều này giúp bạn xác định mã gây ra lỗi.
+
+Tomcat lưu trữ các tệp nhật ký của nó trong thư mục logs. Trong thư mục này, Tomcat lưu trữ một số 
+loại tệp nhật ký với một tệp của mỗi loại cho mỗi ngày. Để xem tệp nhật ký, bạn có thể di chuyển đến 
+thư mục này và mở tệp nhật ký bằng trình chỉnh sửa văn bản. Ví dụ, để xem dữ liệu được ghi bởi các ví dụ 
+trong hình này, tôi mở tệp nhật ký được chỉ định ở cuối hình này. Tệp nhật ký này chứa dữ liệu cho bất 
+kỳ phương thức nhật ký nào đã được thực thi trên máy chủ localhost vào ngày 29 tháng 6 năm 2014.
+
+Khi bạn sử dụng IDE NetBeans với Tomcat, tệp nhật ký của máy chủ được hiển thị trong tab Tomcat 
+Log của cửa sổ Output. Do đó, bạn có thể xem tệp nhật ký hiện tại bằng cách hiển thị tab đó.
+
+
+
+6. 
+Perspective(Quan điểm)
+
+Mục tiêu của chương này là giúp bạn nắm vững cách viết các servlets hoạt động trong mô hình MVC. 
+Bây giờ, bạn đã có khả năng phát triển các servlets của riêng mình làm các bộ điều khiển của ứng dụng. 
+Sau đó, bạn có thể chuyển tiếp request và response HTTP cho một JSP để gửi HTML phù hợp trở lại trình duyệt. 
+Trong chương tiếp theo, bạn sẽ tìm hiểu chi tiết cách viết một JSP.
+
+Trước khi tiếp tục chương tiếp theo, bạn nên biết rằng một số kỹ năng mô tả trong chương này cũng áp dụng cho JSP. 
+Ví dụ, bạn có thể sử dụng phương thức log trong một JSP để ghi dữ liệu vào tệp nhật ký. 
+Tuy nhiên, nếu bạn sử dụng mô hình MVC, thì thông thường bạn sẽ không cần thêm bất kỳ câu lệnh log vào JSP của mình.
+

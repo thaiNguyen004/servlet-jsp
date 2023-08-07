@@ -1,0 +1,61 @@
+Những kỹ năng khác để làm việc với EL
+Hầu hết thời gian, những kỹ năng EL mà bạn đã học cho đến nay là những kỹ năng mà bạn sử dụng khi phát triển JSP. 
+Tuy nhiên, có những lúc bạn có thể cần một số kỹ năng được giới thiệu trong phần còn lại của chương này.
+
+An example that uses an attribute within the [] operator
+Syntax
+${attribute[attribute].property}
+Servlet code
+HashMap<String, User> usersMap = UserIO.getUsersMap(path);
+session.setAttribute("usersMap", usersMap);
+String email = request.getParameter("email");
+session.setAttribute("email", email);
+JSP code
+<p>First name: ${usersMap[email].firstName}</p>
+JSP code that returns an empty string
+<!-- điều này không hoạt động vì thuộc tính được đặt trong dấu ngoặc kép -->
+<p>First name: ${usersMap["email"].firstName}</p>
+
+Another example 
+Syntax 
+${attribute[attribute[index]].property} 
+Servlet code 
+HashMap<String, User> usersMap = UserIO.getUsersMap(path);
+session.setAttribute("usersMap", usersMap);
+String[] emails = {"jsmith@gmail.com", "joel@murach.com"};
+session.setAttribute("emails", emails);
+JSP code 
+<p>First name: ${usersMap[emails[O]].firstName}</p>
+JSP code that returns an empty string 
+<!-- this doesn't work because the attribute is enclosed in quotes --> 
+<p>First name: ${usersMap["emails[0]"].firstName}</p>
+
+
+Cách sử dụng toán tử [] để truy cập các thuộc tính
+Ví dụ đầu tiên trong hình 8-6 cho thấy bạn có thể sử dụng toán tử [] để truy cập một thuộc tính. Ban đầu, mã servlet 
+tạo một Map có tên là usersMap chứa các đối tượng User và đặt Map này làm một thuộc tính. Mặc dù mã này không hiển thị,
+Map này sử dụng địa chỉ email làm khóa để có thể lấy đối tượng User tương ứng. Sau đó, mã servlet lấy một địa chỉ
+email từ đối tượng request và đặt chuỗi này làm một thuộc tính có tên là email.
+
+Tiếp theo, mã JSP truy xuất đối tượng User được liên kết với thuộc tính email bằng cách mã hóa thuộc tính trong toán tử [].
+Vì không có dấu ngoặc kép được mã hóa xung quanh thuộc tính, EL cố gắng đánh giá thuộc tính này. Ở đây, nó sử dụng giá trị
+lưu trữ trong thuộc tính email trong biểu thức. Nói cách khác, nếu biến email là "jsmith@gmail.com", biểu thức được
+đánh giá thành:
+${usersMap["jsmith@gmail.com"].firstName}
+
+Kết quả là, đối tượng User được ánh xạ với "jsmith@gmail.com" được trả về và tên đầu tiên của người dùng này được hiển thị.
+
+Tuy nhiên, hãy lưu ý rằng EL sẽ không đánh giá biến trong toán tử [] nếu bạn mã hóa dấu ngoặc kép xung quanh địa chỉ email như sau:
+${usersMap["email"].firstName}
+Kết quả là, biểu thức này trả về một chuỗi rỗng.
+
+Ví dụ thứ hai cho thấy cách bạn có thể sử dụng các toán tử [] lồng nhau để truy cập các thuộc tính.
+Ở đây, mã servlet lưu trữ một Map của các đối tượng User và một mảng địa chỉ email. Sau đó, mã JSP sử dụng các
+toán tử [] lồng nhau để lấy đối tượng User được ánh xạ với địa chỉ email đầu tiên trong mảng địa chỉ email.
+Điều này hoạt động vì biểu thức trong toán tử [] không được bao quanh bởi dấu ngoặc kép.
+Kết quả là, EL đánh giá biểu thức thành:
+${usersMap["jsmith@gmail.com"].firstName}
+
+
+Điều này có nghĩa là đối tượng User được ánh xạ với "jsmith@gmail.com" được trả về và tên đầu tiên của người
+dùng này được hiển thị. Ở đây, ví dụ này cũng không hoạt động nếu bạn bao quanh biểu thức trong dấu ngoặc kép.

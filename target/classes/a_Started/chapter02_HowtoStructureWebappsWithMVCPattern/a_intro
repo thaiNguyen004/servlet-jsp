@@ -1,0 +1,56 @@
+Cách cấu trúc một ứng dụng web với mô hình MVC (Model-View-Controller)
+Chương này bắt đầu bằng cách trình bày hai mẫu mà bạn có thể sử dụng cho phát triển web với servlet/JSP.
+Sau đó, nó chỉ ra cách sử dụng mẫu thứ hai, được biết đến là mô hình MVC, để cấu trúc một ứng dụng web.
+Cách tiếp cận này mang lại nhiều lợi ích và thường được coi là một quy tắc tốt.
+
+
+Mẫu Model 1
+Mẫu Model 1 được hiển thị trong hình 2-1 sử dụng một JSP để xử lý cả yêu cầu và phản hồi của ứng dụng.
+Ngoài ra, JSP thực hiện tất cả các xử lý cho ứng dụng.
+Để làm điều đó, JSP tương tác với các lớp và đối tượng Java đại diện cho dữ liệu của các đối tượng Business
+trong ứng dụng và cung cấp các phương thức thực hiện xử lý kinh doanh.
+
+Ví dụ trong hình này, ứng dụng lưu trữ dữ liệu cho một người dùng trong một đối tượng User.
+Để lưu trữ dữ liệu của các lớp kinh doanh, ứng dụng ánh xạ dữ liệu vào một cơ sở dữ liệu hoặc tệp tin có thể
+được gọi là bộ nhớ dữ liệu cho ứng dụng. Điều này cũng được gọi là lưu trữ dữ liệu bền vững vì nó tồn tại sau
+khi ứng dụng kết thúc. Thông thường, các lớp truy cập dữ liệu như lớp UserDB được hiển thị trong hình này
+lưu trữ dữ liệu của các đối tượng kinh doanh trong một cơ sở dữ liệu.
+
+Trong cuốn sách này, bạn sẽ học hai cách để tạo lớp truy cập dữ liệu như lớp này.
+Mặc dù mẫu Model 1 đôi khi đủ cho các ứng dụng có yêu cầu xử lý hạn chế, mẫu này không được khuyến nghị cho
+hầu hết các ứng dụng. Vì vậy, nó không được trình bày trong cuốn sách này.
+
+
+
+Mô hình Model 2 (MVC)
+Mô hình này chia mã của ứng dụng thành ba lớp: mô hình (model), giao diện (view) và điều khiển (controller).
+Do đó, mô hình này còn được gọi là mô hình Model-View-Controller (MVC).
+
+Mô hình này hoạt động tốt hơn so với mô hình Model 1 khi yêu cầu xử lý của ứng dụng là đáng kể và lớn.
+
+Trong mô hình MVC, Model định nghĩa lớp kinh doanh của ứng dụng. Thông thường, lớp này được triển khai
+bằng JavaBeans, mà bạn sẽ tìm hiểu thêm về sau. Loại lớp này định nghĩa dữ liệu cho các đối tượng
+kinh doanh và cung cấp các phương thức thực hiện xử lý kinh doanh.
+
+View định nghĩa lớp trình bày của ứng dụng. Vì việc sử dụng một servlet để gửi HTML đến trình duyệt là
+khá bất tiện, một ứng dụng MVC sử dụng tài liệu HTML hoặc JSP để trình bày giao diện cho trình duyệt.
+
+Controller quản lý luồng của ứng dụng, và công việc này được thực hiện bởi một hoặc nhiều servlet.
+Ban đầu, một servlet thường đọc các tham số có sẵn từ yêu cầu. Sau đó, nếu cần thiết, servlet cập nhật mô hình
+và lưu nó vào kho dữ liệu. Cuối cùng, servlet chuyển tiếp mô hình đã cập nhật cho một trong nhiều JSP có thể
+có để trình bày.
+
+Ở đây, hầu hết các ứng dụng cần ánh xạ dữ liệu trong mô hình với kho dữ liệu. Tuy nhiên, JavaBeans
+thường không cung cấp các phương thức để lưu trữ dữ liệu của chính nó. Thay vào đó, các lớp truy cập dữ liệu
+như lớp UserDB cung cấp các phương thức đó. Điều này tách biệt logic kinh doanh và các hoạt động truy cập dữ liệu.
+Trong mô hình MVC, mô hình (model) đại diện cho lớp kinh doanh của ứng dụng, nơi dữ liệu được định nghĩa và
+các phương thức xử lý kinh doanh được cung cấp. Thông thường, JavaBeans được sử dụng để triển khai mô hình này.
+Tuy nhiên, JavaBeans thường không cung cấp các phương thức để lưu trữ dữ liệu của chính nó. Thay vào đó,
+các lớp truy cập dữ liệu (như lớp UserDB) được sử dụng để cung cấp các phương thức để tương tác với kho dữ liệu.
+Điều này có nghĩa là logic kinh doanh và các hoạt động truy cập dữ liệu được tách biệt ra hai lớp riêng biệt,
+đảm bảo tính rõ ràng và tách rời của chúng.
+
+Khi sử dụng mô hình MVC, bạn nên cố gắng giữ cho Model, View và Controller độc lập với nhau càng nhiều càng tốt.
+Điều này giúp dễ dàng chỉnh sửa ứng dụng sau này. Ví dụ, nếu bạn quyết định sửa đổi ứng dụng để hiển thị
+giao diện theo cách khác, bạn nên có thể chỉnh sửa lớp giao diện mà không cần thay đổi điều khiển hay mô hình.
+Trong thực tế, việc tách hoàn toàn các lớp này là khó khăn, nhưng độc lập hoàn toàn là mục tiêu.

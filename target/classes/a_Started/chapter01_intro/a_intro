@@ -1,0 +1,176 @@
+Một giới thiệu về ứng dụng web
+Một ứng dụng web là một tập hợp các trang web được tạo ra để đáp ứng các yêu cầu của người dùng.
+Internet có nhiều loại ứng dụng web khác nhau, như các công cụ tìm kiếm, cửa hàng trực tuyến, đấu giá,
+trang tin tức, nhóm thảo luận và trò chơi.
+
+Mô tả
+
+• Hypertext Markup Language (HTML - Ngôn ngữ Đánh dấu Siêu văn bản) là ngôn ngữ mà trình duyệt web chuyển đổi
+thành các trang web của một ứng dụng web.
+
+• Một trang web tĩnh là một tài liệu HTML được lưu trữ trong một tệp và không thay đổi dựa trên phản hồi
+của người dùng. Trang web tĩnh có tên tệp với phần mở rộng .htm hoặc .html.
+
+• Hypertext Transfer Protocol (HTTP - Giao thức Truyền tải Siêu văn bản) là giao thức mà trình duyệt web
+và máy chủ web sử dụng để giao tiếp.
+
+• Một trình duyệt web yêu cầu một trang từ máy chủ web bằng cách gửi một thông điệp gọi là yêu cầu HTTP
+đến máy chủ. Đối với một trang web tĩnh, yêu cầu HTTP bao gồm tên tệp HTML được yêu cầu.
+
+• Một máy chủ web trả lời yêu cầu HTTP bằng cách gửi một thông điệp gọi là phản hồi HTTP trở lại trình duyệt.
+Đối với một trang web tĩnh, phản hồi HTTP bao gồm tài liệu HTML được lưu trữ trong tệp HTML đó.
+
+
+Cách hoạt động của các trang web động
+
+Khác với trang web tĩnh, trang web động thay đổi dựa trên các tham số được gửi đến ứng dụng web từ một trang khác.
+Ví dụ, khi nút Thêm vào giỏ hàng trên trang đầu tiên trong hình 1-1 được nhấp, trang web tĩnh gọi ứng dụng web
+và gửi một tham số đến nó. Sau đó, ứng dụng web tạo ra trang web động và gửi mã HTML cho nó trở lại trình duyệt.
+Hình 1-4 cho thấy cách hoạt động này. Khi người dùng nhập dữ liệu vào một trang web và nhấp vào nút tương ứng,
+trình duyệt gửi một yêu cầu HTTP đến máy chủ. Yêu cầu này chứa địa chỉ của trang web tiếp theo cùng với bất kỳ
+dữ liệu nào được người dùng nhập vào. Sau đó, khi máy chủ web nhận được yêu cầu này và xác định rằng đó là một
+yêu cầu cho một trang web động, nó chuyển tiếp yêu cầu trở lại cho ứng dụng web.
+Khi ứng dụng web nhận được yêu cầu, nó xử lý dữ liệu mà người dùng đã nhập và tạo ra một tài liệu HTML.
+Tiếp theo, nó gửi tài liệu đó cho máy chủ web, máy chủ web gửi tài liệu trở lại trình duyệt dưới dạng một
+phản hồi HTTP. Sau đó, trình duyệt hiển thị tài liệu HTML được bao gồm trong phản hồi để quá trình có thể bắt đầu lại.
+
+Ba phương pháp cho ứng dụng web Java
+Có nhiều cách để phát triển ứng dụng web Java.
+Khi phát triển ứng dụng web Java, bạn thường sử dụng các phần của Java Enterprise Edition (Java EE).
+Đặc tả này mô tả cách mà máy chủ web có thể tương tác với tất cả các công nghệ web Java bao gồm servlet,
+JavaServer Pages (JSP), JavaServer Faces (JSF), Java Persistence API (JPA), Enterprise JavaBeans (EJB) và nhiều hơn nữa.
+
+Mô tả ba phương pháp thông thường được sử dụng ngày nay.
+---------
+Servlet/JSP
+
+Trong một ứng dụng servlet/JSP được cấu trúc tốt, servlet lưu trữ mã Java thực hiện xử lý phía máy chủ,
+và JavaServer Pages (JSP) lưu trữ mã HTML xác định giao diện người dùng. Mã HTML này thường chứa liên kết đến các tệp
+CSS và JavaScript.
+Để chạy một ứng dụng web sử dụng servlet và JSP, bạn chỉ cần làm việc với phần servlet/JSP của đặc tả Java EE.
+Vì API servlet/JSP là một API cấp thấp tương đối, nó không làm nhiều công việc cho nhà phát triển như hai API khác.
+Tuy nhiên, API servlet/JSP cung cấp cho nhà phát triển một mức độ kiểm soát cao đối với HTML, CSS và JavaScript
+được trả về cho trình duyệt. Ngoài ra, API servlet/JSP là nền tảng cho hai phương pháp khác. Do đó, đây là một nơi tốt
+để bắt đầu với lập trình web Java. Khi bạn tiến bộ qua cuốn sách này, bạn sẽ học cách phát triển các ứng dụng servlet/JSP.
+
+
+JSF
+JavaServer Faces (JSF) là một công nghệ mới hơn được thiết kế để thay thế cả servlet và JSP. Nó cung cấp một API cấp cao hơn
+thực hiện nhiều công việc hơn cho lập trình viên. Khi sử dụng JSF, bạn thường sử dụng nhiều tính năng Java EE hơn so
+với phương pháp servlet/JSP.
+Khi sử dụng JSF, bạn cũng có thể sử dụng Enterprise JavaBeans (EJBs) để định nghĩa các thành phần phía máy chủ.
+Mặc dù có một số lợi ích khi sử dụng EJBs, chúng thường là quá mức cho hầu hết các trang web. Do đó, cuốn sách này
+không hướng dẫn cách sử dụng chúng.
+
+
+Spring Framework
+Tương tự như JSF, Spring Framework là một API cấp cao hơn thực hiện nhiều công việc hơn cho lập trình viên so với
+API servlet/JSP. Tuy nhiên, do cách cấu trúc của nó, Spring Framework vẫn cung cấp cho nhà phát triển một mức độ kiểm soát
+cao đối với HTML/CSS/JavaScript được trả về cho trình duyệt. Do đó, nếu việc kiểm soát HTML/CSS/JavaScript là một ưu tiên
+cho trang web của bạn, Spring Framework có thể là phương pháp phù hợp cho bạn.
+
+
+Giới thiệu về phát triển ứng dụng web servlet/JSP
+Chủ đề này giới thiệu cho bạn về việc phát triển servlet/JSP. Cụ thể, nó trình bày các thành phần phần mềm,
+kiến trúc ứng dụng và các thư mục tiêu chuẩn mà bạn thường sử dụng khi phát triển ứng dụng web Java.
+
+
+1. Các thành phần phần mềm
+
+Bây giờ, bạn đã hiểu tại sao máy chủ (Server) phải chạy phần mềm máy chủ web (Web server). Ngoài ra, để làm việc với servlet và JSP,
+máy chủ cũng phải chạy một servlet/JSP engine, còn được gọi là servlet/JSP container. Trong cuốn sách này, bạn sẽ tìm hiểu cách
+sử dụng máy chủ Tomcat. Máy chủ này là một trong những máy chủ phổ biến nhất cho ứng dụng web Java, và nó bao gồm cả máy chủ web
+và một servlet/JSP engine.
+
+Để một servlet/JSP engine hoạt động đúng, engine phải có khả năng truy cập vào Java Development Kit (JDK) đi kèm với
+Java Standard Edition (Java SE). JDK chứa trình biên dịch Java và các lớp cốt lõi để làm việc với Java.
+Nó cũng chứa môi trường chạy Java Runtime Environment (JRE) cần thiết để chạy các lớp Java đã được biên dịch.
+Vì cuốn sách này giả định rằng bạn đã có một số kinh nghiệm với Java, bạn đã quen thuộc với JDK và JRE.
+
+Vì tất cả các servlet/JSP engine đều phải triển khai phần servlet/JSP của đặc tả Java EE, tất cả các servlet/JSP engine
+nên hoạt động tương tự nhau. Về lý thuyết, điều này làm cho mã servlet/JSP có thể di động giữa các servlet/JSP engine
+và máy chủ ứng dụng. Tuy nhiên, trong thực tế, có những khác biệt nhỏ giữa từng servlet/JSP engine và máy chủ web.
+Do đó, bạn có thể cần phải điều chỉnh mã của mình khi chuyển đổi giữa các servlet/JSP engine hoặc máy chủ web.
+
+Vì hầu hết các ứng dụng web servlet/JSP lưu trữ dữ liệu của họ trong cơ sở dữ liệu, máy chủ thường cũng chạy một máy chủ
+cơ sở dữ liệu. Trong cuốn sách này, bạn sẽ tìm hiểu cách sử dụng MySQL làm máy chủ cơ sở dữ liệu. Phần mềm này là mã nguồn
+mở và thường được sử dụng với các ứng dụng servlet/JSP.
+
+
+2. Kiến trúc
+
+Hình 1-7 cho thấy kiến trúc cho một ứng dụng web điển hình sử dụng servlet và JSP.
+Kiến trúc này sử dụng ba lớp: (1) (Presentation layer) lớp hiển thị, hay còn gọi là lớp giao diện người dùng,
+(2) (Business rules layer) lớp quy tắc kinh doanh, và (3) (Data access layer) lớp truy cập dữ liệu.
+Lý thuyết, người lập trình cố gắng giữ cho các lớp này càng riêng biệt và độc lập nhất có thể. Tuy nhiên, trong thực tế,
+các lớp này thường có liên quan và đặc biệt là đối với lớp quy tắc kinh doanh và lớp truy cập dữ liệu.
+
+Presentation layer:  bao gồm các trang HTML và JSP. Thông thường, một nhà thiết kế web làm việc trên HTML được lưu trữ trong
+các trang này để tạo ra giao diện người dùng. Sau đó, một lập trình viên Java có thể cần chỉnh sửa các trang này để chúng
+hoạt động đúng với các servlet của ứng dụng.
+
+Business rules layer sử dụng servlet để điều khiển luồng của ứng dụng. Những servlet này có thể gọi các lớp Java khác
+để lưu trữ hoặc lấy dữ liệu từ cơ sở dữ liệu và có thể chuyển tiếp kết quả đến một JSP hoặc một servlet khác.
+Trong Business rules layer, lập trình viên Java thường sử dụng một loại đặc biệt của lớp Java được gọi là JavaBean
+để tạm thời lưu trữ và xử lý dữ liệu. Một JavaBean thường được sử dụng để định nghĩa một đối tượng Business như một
+đối tượng Người dùng hoặc Hóa đơn.
+
+Data access layer làm việc với dữ liệu của ứng dụng trên đĩa của máy chủ.
+Thông thường, dữ liệu này được lưu trữ trong cơ sở dữ liệu quan hệ như MySQL. Tuy nhiên, dữ liệu này cũng có thể được
+lưu trữ trong các tệp văn bản, tệp nhị phân và tệp XML. Hoặc nó có thể đến từ các dịch vụ web đang chạy trên các máy chủ khác.
+
+
+Các thư mục và tệp tiêu chuẩn
+
+Hình 1-8 cho thấy một phiên bản đơn giản của cấu trúc thư mục cho ứng dụng Music Store được trình bày ở cuối cuốn sách này.
+Một số thư mục này là một phần của các quy định servlet và JSP. Do đó, chúng là tiêu chuẩn cho tất cả các ứng dụng web.
+Ví dụ, tất cả các ứng dụng web sử dụng servlet phải có các thư mục WEB-INF và WEB-INF\classes.
+Ngoài ra, bạn có thể bao gồm tùy chọn các thư mục tiêu chuẩn khác như thư mục WEB-INF\lib hoặc thư mục META-INF.
+
+Tất nhiên, để tổ chức và cấu trúc một ứng dụng, một lập trình viên có thể tạo ra các thư mục khác bên trong các thư mục này.
+Trong hình này, ví dụ, các thư mục admin, cart và download tổ chức các phần Quản trị, Giỏ hàng và Tải xuống của ứng dụng Music Store.
+
+Để bắt đầu, mỗi ứng dụng web phải có một thư mục gốc. Thư mục này có thể được gọi là thư mục gốc tài liệu,
+hoặc chỉ đơn giản là thư mục gốc. Trong hình này, thư mục gốc tài liệu được đặt tên là musicStore và nằm dưới thư mục
+webapps của Tomcat. Sau đó, tất cả các thư mục và tệp khác cho ứng dụng phải nằm dưới thư mục gốc tài liệu này.
+
+Thư mục WEB-INF phụ thuộc vào thư mục gốc tài liệu thường chứa một tệp web.xml cho ứng dụng. Bạn sẽ tìm hiểu thêm về
+tệp này trong chương tiếp theo. Ngoài ra, bạn có thể sử dụng thư mục này hoặc bất kỳ thư mục con nào của nó để lưu trữ
+các tệp bạn không muốn được truy cập trực tiếp từ web. Ví dụ, một số ứng dụng trong cuốn sách này sử dụng thư mục WEB-INF
+để lưu trữ các tệp dữ liệu. Điều này ngăn người dùng truy cập trực tiếp vào các tệp này.
+
+Thư mục WEB-INF cũng có một số thư mục tiêu chuẩn khác phụ thuộc vào nó. Cụ thể, thư mục WEB-INF\classes là thư mục gốc
+cho tất cả các lớp Java cho ứng dụng không được lưu trữ trong các tệp JAR, bao gồm servlet.
+Thông thường, đây là các lớp bạn viết. Ngược lại, thư mục WEB-INF\lib chứa các tệp JAR chứa bất kỳ thư viện lớp Java nào
+cho ứng dụng. Thông thường, bạn nhận được các tệp JAR này từ bên thứ ba. Tuy nhiên, hãy nhớ rằng thư mục lib của
+Tomcat lưu trữ các tệp JAR cho các thư viện lớp có sẵn cho tất cả các ứng dụng web đang chạy trên máy chủ web.
+Do đó, bạn chỉ sử dụng thư mục WEB-INF\lib nếu bạn muốn làm cho tệp JAR này có sẵn cho một ứng dụng duy nhất.
+
+Để tổ chức các lớp bạn tạo cho ứng dụng, bạn có thể lưu trữ chúng trong các gói. Trong trường hợp đó, bạn cần tạo
+một thư mục con cho mỗi gói. Ví dụ, hình này hiển thị năm gói. Ba trong số này (music.admin, music.cart và music.download)
+chứa các servlet làm việc với các phần Quản trị, Giỏ hàng và Tải xuống của ứng dụng trong khi hai gói còn lại chứa
+các lớp Java cung cấp đối tượng kinh doanh (music.business) và đối tượng truy cập dữ liệu (music.data) cho ứng dụng.
+
+Khi bạn tiến bộ qua cuốn sách này, bạn sẽ tìm hiểu cách sử dụng một số thư mục và tệp tiêu chuẩn khác để triển khai các
+ứng dụng web. Ví dụ, nếu bạn muốn sử dụng bể kết nối cơ sở dữ liệu có sẵn từ Tomcat, bạn có thể sửa đổi tệp context.xml
+được lưu trữ trong thư mục META-INF như được mô tả trong chương 12. Tuy nhiên, trong lúc này, hình này sẽ cho bạn một
+ý tưởng chung về những gì cần thiết để triển khai một ứng dụng web.
+
+
+Tóm tắt các thư mục và tệp cho một ứng dụng web
+
+(root) : Thư mục này và các thư mục con của nó thường chứa các tệp HTML và JSP cho ứng dụng.
+
+\WEB-INF : Thư mục này thường chứa một tệp có tên là web.xml. Bạn có thể sử dụng tệp này để cấu hình các servlet và các
+thành phần khác của ứng dụng. Ngoài ra, thư mục này không thể truy cập trực tiếp từ web.
+
+\WEB-INF\classes : Thư mục này và các thư mục con của nó chứa các servlet và các lớp Java khác cho ứng dụng của bạn.
+Mỗi thư mục con phải tương ứng với gói (package) của lớp Java.
+
+\WEB-INF\lib : Thư mục này chứa các tệp JAR chứa các thư viện lớp Java được sử dụng bởi ứng dụng web.
+
+\META-INF : Thư mục này chứa tệp context.xml. Bạn có thể sử dụng tệp này để cấu hình ngữ cảnh của ứng dụng web.
+
+
+
+

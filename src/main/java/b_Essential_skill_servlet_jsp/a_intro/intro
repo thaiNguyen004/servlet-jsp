@@ -1,0 +1,30 @@
+Kỹ năng cần thiết về Servlet và JSP
+
+Cách tốt nhất để học cách phát triển ứng dụng web là bắt đầu phát triển chúng. 
+Đó là lý do tại sao các chương trong phần này áp dụng phương pháp thực hành 
+trong việc phát triển ứng dụng. Khi bạn hoàn thành phần này, bạn sẽ có những 
+kỹ năng cần thiết để thiết kế, viết mã và kiểm thử ứng dụng web sử dụng servlet/JSP.
+
+Để bắt đầu, chương 4 chỉ cho bạn cách viết mã trang HTML, điều này là tiên quyết 
+để viết mã servlet hoặc JavaServer Pages (JSP). 
+Sau đó, chương 5 chỉ cho bạn những kỹ năng cơ bản để viết mã servlet. 
+Và chương 6 chỉ cho bạn những kỹ năng cơ bản để viết mã JSP.
+
+Với kiến thức này là nền tảng, bạn sẽ sẵn sàng để học các yếu tố cần thiết 
+khác trong lập trình web. 
+Để bắt đầu, chương 7 chỉ cho bạn cách làm việc với sessions và cookies để ứng dụng 
+của bạn có thể theo dõi người dùng. Sau đó, chương 8 chỉ cho bạn thêm chi tiết về 
+việc sử dụng JSP Expression Language (EL) trong JSP. Chương 9 chỉ cho bạn cách 
+sử dụng JSP Standard Tag Library (JSTL) trong JSP. 
+Và chương 10 chỉ cho bạn cách viết mã custom JSP tags mà bạn có thể sử dụng trong JSP.
+
+Nếu bạn quen thuộc với các phiên bản trước của cuốn sách này, bạn có thể nhận thấy 
+rằng phần này không còn bao gồm một chương về các thẻ JSP tiêu chuẩn để làm việc 
+với JavaBeans. Điều đó là do các thẻ này đã được thay thế bằng EL. 
+Hầu hết các lập trình viên không đánh giá cao việc sử dụng các thẻ JSP tiêu chuẩn 
+để làm việc với JavaBeans trong việc phát triển ứng dụng mới. Điều này có nghĩa là 
+các lập trình viên thường không khuyến khích việc sử dụng các thẻ này và coi đó 
+không phải là một thực hành tốt. 
+Thay vào đó, họ ưu tiên sử dụng JSP Expression Language (EL) và JSP Standard Tag Library (JSTL) 
+để thực hiện các tác vụ tương tự trong JSP.. 
+Tuy nhiên, có một mô tả ngắn về các thẻ này trong chương 6.

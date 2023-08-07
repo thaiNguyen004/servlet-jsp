@@ -1,0 +1,45 @@
+Giới thiệu về việc theo dõi phiên (Session Tracking)
+Theo dõi người dùng khi họ di chuyển trên một trang web được gọi là theo dõi phiên
+(Session Tracking). Để bắt đầu, bạn sẽ tìm hiểu cách API servlet theo dõi phiên,
+và sẽ được giới thiệu về một ứng dụng web cần sử dụng theo dõi phiên.
+
+Tại sao việc theo dõi phiên khó khăn với HTTP
+Hình 7-1 thể hiện tại sao việc theo dõi phiên khó hơn đối với các ứng dụng web sử dụng
+HTTP so với các loại ứng dụng khác.
+Ban đầu, một trình duyệt trên máy khách yêu cầu một trang từ máy chủ web. Sau khi
+máy chủ web trả về trang, nó ngắt kết nối. Sau đó, nếu trình duyệt tạo thêm yêu cầu,
+máy chủ web không có cách nào để kết nối trình duyệt với các yêu cầu trước đó.
+Vì HTTP không duy trì trạng thái, nó được gọi là giao thức không duy trì trạng thái
+(stateless protocol).
+Trái lại, FTP duy trì trạng thái giữa các yêu cầu nên nó được gọi là giao thức duy trì
+trạng thái (stateful protocol).
+
+Cách theo dõi phiên hoạt động trong Java
+Hình 7-1 cũng cho thấy cách API servlet theo dõi phiên. Ban đầu, một trình duyệt trên
+máy khách yêu cầu một trang JSP hoặc servlet từ máy chủ web, sau đó máy chủ web chuyển
+yêu cầu đến động cơ servlet. Sau đó, động cơ servlet kiểm tra xem yêu cầu có bao gồm ID
+cho phiên Java không. Nếu không có, động cơ servlet tạo một ID duy nhất cho phiên cùng
+với một đối tượng phiên có thể được sử dụng để lưu trữ dữ liệu cho phiên đó.
+Từ đó, máy chủ web sử dụng ID phiên để liên kết mỗi yêu cầu trình duyệt với đối tượng phiên,
+mặc dù máy chủ vẫn ngắt kết nối HTTP sau khi trả về mỗi trang.
+
+Mặc định, API servlet sử dụng cookie để lưu trữ ID phiên trong trình duyệt của người dùng.
+Điều này là một phần mở rộng của giao thức HTTP. Sau đó, khi thực hiện yêu cầu tiếp theo,
+cookie này được thêm vào yêu cầu. Tuy nhiên, nếu cookie đã bị tắt trong trình duyệt,
+loại theo dõi phiên này sẽ không hoạt động.
+
+Để khắc phục vấn đề này, API servlet cung cấp cách để mã hóa URL sao cho nó bao gồm ID phiên.
+Điều này được gọi là mã hóa URL (URL encoding) và nó hoạt động ngay cả khi cookie đã bị tắt
+trong trình duyệt. Tuy nhiên, có một số vấn đề với phương pháp này. Trước tiên, mã hóa URL
+tạo ra lỗ hổng bảo mật có thể cho phép cuỗm phiên. Thứ hai, mã hóa URL có thể khiến trang web
+hoạt động không đúng nếu người dùng đánh dấu một trang chứa ID phiên.
+
+May mắn thay, cookie đã trở thành một phần không thể thiếu trong trải nghiệm web đến mức
+rất hiếm khi có người sử dụng web mà tắt cookie. Do đó, thông thường bạn có thể giải quyết
+vấn đề này bằng cách hiển thị thông báo cho người dùng thông báo rằng trang web yêu cầu bật cookie.
+
+Trước khi tiếp tục, bạn nên biết có hai loại cookie. Cookie per-session được lưu trữ trên
+trình duyệt cho đến khi người dùng đóng trình duyệt, và cookie bền vững có thể được lưu trữ
+trên ổ cứng của người dùng trong tối đa 3 năm. Mã theo dõi phiên được trình bày trong chương
+này dựa trên cookie per-session. Do đó, cookie per-session phải được bật trong trình duyệt
+của người dùng để hoạt động.

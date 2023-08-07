@@ -1,0 +1,51 @@
+• Một servlet là một lớp Java mở rộng lớp HttpServlet và chạy trong một 
+container servlet như Tomcat.
+
+• Khi viết servlets, thông thường bạn ghi đè các phương thức doGet và doPost để 
+cung cấp xử lý cần thiết. Các phương thức này nhận đối tượng yêu cầu và đối tượng phản 
+hồi được chuyển đến từ máy chủ.
+
+• Sau khi sử dụng phương thức setContentType của đối tượng phản hồi để đặt loại nội dung 
+của phản hồi trả về cho trình duyệt, bạn sử dụng phương thức getWriter để tạo một 
+đối tượng PrintWriter. Sau đó, bạn có thể sử dụng các phương thức println và print 
+của đối tượng đó để gửi HTML trở lại trình duyệt.
+
+• Để yêu cầu một servlet, bạn yêu cầu một URL đã được ánh xạ tới servlet. 
+Ánh xạ này được chỉ định trong tệp web.xml bằng các phần tử servlet và servlet-mapping. 
+Hoặc, với quy định servlet 3.0 (Tomcat 7.0) trở lên, bạn có thể sử dụng 
+chú thích @WebServlet để ánh xạ một servlet tới một URL.
+
+• Khi sử dụng phương thức GET của HTTP để truyền tham số cho một JSP, 
+trình duyệt hiển thị các tham số trong URL của nó. Khi sử dụng phương thức POST của HTTP, 
+trình duyệt không hiển thị các tham số này. Nếu việc thực hiện một yêu cầu nhiều lần có thể 
+gây vấn đề, bạn nên sử dụng phương thức POST.
+
+• Trong phương thức doGet hoặc doPost của một servlet, bạn có thể sử dụng các phương thức 
+getParameter và getParameters của đối tượng yêu cầu để lấy giá trị của các tham số từ 
+yêu cầu.
+
+• Bạn có thể sử dụng phương thức getRealPath của đối tượng ServletContext để lấy đường dẫn 
+tương đối để tham chiếu đến một tệp được sử dụng bởi ứng dụng web của bạn.
+
+• Tệp web.xml bao gồm các thẻ XML xác định các phần tử XML. Phần tử gốc cho tệp này 
+là phần tử web-app. Khi một phần tử được mã hóa trong một phần tử khác, nó có thể được 
+gọi là phần tử con.
+
+• Bạn có thể sử dụng tệp web.xml hoặc chú thích @WebServlet để cung cấp các 
+tham số khởi tạo áp dụng cho toàn bộ ứng dụng web hoặc cho các servlet cụ thể.
+
+• Bạn có thể sử dụng tệp web.xml để cung cấp trang lỗi tùy chỉnh cho các ngoại lệ Java 
+cụ thể hoặc cho các lỗi HTTP được đại diện bởi các mã trạng thái HTTP cụ thể.
+
+• Bạn có thể sử dụng JavaScript hoặc jQuery để thực hiện kiểm tra dữ liệu trên máy khách. 
+Bạn có thể sử dụng một servlet để thực hiện kiểm tra dữ liệu trên máy chủ. 
+Thực hành tốt là thực hiện kiểm tra dữ liệu cả trên máy khách và máy chủ.
+
+• Thường xem xét là không tốt khi ghi đè phương thức service của một servlet.
+
+• Vì các biến thành viên trong một servlet không an toàn với luồng và có thể gây ra 
+các vấn đề nghiêm trọng, bạn không nên sử dụng các biến thành viên trong một servlet.
+
+• Để in dữ liệu gỡ lỗi ra bảng điều khiển máy chủ, bạn có thể sử dụng phương thức println 
+của đối tượng System.out hoặc System.err. Hoặc, bạn có thể sử dụng các phương thức log 
+của lớp HttpServlet để ghi dữ liệu gỡ lỗi vào một tệp nhật ký.

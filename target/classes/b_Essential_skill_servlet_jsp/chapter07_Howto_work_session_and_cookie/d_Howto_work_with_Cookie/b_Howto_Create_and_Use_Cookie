@@ -1,0 +1,61 @@
+Cách tạo và sử dụng cookie
+
+Hình 7-7:
+Constructor
+Cookie(String name, String value)
+
+setMaxAge(int maxAgeInSeconds)
+Để tạo cookie liên tục, hãy đặt tuổi tối đa của cookie thành một số dương.
+Để tạo cookie theo phiên, hãy đặt tuổi tối đa của cookie thành -1.
+Sau đó, cookie sẽ bị xóa khi người dùng thoát khỏi trình duyệt.
+
+setPath(String path)
+Để cho phép toàn bộ ứng dụng truy cập cookie, hãy đặt đường dẫn của cookie thành "/".
+
+getName()
+getValue()
+
+addCookie(Cookie c)
+Thêm cookie chỉ định vào đối tượng response
+
+getCookies();
+Trả về một mảng các đối tượng Cookie mà máy khách đã gửi cùng với yêu cầu này.
+Nếu không có cookie nào được gửi, phương thức này sẽ trả về giá trị null.
+
+Để tạo và sử dụng cookie, bạn sử dụng các hàm tạo và phương thức được hiển thị trong hình 7-7.
+Sau khi tạo một đối tượng Cookie, bạn có thể sử dụng các phương thức của nó để đặt các tham số
+và lấy tên và giá trị của nó.
+Sau đó, bạn có thể sử dụng phương thức addCookie của đối tượng response để thêm cookie đó vào
+PC của trình duyệt. Và bạn có thể sử dụng phương thức getCookies của đối tượng request để lấy
+một mảng của tất cả các cookie trên PC của trình duyệt.
+Các phương thức này được minh họa bởi hai ví dụ.
+
+Ví dụ đầu tiên sử dụng bốn câu lệnh để tạo một cookie và thêm nó vào đối tượng response.
+Câu lệnh đầu tiên tạo đối tượng Cookie. Câu lệnh thứ hai gọi phương thức setMaxAge
+để đặt tuổi thọ của cookie trên PC của trình duyệt là hai năm
+(60 giây nhân 60 phút nhân 24 giờ nhân 365 ngày nhân 2 năm).
+Câu lệnh thứ ba đặt đường dẫn cho cookie để nó có sẵn cho toàn bộ ứng dụng web.
+Và câu lệnh thứ tư thêm cookie vào đối tượng response để nó được trả về cho trình duyệt
+và thêm vào PC của trình duyệt.
+
+Cookie c = new Cookie("useridCookie", userid);
+c.setMaxAge(60*60*24*365*2);
+c.setPath ("/");
+response.addCookie(c);
+
+
+Ví dụ thứ hai truy xuất một cookie từ đối tượng request được gửi từ một trình duyệt.
+Ở đây, câu lệnh đầu tiên trả về một mảng các đối tượng Cookie từ đối tượng request.
+Sau đó, các câu lệnh tiếp theo lặp qua mảng để trả về cookie có tên là "userIdCookie".
+Để làm điều đó, các câu lệnh này sử dụng các phương thức getName và getValue của đối tượng Cookie.
+
+Cookie[] cookies = request.getCookies();
+String cookieName = "userIdCookie";
+String cookieValue = "";
+for (Cookie cookie: cookies) {
+    if (cookieName.equals(cookie.getName())) {
+        cookieValue = cookie.getValue();
+    }
+}
+
+

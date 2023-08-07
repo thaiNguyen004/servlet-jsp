@@ -1,0 +1,96 @@
+Cách để bao gồm một tệp trong JSP
+Khi bạn đang viết một ứng dụng web, có thể bạn muốn bao gồm cùng một khối mã 
+trong một số JSP. Ví dụ, bạn có thể muốn sử dụng cùng một phần đầu và chân trang 
+cho một số JSP. Hoặc bạn có thể muốn sử dụng cùng một menu hoặc hộp combo cho 
+một số JSP. Trong trường hợp đó, bạn có thể lưu mã này trong một tệp riêng biệt. 
+Sau đó, bạn có thể bao gồm mã trong tệp đó vào một JSP. 
+Các tệp như vậy thường được gọi là "includes" và việc sử dụng includes có thể 
+giảm sự trùng lặp mã và đơn giản hóa việc viết và bảo trì một ứng dụng.
+
+Sumary
+- Một JSP bao gồm một tệp header và footer
+
+
+
+1.
+Một JSP bao gồm một tệp header và footer
+
+Hình 6-9:
+A header file named header.html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=
+    <tit1e>Murach's Java Servlets and JSP</tit1e>
+    <link rel="stylesheet" type="text/css"/>
+</head>
+
+A footer file named footer.jsp
+<%@ page import="java.util.GregorianCalendar, java.util.Calendar" %>
+<%
+    GregorianCalendar currentDate = new GregorianCalendar();
+    int currentYear = currentDate.get(Calendar.YEAR);
+%>
+<p>&copy; Copyright <%= currentYear %> Mike Murach &amp;</p>
+</html>
+
+
+A JSP file that uses both include files
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:import url="/includes/header.html"/>
+<h1>Join our email list</h1>
+<p>To join our email list, enter your name and
+email address below.</p>
+
+<c:if test="${message != null}"> 
+<p><i>${message}</i></p> 
+</c:if> 
+<form action="emailList " method="post "> 
+<input type="hidden" name="action" value="add "> 
+<label class= "pad_top" >Email: </label> 
+<input type="email" name="email" value="${user.email}"><br> 
+<label class="pad_top">First Name:</label> 
+<input type="text" name="firstName " value="${user.firstName}"><br> 
+<label class="pad_top">Last Name:</label> 
+<input type="text" name="lastName" value="${user.lastName}"><br> 
+<label>&nbsp;</label> 
+<input type="submit" value="Join Now" class="margin_left "> 
+</form>
+
+<c:import url="/includes/footer.jsp" />
+
+
+Hình 6-9 bắt đầu bằng việc hiển thị một tệp HTML chứa các thẻ xác định đầu của 
+một tài liệu HTML. Những thẻ này bao gồm thẻ DOCTYPE, thẻ mở HTML, thẻ head, 
+các thẻ bên trong thẻ head và thẻ mở body. Vì tệp này chỉ chứa các thẻ HTML mà 
+không có bất kỳ thẻ JSP nào, nó được lưu trong một tệp HTML có tên là header.html. 
+Ở đây, thẻ title đặt tiêu đề của trang web hiển thị trong trình duyệt là 
+"Murach's Java Servlets and JSP".
+
+Hình này cũng hiển thị tệp footer.jsp chứa các thẻ HTML và JSP xác định một phần 
+chân trang cho một tài liệu. Phần chân trang này bắt đầu bằng việc sử dụng một 
+chỉ thị JSP để nhập các lớp GregorianDate và Calendar từ gói java.util. 
+Sau đó, một đoạn mã scriptlet JSP sử dụng các lớp này để lấy giá trị int cho năm hiện tại. 
+Sau đoạn mã scriptlet, phần chân trang sử dụng một biểu thức trong mã HTML để hiển thị 
+thông báo bản quyền sử dụng giá trị int cho năm hiện tại. 
+Trong mã HTML này, "©" và "&" là các thực thể HTML đại diện cho ký hiệu bản quyền 
+(©) và dấu và (&). Cuối cùng, phần chân trang cung cấp các thẻ body và html đóng.
+
+Sau các tệp header và footer, hình này hiển thị một tệp JSP sử dụng các câu lệnh 
+để bao gồm các tệp header.html và footer.jsp. Ở đây, dòng đầu tiên trong tệp JSP 
+nhập thư viện JSTL cốt lõi như đã mô tả trước đây trong chương, và dòng thứ hai 
+sử dụng thẻ nhập JSTL để bao gồm toàn bộ mã cần thiết để bắt đầu trang web. 
+Sau đó, dòng cuối cùng trong tệp bao gồm mã để hiển thị thông báo bản quyền 
+và tất cả mã cần thiết để hoàn thành trang web.
+
+Trong hình này, các tệp header và footer được lưu trong một thư mục có tên là 
+"includes". Khi làm việc với các tệp bao gồm, việc lưu chúng trong một thư mục 
+riêng như vậy là một thực hành phổ biến.
+
+Trong ví dụ này, các tệp được bao gồm nhỏ đến mức không thể thể hiện được 
+sức mạnh của kỹ thuật này. Tuy nhiên, hãy tưởng tượng rằng các tệp bao gồm chứa 
+các khối mã lớn hơn và rằng mã này phù hợp cho hàng chục hoặc hàng trăm JSP. 
+Kỹ thuật này có thể giảm tổng lượng mã trong ứng dụng và làm cho ứng dụng dễ bảo trì hơn. 
+Ví dụ, nếu bạn muốn thay đổi phần đầu cho tất cả các JSP bao gồm tệp header, 
+bạn chỉ cần thay đổi một tệp duy nhất.
+

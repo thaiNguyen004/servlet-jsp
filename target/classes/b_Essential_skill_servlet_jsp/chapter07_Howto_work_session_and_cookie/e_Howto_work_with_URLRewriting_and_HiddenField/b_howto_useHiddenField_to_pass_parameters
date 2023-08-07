@@ -1,0 +1,46 @@
+Cách sử dụng các trường ẩn để truyền tham số
+Trong chương 4, bạn đã học cách mã hóa các trường ẩn trong một biểu mẫu HTML.
+Bây giờ, hình 7-12 cho thấy cách sử dụng các trường ẩn để truyền tham số từ trình duyệt
+tới máy chủ. Cụ thể, nó cho thấy cách truyền một tham số có tên là productCode
+tới servlet được ánh xạ đến URL /cart.
+
+A form tag that uses a hidden text field and a button
+<form action="cart" method="post">
+    <input type="submit" value="Add To Cart">
+    <input type="hidden" name="productCode" value="8601">
+</form>
+
+Ví dụ đầu tiên sử dụng các trường ẩn để thực hiện cùng một tác vụ như ví dụ URL rewriting
+đầu tiên trong hình trước. Tuy nhiên, có một số lợi ích khi sử dụng các trường ẩn.
+Thứ nhất, một trường ẩn có thể chứa các khoảng trắng và các ký tự đặc biệt khác mà khó
+làm việc khi sử dụng URL rewriting. Thứ hai, không có giới hạn về số ký tự có thể được
+lưu trữ trong một trường ẩn. Thứ ba, vì ví dụ này sử dụng phương thức HTTP POST,
+nó không hiển thị các giá trị toạham số trong URL, li bỏ các rủi ro bảo mật đã đề cập
+trong hình trước.
+
+URL khi click vào button
+localhost:8080/ch07cart/cart
+
+
+Ví dụ thứ hai trong hình này cho thấy bạn có thể sử dụng biểu thức JSP để gán giá trị
+cho một trường ẩn. Ở đây, biểu mẫu chứa một trường ẩn chứa mã sản phẩm, một hộp văn bản cho
+số lượng và một nút Cập nhật. Tuy nhiên, giá trị cho trường ẩn không được mã hóa cứng.
+Thay vào đó, một biểu thức JSP lấy giá trị cho trường ẩn. Như vậy, khi người dùng nhấp
+vào nút Cập nhật, servlet có thể xác định sản phẩm nào người dùng muốn cập nhật.
+
+
+<form action="cart" method="post">
+<input type="hidden" name="productCode" value="${product.code}">
+<input type=text size=2 name="quantity" value="${lineItem.quantity}">
+<input type="submit" name="updateButton" value="Update">
+</form>
+
+
+Một hạn chế của các trường ẩn
+- Bởi vì các trường ẩn được hiển thị trong mã nguồn của trang được trả về cho trình duyệt,
+bất kỳ ai cũng có thể xem các tham số. Do đó, các trường ẩn không phù hợp cho dữ liệu bảo mật
+như mật khẩu.
+
+Mô tả
+- Bạn có thể sử dụng các trường ẩn để truyền tham số cho một servlet hoặc JSP.
+Để làm điều đó, bạn mã hóa các trường ẩn trong một thẻ form.

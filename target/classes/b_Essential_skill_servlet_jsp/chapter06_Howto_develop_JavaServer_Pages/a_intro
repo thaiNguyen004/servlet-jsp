@@ -1,0 +1,10 @@
+Làm thế nào để phát triển
+JavaServer Pages
+Chương 2 đã chỉ ra cách sử dụng mô hình MVC để cấu trúc một ứng dụng web 
+sử dụng servlet và JSP, và chương 5 đã chỉ cho bạn cách phát triển các servlet 
+cho những ứng dụng đó. Bây giờ, chương này trình bày những kỹ năng bạn cần phải 
+phát triển JSP trong mô hình MVC. 
+
+Khi hoàn thành chương này, bạn nên có khả năng viết mã JSP cho các ứng dụng web 
+của riêng bạn. Ngoài ra, bạn nên có khả năng duy trì các JSP hiện có cho các 
+ứng dụng web cũ.

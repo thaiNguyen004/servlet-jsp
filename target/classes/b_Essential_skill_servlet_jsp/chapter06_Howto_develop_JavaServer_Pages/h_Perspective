@@ -1,0 +1,15 @@
+Quan điểm
+
+Mục tiêu của chương này là cung cấp cho bạn những kỹ năng cơ bản để viết mã JSP. 
+Tại điểm này, bạn nên có khả năng viết mã JSP đơn giản nhưng thực tế của riêng 
+bạn sử dụng các thẻ EL và JSTL đơn giản. 
+
+Ngoài ra, bạn nên hiểu tại sao thường sử dụng EL và JSTL thay vì các thẻ JSP cũ hơn, 
+bạn nên biết cách bao gồm một tệp trong JSP và bạn nên biết cách khắc phục một 
+số lỗi JSP thông thường.
+
+Cho đến nay, cuốn sách này chỉ sử dụng scope (phạm vi) request (yêu cầu) để 
+truyền dữ liệu từ một trang web sang trang web khác. 
+Tuy nhiên, khi bạn cần lưu trữ dữ liệu cho toàn bộ (session) phiên làm việc của 
+người dùng, thông thường bạn sử dụng phạm vi phiên làm việc như được hiển thị 
+trong chương tiếp theo.

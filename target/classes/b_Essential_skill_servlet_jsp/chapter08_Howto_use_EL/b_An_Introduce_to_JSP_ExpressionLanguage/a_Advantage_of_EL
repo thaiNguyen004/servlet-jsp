@@ -1,0 +1,58 @@
+Ngôn ngữ Biểu thức JSP (EL) cung cấp một cú pháp gọn nhẹ cho phép bạn truy xuất dữ liệu
+từ JavaBeans, maps, arrays và lists đã được lưu trữ như các thuộc tính của một ứng dụng web.
+Để minh họa,t hình 8-1 trình bày hai ví dụ truy xuất dữ liệu ừ một đối tượng User có tên
+là "user" đã được lưu trữ như một thuộc tính của đối tượng phiên (session).
+
+EL
+<label>Email:</label>
+<span>${user.email}</span><br>
+<label>First Name:</label>
+<span>${user.firstName}</span><br>
+<label>Last Name:</label>
+
+Standard JSP tags
+<jsp:useBean id="user" scope="session" class="murach.business.User"/>
+<label>Email:</label>
+<span><jsp:getProperty name="user" property="email"/></span><br>
+<label>First Name:</label>
+<span><jsp:getProperty name="user" property="firstName"/></span><br>
+<label>Last Name:</label>
+<span><jsp:getProperty name="user" property="lastName"/></span><br>
+
+Cả hai ví dụ này đều giả định rằng lớp User tuân theo tất cả các quy tắc để tạo một JavaBean
+như được hiển thị trong hình 6-1 của chương 6. Sau đó, ví dụ đầu tiên sử dụng EL
+để truy xuất các thuộc tính của đối tượng User, và ví dụ thứ hai sử dụng các thẻ JSP
+tiêu chuẩn để truy xuất những thuộc tính đó. Điều này sẽ giúp bạn nhanh chóng hiểu cách EL
+có thể cải thiện JSP của bạn.
+
+
+Ưu điểm của EL
+EL có một số ưu điểm so với các thẻ JSP tiêu chuẩn. Trước tiên, EL được viết gọn và thanh lịch hơn.
+Điều này làm cho việc viết mã và đọc mã dễ dàng hơn.
+
+Thứ hai, mặc dù không được hiển thị trong hình này, EL giúp dễ dàng truy cập các thuộc tính lồng nhau.
+Ví dụ, bạn có thể truy xuất thuộc tính có tên là "code" từ một JavaBean có tên là "product" nằm trong
+một JavaBean có tên là "item" như sau:
+${item.product.code}
+
+Thứ ba, trong khi các thẻ JSP tiêu chuẩn chỉ cho phép bạn truy cập JavaBeans, EL cho phép bạn truy cập
+các bộ sưu tập như mảng, bản đồ và danh sách. Một bản đồ là một bộ sưu tập thực hiện giao diện Map,
+chẳng hạn như một bản đồ HashMap. Một danh sách là một bộ sưu tập thực hiện giao diện List, chẳng hạn như
+một danh sách ArrayList<> (danh sách mảng). Để biết thêm thông tin về mảng và các bộ sưu tập, bạn có thể
+tham khảo sách Murach's Java Programming.
+
+Thứ tư, EL thường xử lý các giá trị null tốt hơn so với các thẻ JSP tiêu chuẩn. Ví dụ, thay vì trả về
+giá trị null cho một biến chuỗi, EL trả về một chuỗi trống, điều này thường là điều bạn muốn.
+
+Thứ năm, EL cung cấp các chức năng mà không có sẵn từ các thẻ JSP tiêu chuẩn. Ví dụ, nó cho phép bạn làm việc
+với các tiêu đề HTTP, cookie và các thông số khởi tạo ngữ cảnh (context initialization parameters).
+Nó cũng cho phép bạn thực hiện các phép tính và so sánh.
+
+
+Nhược điểm của EL
+Khác với các thẻ JSP tiêu chuẩn, EL không tạo một JavaBean nếu JavaBean chưa được lưu trữ như một thuộc tính.
+Ngoài ra, EL không cung cấp cách để thiết lập các thuộc tính của một JavaBean.
+Tuy nhiên, khi bạn sử dụng mô hình MVC (Model-View-Controller), bạn thường sử dụng một servlet để tạo một JavaBean,
+thiết lập các thuộc tính của nó và lưu trữ nó như một thuộc tính. Do đó, những nhược điểm này không là vấn đề.
+Trên thực tế, nhiều nhà phát triển có thể nói rằng việc cho phép view trực tiếp tạo JavaBeans và thiết lập các
+thuộc tính của chúng vi phạm các quy tắc tốt cho MVC.

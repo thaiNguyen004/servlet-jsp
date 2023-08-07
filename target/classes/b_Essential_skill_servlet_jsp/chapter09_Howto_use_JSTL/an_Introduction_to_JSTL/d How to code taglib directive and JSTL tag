@@ -1,0 +1,35 @@
+Cách viết chỉ thị taglib
+Trước khi bạn có thể sử dụng các thẻ JSTL trong một trang JSP, bạn phải viết một chỉ thị taglib để xác định URI
+và tiền tố cho thư viện JSTL. Trong hình ví dụ này, chỉ thị taglib xác định URI cho thư viện lõi JSTL với
+tiền tố là "c", tiền tố thường được sử dụng cho thư viện này. Trên thực tế, tất cả các ví dụ trong chương
+này đều giả định rằng trang bao gồm một chỉ thị taglib như thế này trước khi sử dụng các thẻ JSTL.
+Mặc dù bạn có thể sử dụng các tiền tố khác ngoài các tiền tố trong hình này, chúng tôi khuyến nghị sử dụng
+các tiền tố tiêu chuẩn.
+
+<%@ taglib prefix= "c" uri= "http://java.sun.com/jsp/jstl/core" %>
+
+An example that uses JSTL to escape output
+<td><c: out value= "${item.product.description}"/></td>
+
+Cách viết một thẻ JSTL
+Sau khi bạn đã thêm các tệp JAR phù hợp vào ứng dụng của mình và sử dụng chỉ thị taglib để xác định một thư viện,
+bạn có thể viết một thẻ JSTL. Trong hình này, ví dụ, thẻ out được sử dụng để tránh đầu ra trả về cho trình duyệt.
+Trong ví dụ này, tiền tố cho thẻ này là "c". Như bạn sẽ tìm hiểu sau trong chương này, hầu hết các nhà phát
+triển xem đây là một thực hành tốt khi sử dụng thẻ này cho hầu hết các loại đầu ra.
+
+
+Các thẻ JSTL sử dụng cú pháp tương tự như HTML. Do đó, những thẻ này dễ viết và đọc, đặc biệt đối với các nhà
+thiết kế web và những người không phải là lập trình viên đã quen với cú pháp HTML.
+
+Name        Prefix          URI                                     Description
+Core        c               http://java.sun.com/jsp/jstl/core       Chứa các thẻ cốt lõi cho các nhiệm vụ phổ biến như
+                                                                    vòng lặp và câu lệnh if/else.
+
+Formatting  fmt             http://java.sun.com/jsp/jstl/fmt        Cung cấp các thẻ để định dạng số, thời gian và ngày
+                                                                    tháng để chúng hoạt động chính xác với quốc tế hóa (i18n).
+
+SQL         sql             http://java.sun.com/jsp/jstl/sql        Cung cấp các thẻ để làm việc với các truy vấn SQL và nguồn dữ liệu.
+
+XML         x               http://java.sun.com/jsp/jstl/xml        Cung cấp các thẻ để thao tác với tài liệu XML
+Functions   fn              http://java.sun.com/jsp/jstl/functions  Cung cấp các hàm để có thể sử dụng thao tác với chuỗi
+

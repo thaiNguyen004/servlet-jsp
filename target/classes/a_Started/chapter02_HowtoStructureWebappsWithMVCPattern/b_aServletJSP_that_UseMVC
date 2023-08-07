@@ -1,0 +1,416 @@
+
+a servlet & jsp that use mvc pattern
+Bây giờ bạn đã hiểu cách hoạt động của mô hình MVC, bạn đã sẵn sàng để xem mã nguồn cho một ứng dụng
+servlet/JSP sử dụng mô hình này.
+Đầu tiên, bạn có thể xem giao diện người dùng (UI) của ứng dụng này.
+Sau đó, bạn có thể xem mã nguồn cho những tệp quan trọng nhất của ứng dụng này.
+--------------------------------------------------------
+Giao diện người dùng UI:
+
+Hình 2-3 hiển thị giao diện người dùng cho một ứng dụng web cho phép người dùng tham gia danh sách email.
+Ở đây, trang đầu tiên là một trang HTML tĩnh cho phép người dùng nhập địa chỉ email, tên và họ.
+Khi người dùng nhập dữ liệu và nhấp vào nút Tham gia ngay, trình duyệt web gửi một yêu cầu HTTP đến máy chủ
+chứa dữ liệu này.
+
+Trên máy chủ, một servlet nhận dữ liệu mà người dùng đã nhập từ yêu cầu HTTP, lưu dữ liệu đó vào một
+đối tượng User, sử dụng lớp UserDB để lưu trữ dữ liệu và trả về một phản hồi HTTP cho trình duyệt.
+Phản hồi HTTP này là một trang HTML động bao gồm dữ liệu mà người dùng đã nhập trên trang đầu tiên.
+
+Để hiển thị trang đầu tiên của ứng dụng này trên máy tính phát triển, trình duyệt gọi URL này:
+localhost:8080/ch02email/
+
+Phần đầu của URL này cho biết máy chủ đang chạy trên cùng máy chủ với trình duyệt trên cổng 8080,
+đây là cổng mặc định cho phiên bản Tomcat được đi kèm với NetBeans. Phần thứ hai của URL này cho biết
+tên ứng dụng là ch02email. Vì URL không chỉ định tên tệp, Tomcat hiển thị tệp mặc định,
+thường có tên là index.html, index.htm hoặc index.jsp.
+
+Để hiển thị trang thứ hai của ứng dụng này, người dùng có thể nhấp vào nút Tham gia ngay. Điều này
+hiển thị URL này:
+localhost:8080/ch02email/emailList
+
+Hai phần đầu của URL này giống như trang đầu. Tuy nhiên, phần thứ ba của URL được ánh xạ vào một
+servlet xử lý dữ liệu được nhập trên trang đầu. Bạn sẽ thấy cách điều này hoạt động trong các hình tiếp theo.
+
+HTML cho trang đầu tiên
+Hình 2-4 hiển thị mã HTML
+Vì không có mã Java nào trong một trang HTML tĩnh, những trang này thường được viết bởi nhà thiết kế web,
+không phải lập trình viên web. Tuy nhiên, lập trình viên web có thể cần chỉnh sửa các thuộc tính của các
+thẻ form hoặc input để làm cho chúng hoạt động đúng với servlet xử lý dữ liệu được gửi bởi một trang HTML tĩnh.
+
+Các thẻ input này sử dụng HTML5 để tạo ra ba hộp văn bản có giá trị bắt buộc. Do đó, nếu người dùng không
+nhập giá trị cho một trong những hộp văn bản này, trình duyệt hiển thị một thông báo phù hợp yêu cầu
+người dùng nhập giá trị. Cả ba hộp văn bản sử dụng thuộc tính name để chỉ định tên mà servlet có thể
+sử dụng để truy cập giá trị được lưu trữ trong hộp văn bản. Hộp văn bản đầu tiên có tên là "email",
+hộp văn bản thứ hai có tên là "firstName", và hộp văn bản thứ ba có tên là "lastName".
+
+Thẻ input thứ năm là một nút nhấn để gửi một yêu cầu HTTP đến máy chủ. Vì thẻ form xác định thuộc tính
+action là "emailList", biểu mẫu này gửi dữ liệu này đến URL của servlet được mô tả trong hình trước.
+Tương tự, vì thẻ form xác định thuộc tính method là "post", biểu mẫu này sử dụng phương thức POST
+cho yêu cầu HTTP của nó.
+
+Khi bạn thực hiện một yêu cầu sửa đổi dữ liệu trên máy chủ, thường bạn sử dụng phương thức POST.
+Tuy nhiên, nếu bạn không sửa đổi dữ liệu, thường bạn sử dụng thuộc tính method là "get"
+để sử dụng phương thức GET cho yêu cầu HTTP. Bạn sẽ tìm hiểu thêm về cách điều này
+hoạt động trong chương 5.
+
+Hình 2-4
+The index.html file :
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset=''utf-811>
+    <title>Murach 's Java Servlets and JSP</title>
+    <link rel="stylesheet " href="styles/main .css " type="text/css "/>
+</head>
+<body>
+    <hl>Join our email list</hl>
+    <p>To join our email list, enter your name and email address below.</p>
+    <form action="emailList" method="post">
+        <input type="hidden" name="action" value="add">
+
+        <label>Email:</label>
+        <input type="email" name="email" required><br>
+
+        <label>First Name:</label>
+        <input type="text" name="firstName" required><br>
+
+        <label>Last Name:</label>
+        <input type="text" name="lastName" required><br>
+
+        <label>&nbsp;</label>
+        <input type="submit" value="Join Now" id="submit ">
+    </form>
+</body>
+</html>
+
+CSS cho cả hai trang web
+Hình 2-5 hiển thị CSS cho cả hai trang web của ứng dụng. Nếu bạn đã quen thuộc với CSS, bạn không nên
+gặp bất kỳ khó khăn nào trong việc hiểu mã này. Nếu kỹ năng CSS của bạn còn hơi yếu,
+chương 4 sẽ trình bày một khóa học nhanh về CSS để giúp bạn nắm vững kiến thức cần thiết cho cuốn sách này.
+Trong lúc đó, hãy tập trung vào các khái niệm chung và đừng lo lắng nếu bạn chưa hiểu rõ về tất cả các
+chi tiết của mã này.
+
+CSS (Cascading Style Sheet) chứa định dạng cho các trang web. Trong hình này, trang web sử dụng CSS
+được lưu trữ trong một tệp có tên main.css nằm trong thư mục styles của thư mục hiện tại. Ở đây, CSS
+chỉ định phông chữ và các lề cho hầu hết các phần tử HTML. Ngoài ra, nó chỉ định rằng các thẻ label
+sẽ được đặt ở phía trái của các thẻ khác cho đến khi gặp một thẻ br (break).
+
+CSS cung cấp một cách để tách biệt định dạng của các trang web với nội dung của các trang web, điều này
+được coi là một phương pháp tốt nhất. Vì CSS kiểm soát diện mạo và định dạng của trang, nó thường được
+tạo ra bởi một nhà thiết kế web, không phải một lập trình viên web. Tất nhiên, việc hiểu biết về CSS cũng
+luôn hữu ích đối với lập trình viên web. Trên thực tế, người lập trình và người thiết kế thường trở thành
+cùng một người.
+
+Hình 2-5
+The main.css file:
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11pt;
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+hl {
+    color: teal;
+}
+
+label {
+    float: left;
+    width: 6em;
+    margin-bottom: O.5em;
+}
+
+input [type= "text"], input [type="email"] {
+    width: 15em;
+    margin-left: O.5em;
+    margin-bottom: O.5em;
+}
+
+br {
+    clear: both;
+}
+#submit {
+    margin-left: O.5em;
+}
+
+Servlet for back-end processing (xử lý phía máy chủ)
+Để bạn hiểu rõ hơn về cách servlet hoạt động, Hình 2-6 hiển thị mã cho một servlet.
+Đơn giản, servlet là một loại lớp Java đặc biệt chạy trên máy chủ và thực hiện xử lý cho các trang web động
+của ứng dụng web. Đó là lý do tại sao servlets cho một ứng dụng web được viết bởi các lập trình viên web,
+không phải nhà thiết kế web.
+
+
+Hình 2-6-1
+The EmailListServlet class :
+package murach.email;
+
+import Java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import murach.business.User;
+import murach.data.UserDB;
+
+public class EmailListServlet extends HttpServlet {
+    @Override
+    protected void doPost (HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String url = "/index.html";
+        // lấy giá trị của tham số (parameter) "action" của request http hiện tại
+        String action = request.getParameter("action");
+
+        if (action == null) {
+            action = "join"; // default action
+        }
+        if (action.equals("join")) {
+            url = "/index.html";
+        }
+        else if (action.equals("add")) {
+            // get parameters from the request
+            String firstName = request.getParameter("firstName");
+            String lastName = request.getParameter("lastName");
+            String email = request.getParameter("email");
+
+            User user = new User(firstName, lastName, email);
+            UserDB.insert(user);
+            request.setAttribute("user", user);
+            url = "/thanks.jsp";
+            // Chuyển tiếp các đối tượng request và response đến địa chỉ url mới
+
+            getServletContext().requestDispatcher(url).forward(request, response);
+        }
+}
+
+}
+
+Phương thức forwards(): Phương thức forwards() trong RequestDispatcher được sử dụng để chuyển tiếp
+yêu cầu và phản hồi từ một servlet đến một nguồn tài nguyên khác để xử lý tiếp theo. Khi phương thức
+này được gọi, yêu cầu và phản hồi hiện tại được chuyển tiếp đến nguồn tài nguyên khác, và sau đó
+nguồn tài nguyên đó sẽ tiếp tục xử lý yêu cầu và phản hồi. Quá trình chuyển tiếp này xảy ra trong
+phạm vi cùng một yêu cầu HTTP, do đó client không nhận ra rằng yêu cầu đã được chuyển tiếp đến một
+nguồn tài nguyên khác.
+
+
+Mỗi servlet là một lớp Java mở rộng lớp HttpServlet. Trong hình này, ví dụ, servlet là một lớp Java có tên EmailListServlet
+mở rộng lớp HttpServlet. Servlet này bắt đầu bằng cách ghi đè phương thức doPost của lớp HttpServlet. Phương thức này
+được thực thi khi URL của nó nhận một request HTTP sử dụng phương thức POST.
+Phương thức doPost chấp nhận cả đối tượng request và đối tượng response từ máy chủ web. Trong thân của phương thức này,
+câu lệnh đầu tiên xác định một chuỗi URL. Sau đó, câu lệnh thứ hai sử dụng phương thức getParameter của đối tượng request
+để lấy giá trị của tham số có tên "action" từ request HTTP. Sau đó, đoạn mã này kiểm tra xem action có null không.
+Nếu có, đoạn mã này đặt chuỗi URL thành giá trị "join".
+Sau khi thiết lập biến URL và action, đoạn mã này sử dụng câu lệnh if/else để kiểm tra biến action để xác định
+hành động cần thực hiện. Nếu biến action bằng giá trị "join", đoạn mã này đặt chuỗi URL để hiển thị trang
+đầu tiên của ứng dụng, trang index.html.
+
+Tuy nhiên, nếu biến action bằng giá trị "add", đoạn mã này xử lý dữ liệu đã được gửi đến máy chủ.
+Để làm điều đó, ba câu lệnh đầu tiên trong mệnh đề else sử dụng phương thức getParameter của đối tượng yêu cầu để
+lấy các tham số từ yêu cầu HTTP. Sau đó, servlet thực hiện xử lý yêu cầu bằng cách sử dụng mã Java thông thường.
+Trong hình này, ví dụ, nó lưu trữ dữ liệu trong một đối tượng User, được mô tả chi tiết trong hình tiếp theo,
+và sử dụng phương thức insert của lớp UserDB để lưu đối tượng User vào cơ sở dữ liệu.
+Sau đó, đoạn mã này đặt đối tượng User làm thuộc tính của đối tượng request để nó có sẵn cho một JSP,
+chuỗi URL cho JSP của trang thứ hai của ứng dụng, được lưu trữ trong một tệp có tên thanks.jsp.
+
+Sau khi mệnh đề if/else kết thúc, servlet có thể trả về HTML cho trình duyệt bằng cách chuyển tiếp đối tượng
+request và response đến URL đã chỉ định. Thông thường, URL này là một JSP, nhưng cũng có thể là một trang HTML.
+Vì mã này điều khiển luồng của ứng dụng web, servlet này được gọi là controller trong mô hình MVC
+
+
+Servlet trong hình này kết thúc bằng cách ghi đè phương thức doGet của lớp HttpServlet. Phương thức này cho phép
+servlet này xử lý các yêu cầu HTTP sử dụng phương thức GET.
+Giống như phương thức doPost, phương thức doGet cũng chấp nhận cả đối tượng yêu cầu và đối tượng phản hồi từ máy chủ web.
+Phần thân của phương thức này chứa một câu lệnh duy nhất gọi phương thức doPost được định nghĩa trước đó trong
+servlet này và truyền cho nó các đối tượng yêu cầu và phản hồi. Như kết quả, phương thức doGet có thể được sử dụng
+để thực hiện cùng quá trình xử lý như phương thức doPost. Điều này là điển hình cho nhiều servlet.
+Tuy nhiên, điều này cũng là một nguy cơ về bảo mật tiềm ẩn. Để tìm hiểu cách kiểm soát các loại xử lý mà phương thức
+doGet và doPost thực hiện, vui lòng xem chương 22.
+Trong chương 5, bạn sẽ tìm hiểu chi tiết về việc viết mã servlet. Khi bạn hoàn thành chương đó, bạn sẽ có thể viết
+các servlet quan trọng của riêng bạn.
+
+Tập tin web.xml
+Hình 2-6-2 hiển thị tập tin web.xml cho ứng dụng này. Vì tập tin web.xml mô tả cách ứng dụng web nên được cấu hình
+khi triển khai trên một máy chủ, tập tin này được gọi là mô tả triển khai (deployment descriptor - DD). Nếu tập tin này
+tồn tại, nó luôn được lưu trữ trong thư mục WEB-INF của ứng dụng.
+
+Ít nhất, tập tin này phải chứa mã được đánh dấu. Mã này xác định phiên bản XML và các tiêu chuẩn Java EE cho tập tin
+web.xml. Thông thường, tuy nhiên, tập tin web.xml chứa một số mã bổ sung được sử dụng để cấu hình ứng dụng web.
+Trong hình này, ví dụ, tập tin web.xml sử dụng phần tử servlet để cung cấp một tên cho servlet được trình bày trong
+hình này. Sau đó, nó sử dụng phần tử servlet-mapping để ánh xạ tên đó thành một mẫu URL mà bạn có thể sử dụng để gọi servlet.
+Ngoài ra, tập tin web.xml xác định hai tệp chào mừng: index.html và index.jsp. Sau đó, nếu trình duyệt chỉ định một
+URL chỉ bao gồm một thư mục, máy chủ web sẽ cố gắng hiển thị một trong các trang chào mừng cho ứng dụng.
+Trong hình này, ví dụ, máy chủ web bắt đầu bằng cách cố gắng hiển thị trang index.html. Nếu trang này không tồn tại
+trong thư mục, nó sẽ cố gắng hiển thị trang index.jsp. Các cài đặt này là điển hình cho một ứng dụng web Java.
+Khi bạn tiến bộ qua cuốn sách này, bạn sẽ tìm hiểu thêm về làm việc với tập tin web.xml. Ví dụ, trong chương 5,
+bạn sẽ tìm hiểu cách sử dụng tập tin web.xml để làm việc với các tham số khởi tạo và xử lý lỗi.
+Trước khi tiếp tục, bạn nên biết rằng có một cách ánh xạ servlet mới và dễ dàng hơn đã được giới thiệu với đặc tả
+servlet 3.0 (Tomcat 7). Bạn sẽ tìm hiểu cách sử dụng nó trong chương 5. Rất tiếc, phương pháp này không hoạt động
+với các phiên bản trước của đặc tả servlet .
+Do đó, nếu bạn đang sử dụng một phiên bản Tomcat cũ hơn, bạn vẫn cần sử dụng tập tin web.xml để ánh xạ servlet
+của bạn với các URL.
+
+
+The EmaillistServlet class :
+@Override
+protected void doGet {HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    doPost{request, response);
+}
+
+The web.xml file:
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1"
+            xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+            xmlns:xsi="http:www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd>
+<servlet>
+    <servlet-name>EmailListServlet</servlet-name>
+    <servlet-class>murach.email.EmailListServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>EmailListServlet</servlet-name>
+    <url-pattern>/emailList</url-pattern>
+</servlet-mapping>
+<session-config>
+    <session-timeout>30</session-timeout>
+</session-config>
+<welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+</welcome-file-list>
+</web-app>
+
+Lớp User
+Hình 2-7 hiển thị mã cho lớp User. Lớp này là một JavaBean hoặc bean, vì nó tuân theo ba quy tắc
+mà tất cả các JavaBean phải tuân theo.
+- Thứ nhất, một JavaBean phải chứa một hàm tạo không tham số, đó là một hàm tạo không chấp nhận bất kỳ đối số nào.
+Trong hình này, hàm tạo không tham số sử dụng ba câu lệnh để đặt tất cả ba biến thể thành chuỗi rỗng. Kết quả là,
+một đối tượng User mới được tạo lưu trữ chuỗi rỗng cho các biến thể của nó thay vì giá trị null, điều này thường
+là điều bạn muốn.
+- Thứ hai, một JavaBean phải chứa các phương thức get và set cho tất cả các thuộc tính cần được truy cập bởi JSP.
+Trong hình này, ví dụ, các phương thức cung cấp truy cập đến tất cả các biến thể của lớp User, do đó lớp này đủ
+điều kiện để được coi là một bean. Tất nhiên, bạn cũng có thể viết các phương thức get và set cung cấp truy cập
+đến các thuộc tính khác trong một bean.
+Để cung cấp truy cập đến một giá trị Boolean, bạn viết các phương thức is và set thay vì get và set. Ví dụ, bạn
+có thể viết các phương thức có tên là isEmailUpdated và setEmailUpdated để cung cấp truy cập đến thuộc tính Boolean
+có tên emailUpdated.
+Khi viết các phương thức get, set và is, bạn phải tuân theo quy ước viết hoa chữ cái được sử dụng trong hình này.
+Nói cách khác, mỗi tên phương thức phải bắt đầu bằng một chữ cái viết thường, tiếp theo là tên thuộc tính bắt đầu
+bằng một chữ cái viết hoa như firstN ame.
+- Thứ ba, một JavaBean phải thực hiện giao diện Serializable hoặc Externalizable. Giao diện Serializable là
+một giao diện đánh dấu trong gói java.io cho thấy một lớp chứa các phương thức get, set và is mà một lớp khác
+có thể sử dụng để đọc và ghi các biến thể của một đối tượng đến và từ nguồn dữ liệu cố định. Trong hình này, ví dụ,
+lớp User thực hiện giao diện Serializable và chứa tất cả các phương thức get và set cần thiết.
+Kết quả là, một số máy chủ servlet có thể lưu và khôi phục đối tượng này nếu cần. Ví dụ, máy chủ Tomcat có thể
+lưu trạng thái của đối tượng User trước khi tắt và khôi phục trạng thái của đối tượng User khi bắt đầu lần khởi động tiếp theo.
+
+Khi viết một ứng dụng web, việc sử dụng JavaBeans để xác định các đối tượng kinh doanh của ứng dụng là phổ biến.
+Những bean này có thể được gọi là JavaBeans vô hình vì chúng không định nghĩa các thành phần hiển thị. Trọng tâm của
+cuốn sách này là trên loại JavaBean này.
+Tuy nhiên, bạn nên nhận ra rằng JavaBeans có thể làm nhiều hơn việc xác định các đối tượng kinh doanh.
+Ví dụ, JavaBeans có thể được sử dụng để xác định các nút và các điều khiển giao diện người dùng khác.
+Bạn cũng nên nhận ra rằng có một loại JavaBean khác được gọi là Enterprise JavaBean (EJB). Mặc dù EJB tương tự
+với JavaBeans ở một số khía cạnh, nhưng EJB phức tạp và khó viết hơn JavaBeans.
+Để tìm hiểu thêm về chúng, bạn có thể đọc một cuốn sách giới thiệu về các tính năng nâng cao của đặc tả Java EE.
+
+Hình 2-7
+The User class:
+package murach.business;
+
+import java.io.Serializable;
+
+public class User implements Serializable (
+    private String firstName; private String lastName;
+    private String email;
+    public User() {
+        firstName = ""
+        lastName = ""
+        email = "";
+    }
+    public User(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+    }
+
+    public String getFirstName () {
+        return firstName;
+    }
+    public void setFirstName (String firstName) {
+        this.firstName = firstName;
+    }
+    public String getLastName () {
+        return lastName;
+    }
+    public void setLastName (String lastName) (
+        this.lastName = lastName;
+    }
+    public String getEmail () (
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}
+
+Trang JSP cho trang thứ hai
+Lợi ích chính mà bạn nhận được khi viết các lớp business của mình sao cho đủ điều kiện là JavaBeans là bạn có thể sử
+dụng các thẻ JSP đặc biệt để làm việc với các bean đó. Điều này được minh họa bởi JSP trong Hình 2-8.
+Hầu hết mã trong đoạn mã này là mã HTML. Trên thực tế, mã khác trong trang này chỉ là ba thẻ JSP đặc biệt được tô sáng.
+Điều này làm cho việc viết JSP trở nên dễ dàng nếu bạn biết HTML.
+Ba thẻ JSP được hiển thị trong hình này là các thẻ Expression Language (EL), và chúng dễ nhận biết vì chúng bắt đầu
+bằng một ký hiệu đô la ($) theo sau là dấu ngoặc mở ({), và kết thúc bằng dấu ngoặc đóng (}).
+Những thẻ này hoạt động vì servlet trong Hình 2-6-1 lưu trữ đối tượng User như là một thuộc tính của đối tượng request
+với tên là user. Hơn nữa, điều này hoạt động vì đối tượng User có các phương thức getEmail, getFirstName và getLastName
+cung cấp truy cập vào dữ liệu được lưu trữ trong đối tượng User.
+Mặc dù có thể nhúng mã Java vào một JSP, nhưng điều này thường được coi là một thực hành không tốt.
+Thay vào đó, được coi là một thực hành tốt là cấu trúc lại ứng dụng để di chuyển mã Java vào một servlet chuyển tiếp
+đối tượng request và đối tượng response đến JSP. Như vậy, servlet thực hiện quá trình xử lý và JSP cung cấp HTML cho
+giao diện người dùng. Với cách tiếp cận này, JSP không cần bất kỳ mã Java nhúng nào, chỉ cần các thẻ JSP đặc biệt
+như các thẻ được hiển thị trong hình này. Điều đó có nghĩa là nhà thiết kế web có thể phát triển các JSP với tương tác
+tối thiểu với lập trình viên Java và lập trình viên Java có thể phát triển các servlet mà không phải lo lắng về HTML.
+Khi một JSP được yêu cầu lần đầu tiên, bộ máy JSP (là một phần của bộ máy servlet/JSP) chuyển đổi mã JSP thành một servlet
+và biên dịch servlet đó. Sau đó, bộ máy JSP tải servlet đó vào bộ máy servlet, nơi nó chạy.
+Đối với các yêu cầu tiếp theo, bộ máy JSP chạy servlet tương ứng với JSP. Trong quá khứ, điều này đôi khi dẫn đến độ trễ
+khi JSP được yêu cầu lần đầu tiên. Ngày nay, hầu hết các bộ máy servlet/JSP biên dịch trước JSP để tránh độ trễ đó.
+
+
+Hình 2-8
+The thanks.jsp file
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Murach's Java Servlets and JSP</title>
+    <link rel="stylesheet" href="styles/main.css" type="text/css"/>
+</head>
+
+<body>
+    <h1>Thanks for joining our email list</h1>
+    <p>Here is the information that you entered:</p>
+
+    <label>Email:</label>
+    <span>${user.email}</span><br>
+
+    <label>First Name:</label>
+    <span>${user.firstName}</span><br>
+
+    <label>Last Name:</label>
+    <span>${user.lastName}</span><br>
+
+    <p>Để nhập một địa chỉ email khác, hãy nhấp vào nút Quay lại trong trình duyệt của
+    bạn hoặc nút Quay lại hiển thị bên dưới.</p>
+
+    <form action="" method="get">
+        <input type="hidden" name="action" value="join">
+        <input type="submit" value="Return">
+    </form>
+</body>
+</html>
+
+Quan điểm
+Mục tiêu chính của chương này là chỉ cho bạn cách sử dụng mô hình MVC để cấu trúc một ứng dụng web.
+Ngoài ra, chương này đã giới thiệu các loại tệp tin khác nhau mà bạn cần làm việc trong một ứng dụng servlet/JSP.
+Những tệp tin này bao gồm các tệp tin HTML, JSP, CSS, servlet, Java và XML.
+
+Trong chương tiếp theo, bạn sẽ học cách sử dụng NetBeans để làm việc với những loại tệp tin này.
+Trong quá trình xem xét chương này, bạn có thể nhận thấy rằng chương này không bao gồm mã cho lớp UserDB.
+Hiện tại, điều bạn cần biết là phương thức insert của lớp UserDB thêm dữ liệu được lưu trữ trong một đối tượng User
+vào cơ sở dữ liệu của ứng dụng. Sau này, trong phần 3, bạn sẽ tìm hiểu về hai phương pháp khác nhau để làm việc
+với cơ sở dữ liệu.

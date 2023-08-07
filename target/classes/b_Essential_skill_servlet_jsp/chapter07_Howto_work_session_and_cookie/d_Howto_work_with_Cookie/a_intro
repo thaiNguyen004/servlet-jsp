@@ -1,0 +1,58 @@
+
+Trong chủ đề trước, bạn đã học về việc API servlet sử dụng các cookie theo phiên làm việc
+(per-session cookies). Bây giờ, bạn sẽ tìm hiểu thêm về làm việc với cookie, bao gồm cách tạo
+một cookie lưu trữ có thể được lưu trữ trên máy tính của người dùng trong tối đa ba năm.
+
+Giới thiệu về cookie
+Hình 7-6 giới thiệu cho bạn một số thông tin cơ bản về cookie.
+Để bắt đầu, nó cho thấy một số ví dụ về cookie. Các ví dụ này cho thấy rằng một cookie đơn giản
+là một cặp tên/giá trị. Ví dụ, tên của cookie đầu tiên là jsessionid,
+và giá trị của nó là D1Fl5245171203E8670487F020544490. Đây là giá trị điển hình cho cookie được
+tạo bởi API servlet để theo dõi phiên làm việc. Tuy nhiên, bạn có thể tạo các cookie riêng của mình
+để lưu trữ bất kỳ loại dữ liệu chuỗi nào.
+
+Sau khi bạn đã tạo một cookie, bạn sẽ bao gồm nó trong phản hồi từ máy chủ đến trình duyệt.
+Sau đó, trình duyệt sẽ lưu trữ cookie trên máy khách (client machine) và gửi nó trở lại máy chủ
+với tất cả các yêu cầu tiếp theo. Tuy nhiên, hãy nhớ rằng một số trình duyệt có thể đã tắt cookie,
+đặc biệt là cookie lưu trữ (persistent cookies). Do đó, bạn không luôn luôn có thể tin tưởng
+vào việc sử dụng chúng.
+
+Sau khi bạn đã lưu trữ một cookie trên PC của trình duyệt, bạn có thể sử dụng nó để cải thiện
+ứng dụng web của mình cho người dùng. Ví dụ, bạn có thể sử dụng cookie để xác minh rằng người
+dùng đã đăng ký trước đó để họ không phải đăng ký lại. Bạn có thể sử dụng chúng để tùy chỉnh
+các trang hiển thị thông tin cụ thể cho người dùng. Và bạn có thể sử dụng chúng để tập trung
+quảng cáo có khả năng thu hút người dùng.
+
+Các ví dụ về cookie:
+- jsessionid = D1Fl5245171203E8670487F020544490
+- user id = 87
+- email = jsmith@hotmail.com
+
+Cách cookie hoạt động:
+- Cookie là một cặp tên/giá trị được lưu trữ trong trình duyệt.
+
+- Trên máy chủ, một ứng dụng web tạo cookie và gửi nó đến trình duyệt. Trên máy khách,
+trình duyệt lưu trữ cookie và gửi nó trở lại máy chủ mỗi khi truy cập một trang từ máy chủ đó.
+
+- Cookie có thể được thiết lập để tồn tại trong trình duyệt của người dùng trong tối đa 3 năm.
+
+- Một số người dùng tắt cookie trong trình duyệt của họ. Do đó, bạn không thể luôn luôn kỳ vọng
+tất cả người dùng có bật cookie.
+
+- Trình duyệt thường chỉ chấp nhận tối đa 20 cookie từ mỗi trang web và tổng cộng 300 cookie.
+Ngoài ra, chúng có thể giới hạn mỗi cookie là 4 kilobytes.
+
+- Một cookie có thể được liên kết với một hoặc nhiều tên miền phụ.
+
+Các ứng dụng phổ biến của cookie:
+- Cho phép người dùng bỏ qua các biểu mẫu đăng nhập và đăng ký thu thập dữ liệu như tên người dùng,
+mật khẩu, địa chỉ hoặc dữ liệu thẻ tín dụng.
+- Tùy chỉnh các trang hiển thị thông tin như báo cáo thời tiết, kết quả thể thao và thông tin chứng khoán.
+- Tập trung quảng cáo như banner quảng cáo nhắm vào các sở thích của người dùng.
+
+Mô tả:
+- Một cookie theo phiên được tạo tự động để lưu trữ ID phiên cho mỗi phiên làm việc.
+Cookie này được sử dụng để liên kết trình duyệt với đối tượng phiên.
+- Bạn cũng có thể tạo và gửi các cookie khác đến trình duyệt của người dùng.
+Cookie này có thể được sử dụng để truy cập dữ liệu cụ thể cho người dùng được lưu trữ
+trong tệp hoặc cơ sở dữ liệu.

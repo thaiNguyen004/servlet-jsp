@@ -1,0 +1,70 @@
+Tại điểm này, bạn đã có các kỹ năng cơ bản để làm việc với
+Session, Cookie, URL rewriting và các trường ẩn.
+
+Tuy nhiên, việc hiểu cách sử dụng những kỹ năng này mà không thấy chúng trong một ứng dụng
+hoàn chỉnh có thể là khó khăn. Đó là lý do tại sao hình 7-13 trình bày một ứng dụng cho
+phép người dùng đã đăng ký tải xuống các tệp âm thanh từ một trang web. Mặc dù ứng dụng này
+dài tám trang, bạn có thể học rất nhiều khi nghiên cứu nó.
+
+
+Cấu trúc tệp
+Phần 2 bắt đầu bằng cách trình bày các tệp cấu thành ứng dụng Tải xuống.
+Để bắt đầu, ứng dụng này sử dụng sáu tệp JSP:
+một cho trang Index,
+một cho trang Đăng ký
+và một cho trang Tải xuống cho mỗi trong bốn album.
+Trang Tải xuống theo một quy ước đặt tên cứng nhắc. Tất cả các trang này bắt đầu bằng
+một mã sản phẩm gồm bốn ký tự xác định album, tiếp theo là dấu gạch dưới, tiếp theo là "download.jsp".
+
+The names of the jsp files
+index.jsp
+register .j sp
+8601_download.jsp
+pfOl_download.jsp
+pf02_download.jsp
+jrOl_download.jsp
+
+The name of the controller servlet class
+murach.download.DownloadServlet
+
+Các tệp MP3 được sử dụng bởi album tuân theo một quy ước đặt tên tương tự.
+Các tệp này được lưu trữ trong một thư mục con của thư mục sound có sẵn từ ứng dụng khác
+có tên là musicStore. Ở đây, mỗi thư mục con sử dụng mã sản phẩm gồm bốn ký tự cho album.
+Khi một trình duyệt hiện đại truy cập vào URL của một trong các tệp MP3 này, nó sẽ tải xuống và phát nó.
+The file structure for the mp3 files
+musicStore/sound/8601/*.mp3
+musicStore/sound/pf01/*.mp3
+musicStore/sound/pf02/*.mp3
+musicStore/sound/jr01/*.mp3
+
+<?xml version="1.0" encoding="UTF-811"?>
+<web-app version= "3.0" xmlns= "http://java.sun.com/xml/ns/javaee"
+    xmlns: xsi= "http://www.w3.org/2001/XMLSchema-instance"
+    xsi: schemaLocation= "http: //java. sun. com/xml/ns/javaee
+                          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" >
+    <servlet>
+        <servlet-name>DownloadServlet.</servlet-name>
+        <servlet-class>murach.download.DownloadServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DownloadServlet.</servlet-name>
+        <url-pattern>/download</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>
+
+Tệp web.xml
+Phần 2 cũng trình bày tệp web.xml cho ứng dụng. Tệp này ánh xạ lớp DownloadServlet
+tới URL /download. Ngoài ra, nó đặt thời gian hết hạn phiên mặc định là 30 phút.
+Kết quả là, phiên làm việc sẽ bị hủy nếu một khách hàng không truy cập vào đối tượng phiên
+trong vòng 30 phút. Để thay đổi điều này, bạn có thể chỉnh sửa tệp web.xml hoặc viết mã Java
+sử dụng phương thức setMaxinactiveinterval để thay đổi khoảng thời gian không hoạt động tối đa
+cho phiên làm việc.
+Cuối cùng, tệp web.xml đặt danh sách tệp chào mừng cho ứng dụng là index.jsp.
+Kết quả là, nếu người dùng yêu cầu thư mục gốc của ứng dụng, tệp index.jsp sẽ được hiển thị.
+

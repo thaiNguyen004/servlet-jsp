@@ -1,0 +1,31 @@
+Trong hầu hết các ứng dụng web, bạn cần theo dõi người dùng khi họ di chuyển qua các
+phần của ứng dụng web. May mắn thay, API servlet làm điều này khá dễ dàng.
+Trong chương này, bạn sẽ tìm hiểu cách sử dụng API servlet để theo dõi session và
+làm việc với cookie.
+
+Sumary
+Giới thiệu về session tracking (theo dõi phiên)
+Tại sao session tracking khó khăn với HTTP
+Cách session tracking hoạt động trong Java
+Một ứng dụng cần session tracking
+Cách làm việc với session
+Cách thiết lập và lấy thuộc tính session
+Các phương thức khác của đối tượng Session
+Cách cung cấp truy cập an toàn vào đối tượng Session
+
+Cách làm việc với cookie
+Giới thiệu về cookie
+Cách tạo và sử dụng cookie
+Cách xem và xóa cookie
+Bốn phương thức để làm việc với cookie
+Một lớp tiện ích để làm việc với cookie
+Cách làm việc với URL rewriting và trường ẩn
+Cách sử dụng URL rewriting để truyền tham số
+Cách sử dụng trường ẩn để truyền tham số
+Ứng dụng Tải xuống
+Giao diện người dùng
+Cấu trúc tệp
+Tệp web.xml
+Mã cho các trang JSP
+Mã cho servlet
+Góc nhìn.

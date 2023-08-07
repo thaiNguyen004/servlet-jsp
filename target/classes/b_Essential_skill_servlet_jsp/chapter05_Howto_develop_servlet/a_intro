@@ -1,0 +1,6 @@
+Cách phát triển servlets
+
+Chương 2 đã chỉ ra cách sử dụng mô hình MVC để cấu trúc một ứng dụng web sử dụng 
+servlet và JSP. Bây giờ, chương này trình bày những kỹ năng mà bạn cần để 
+phát triển servlets trong mô hình MVC. Khi bạn hoàn thành chương này, bạn sẽ có 
+khả năng viết mã servlet cho các ứng dụng web của riêng bạn.

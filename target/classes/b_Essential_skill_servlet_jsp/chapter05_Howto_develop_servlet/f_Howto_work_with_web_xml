@@ -1,0 +1,320 @@
+Cách làm việc với tệp web.xml
+
+Trong chương 2, bạn đã học rằng hầu hết các ứng dụng có một tệp web.xml duy nhất 
+chứa thông tin về cấu hình của ứng dụng. Sau đó, ở phần đầu chương này, bạn đã 
+học cách sử dụng tệp web.xml để ánh xạ servlet với URL. Bây giờ, bạn sẽ tìm hiểu 
+thêm về cách làm việc với tệp web.xml cho một ứng dụng.
+Mã trong phần này đã được kiểm tra trên máy chủ Tomcat. Nếu bạn đang sử dụng một 
+máy chủ servlet khác, bạn có thể cần sửa đổi mã được trình bày trong phần này để 
+nó hoạt động với máy chủ servlet của bạn. Tuy nhiên, nói chung, mã được trình bày 
+ở đây nên hoạt động trên tất cả các máy chủ servlet.
+
+- Một tệp web.xml hoàn chỉnh
+- Cách làm việc với các tham số khởi tạo (initialization parameters)
+- Cách triển khai xử lý lỗi tùy chỉnh
+
+1.
+Một tệp web.xml hoàn chỉnh
+
+Hình 5-11 Một tệp web.xml hoàn chỉnh
+<?xml version="l.0" encoding="UTF-8"?> 
+<web-app version="3.0"xmlns="http://java.sun.com/xml/ns/javaee" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+            http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"> 
+    <context-param> 
+        <param-name>custServEmail</param-name> 
+        <param-value>custserv@murach.com</param-value> 
+    </context-param> 
+    
+    <servlet> 
+        <servlet-name>EmailListServlet</servlet-name> 
+        <servlet-class>murach.email.EmailListServlet</servlet-class> 
+        <init-param> 
+            <param-name>relativePathToFile</param-name> 
+            <param-value>/WEB-INF/EmailList.txt</param-value> 
+        </init-param> 
+    </servlet> 
+    
+    <servlet-mapping> 
+        <servlet-name>EmailListServlet</servlet-name> 
+        <url-pattern>/emailList</url-pattern> 
+    </servlet-mapping> 
+    
+    <!-- you can comment out these tags when the app is in development --> 
+    <error-page> 
+        <error-code>404</error-code> 
+        <location>/error_404.jsp</location> 
+    </error-page> 
+    <error-page> 
+        <exception-type>java.lang.Throwable</exception-type> 
+        <location>/error_java.jsp</location> 
+    </error-page> 
+    <session-config> 
+        <session-timeout>30</session-timeout> 
+    </session-config> 
+    <welcome-file-list> 
+        <welcome-file>index.html</welcome-file> 
+        <welcome-file>index.jsp</welcome-file> 
+    </welcome-file-list> 
+</web-app>
+
+Hình 5-11 hiển thị tệp web.xml hoạt động với ứng dụng được trình bày trong chương này. 
+Tệp web.xml này bắt đầu bằng hai thẻ xác định loại tài liệu XML đang được sử dụng. 
+Hiện tại, bạn không cần phải hiểu mã này. Tuy nhiên, những thẻ này phải được bao gồm 
+ở đầu mỗi tệp web.xml. 
+May mắn thay, hầu hết các IDE tạo chúng tự động. Nếu không, bạn có thể sao chép những 
+thẻ này từ một tệp web.xml khác.
+
+Sau mã này, tệp web.xml chứa các thẻ XML xác định các phần tử. 
+Ví dụ, các thẻ mở và đóng web-app xác định phần tử web-app. Vì tất cả các phần tử khác 
+được mã hóa trong phần tử này, phần tử web-app được gọi là phần tử gốc. Bất kỳ phần tử 
+nào được mã hóa trong phần tử này hoặc một phần tử cấp thấp hơn được gọi là phần tử con.
+Để sửa đổi một tệp web.xml, bạn nên sử dụng IDE của mình. Trong quá trình thực hiện các 
+sửa đổi, nếu bạn muốn giữ mã trong tệp XML nhưng không muốn máy chủ servlet sử dụng nó, 
+bạn có thể sử dụng chú thích XML để chú thích các phần mã đó. Những chú thích này hoạt động 
+theo cách tương tự như chú thích HTML.
+Khi bạn hoàn thành việc sửa đổi tệp, bạn phải triển khai lại ứng dụng lên Tomcat để các 
+thay đổi có hiệu lực. Với hầu hết các IDE, điều này xảy ra tự động khi bạn chạy ứng dụng. 
+Nếu không, bạn luôn có thể khởi động lại Tomcat để đảm bảo nó đọc lại các thay đổi trong 
+tệp web.xml.
+Khi bạn sửa đổi một tệp web.xml, bạn nên đảm bảo nhúng các phần tử XML đúng cách như được 
+hiển thị trong hình này. Nếu không, khi bạn khởi động Tomcat hoặc cố gắng triển khai ứng dụng 
+của bạn, Tomcat sẽ không thể đọc tệp web.xml. Trong trường hợp đó, Tomcat hiển thị một thông báo 
+lỗi. Để giải quyết vấn đề này, bạn có thể chỉnh sửa tệp web.xml và triển khai lại ứng dụng. 
+Hoặc, bạn có thể khởi động lại Tomcat để đọc lại tệp.
+
+
+2. 
+Cách làm việc với các tham số khởi tạo
+Nếu bạn muốn lưu trữ một số tham số khởi tạo cho một ứng dụng trong một vị trí trung tâm, 
+bạn có thể thêm chúng vào tệp web.xml như được hiển thị: 
+
+<context-param> 
+    <param-name>custServEmail</param-name> 
+    <param-value>custserv@murach.com</param-value>
+</context-param>
+
+<servlet> 
+    <servlet-name>AddToEmailListServlet</servlet-name> 
+    <servlet-class>email.AddToEmailListServlet</servlet-class> 
+    <init-param> 
+        <param-name>relativePathToFile</param-name> 
+        <param-value>/WEB-INF/EmailList.txt</param-value>
+    </init-param> 
+</servlet>
+
+Sau đó, servlet của bạn có thể đọc các tham số này như được hiển thị: 
+String custServEmail = this.getServletContext().getinitParameter("custServEmail"); 
+String relativePath = this.getServletConfig().getinitParameter("relativePathToFile");
+
+Để định nghĩa một tham số khởi tạo ngữ cảnh có sẵn cho tất cả các servlet trong ứng dụng web, 
+bạn code một phần tử context-param. Sau đó, bạn code hai phần tử con: 
+phần tử param-name và phần tử param-value. Để định nghĩa nhiều tham số ngữ cảnh, 
+bạn có thể code thêm các phần tử context-param sau phần tử đầu tiên. Trong hình này, 
+phần tử context-param định nghĩa một tham số có tên là custServEmail có giá trị cung cấp 
+một địa chỉ email.
+
+Để định nghĩa một tham số khởi tạo servlet có sẵn cho một servlet cụ thể, bạn có thể code 
+một phần tử init-param trong một phần tử servlet. Phần tử này theo sau các phần tử 
+servlet-name và servlet-class mà bạn đã học ở phần trước của chương này.
+Trong phần tử init-param, bạn phải code các phần tử param-name và param-value để xác định 
+tên và giá trị của tham số khởi tạo. Để định nghĩa nhiều tham số khởi tạo cho một servlet, 
+bạn có thể code thêm các phần tử init-param sau phần tử đầu tiên. Trong hình này, phần tử 
+init-param định nghĩa một tham số có tên là relativePathToFile có giá trị là một đường dẫn tương đối.
+
+Với phiên bản 3.0 của servlet (Tomcat 7.0) và các phiên bản sau, bạn có thể sử dụng các 
+chú thích @WebServlet và @InitParam để chỉ định các tham số khởi tạo servlet. 
+Để làm điều đó, bạn có thể code chú thích @WebServlet như đã mô tả ở phần trước của 
+chương này. Tuy nhiên, bạn sử dụng thuộc tính urlPatterns để chỉ định ánh xạ URL cho servlet. 
+Sau đó, bạn sử dụng thuộc tính initParams để chỉ định các tham số khởi tạo cho servlet. 
+Để làm điều đó, bạn có thể code một hoặc nhiều chú thích @InitParam. Mỗi chú thích này bao gồm 
+các thuộc tính name và value để chỉ định tên và giá trị của tham số.
+Ví dụ: 
+@WebServlet(urlPatterns={"/emailList"}, 
+    initParams=
+    {
+        @InitParam(name="relativePathToFile", value="/WEB_INF/EmailList.txt"),
+        @InitParam(name="relativePathToFile2", value="/WEB_INF/EmailList2.txt")
+    })
+
+
+Dưới đây là mô tả của các phần tử:
+
+1. `<context-param>`: 
+Định nghĩa một tham số khởi tạo ngữ cảnh (context initialization parameter) cho ứng dụng web. 
+Đây là một phần tử cha để chứa các thông tin cấu hình được sử dụng bởi tất cả các servlet 
+trong ứng dụng.
+
+2. `<servlet>`: 
+Định nghĩa một servlet trong ứng dụng web. Một servlet là một thành phần chịu trách nhiệm 
+xử lý các yêu cầu và tạo ra các phản hồi tương ứng.
+
+3. `<servlet-name>`: 
+Xác định tên của servlet. Đây là một phần tử con của phần tử `<servlet>` và được sử dụng 
+để đặt tên cho servlet để nó có thể được xác định và tham chiếu trong các phần khác của 
+file cấu hình và trong mã nguồn ứng dụng.
+
+4. `<servlet-class>`: 
+Xác định lớp (class) của servlet. Đây là một phần tử con của phần tử `<servlet>` 
+và được sử dụng để chỉ định tên lớp của servlet, đại diện cho logic xử lý yêu cầu và phản hồi 
+của servlet.
+
+5. `<init-param>`: 
+Định nghĩa một tham số khởi tạo (servlet initialization parameter) cho một servlet cụ thể. 
+Đây là một phần tử con của phần tử `<servlet>` và chứa thông tin cấu hình được sử dụng bởi 
+servlet đó.
+
+6. `<param-name>`: 
+Xác định tên của tham số khởi tạo. Đây là một phần tử con của phần tử `<init-param>` 
+và được sử dụng để đặt tên cho tham số để có thể được xác định và sử dụng trong mã nguồn 
+của servlet.
+
+7. `<param-value>`: 
+Xác định giá trị của tham số khởi tạo. Đây là một phần tử con của phần tử `<init-param>` 
+và được sử dụng để chỉ định giá trị của tham số, được sử dụng trong quá trình cấu hình 
+và xử lý của servlet.
+
+String custServEmail = this.getServletContext().getinitParameter("custServEmail");
+String relativePath = this.getServletConfig().getinitParameter("relativePathToFile");
+
+Phần trên của hình minh họa cho thấy cách đọc các tham số khởi tạo như những tham số 
+trong phần 1. Để lấy một tham số khởi tạo mà có sẵn cho tất cả các servlet, bạn bắt đầu bằng 
+cách gọi phương thức `getServletContext` từ bất kỳ đâu trong servlet để nhận một đối tượng 
+`ServletContext`. Sau đó, bạn gọi phương thức `getInitParameter` từ đối tượng `ServletContext`.
+
+Để lấy một tham số khởi tạo chỉ có sẵn cho servlet hiện tại, bạn bắt đầu bằng cách gọi 
+phương thức `getServletConfig` từ bất kỳ đâu trong servlet để nhận một đối tượng `ServletConfig`. 
+Sau đó, bạn gọi phương thức `getInitParameter` từ đối tượng `ServletConfig`.
+
+Lưu ý rằng phương thức `getInitParameter` hoạt động tương tự cho cả đối tượng `ServletContext`
+và đối tượng `ServletConfig`. Sự khác biệt duy nhất là đối tượng `ServletContext` trả về các 
+tham số có sẵn cho tất cả các servlet trong khi đối tượng `ServletConfig` chỉ trả về các tham số 
+có sẵn cho servlet hiện tại.
+
+Khi gọi phương thức `getInitParameter`, bạn phải chỉ định tên của tham số. Nếu tham số tồn tại, 
+phương thức `getInitParameter` sẽ trả về giá trị của tham số dưới dạng một chuỗi (string). 
+Nếu không, phương thức này trả về giá trị null.
+
+
+
+3. 
+Cách triển khai xử lý lỗi tùy chỉnh
+
+Hình 5-13
+Ví dụ 1
+The XML tags that provide error-handling for an HTTP 404 status code 
+<error-page> 
+    <error-code>404</error-code> 
+    <location>/error_404.jsp</location> 
+</error-page> 
+
+The code for a file named error_404.jsp 
+<h1>404 Error</hl> 
+<p>The server was not able to find the file you requested.</p>
+<p>To continue, click the Back button.</p>
+
+Ví dụ 2
+The XML tags that provide error-handling for all Java exceptions 
+<error-page> 
+    <exception-type>java.lang.Throwable</exception-type> 
+    <location>/error_java.jsp</location> 
+</error-page> 
+
+The code for a file named error_java.jsp 
+<hl>Java Error</hl> 
+<p>Sorry, Java has thrown an exception.</p>
+<p>To continue, click the Back button.</p>
+<h2>Details</h2> 
+<p>Type:{pageContext.exception["class"]}</p>
+<p>Message:{pageContext.exception.message}</p>
+
+Hình 5-13 minh họa cách sử dụng tệp web.xml để chỉ định các trang lỗi tùy chỉnh 
+áp dụng cho toàn bộ ứng dụng. Khi bạn phát triển một ứng dụng, bạn có thể không 
+muốn triển khai các trang lỗi tùy chỉnh. Điều này cho phép khi xảy ra lỗi, 
+Tomcat hiển thị một trang lỗi mà bạn có thể sử dụng để gỡ lỗi. 
+
+Trước khi triển khai một ứng dụng, tuy nhiên, bạn có thể muốn triển khai các trang lỗi 
+tùy chỉnh để hiển thị lỗi một cách thân thiện với người dùng và phù hợp với phần còn lại 
+của ứng dụng của bạn.
+
+Để chỉ định một trang lỗi tùy chỉnh cho một mã trạng thái HTTP cụ thể, bạn bắt đầu 
+bằng cách viết một phần tử error-page. Trong phần tử này, bạn viết hai phần tử con: 
+phần tử error-code và phần tử location. Phần tử error-code chỉ định mã trạng thái HTTP cho lỗi. 
+Phần tử location chỉ định vị trí của trang lỗi tùy chỉnh.
+
+Ví dụ đầu tiên trong hình minh họa cách viết phần tử error-page cho mã trạng thái HTTP 404. 
+Ở đây, phần tử error-code chỉ định số cho mã trạng thái HTTP. Sau đó, phần tử location 
+chỉ định một URL trỏ đến trang lỗi có tên là error_404.jsp được lưu trữ trong thư mục gốc 
+của ứng dụng. Lưu ý rằng phần tử này phải bắt đầu bằng dấu gạch chéo (/).
+
+Tiếp theo hiển thị một số mã cơ bản cho trang error_404.jsp cho mã trạng thái 404. 
+Trang này là một trang JSP hiển thị một thông báo thân thiện với người dùng mô tả mã 
+trạng thái HTTP 404.
+
+Mã trạng thái 404 chỉ ra rằng máy chủ không thể tìm thấy tệp theo URL được yêu cầu. 
+Khi bạn có thêm kinh nghiệm với lập trình web, bạn sẽ quen thuộc với các mã trạng thái HTTP khác. 
+Ngoài ra, một số mã thông báo phổ biến khác được tóm tắt trong chương 18.
+
+Để chỉ định một trang lỗi tùy chỉnh được hiển thị khi có một ngoại lệ không được xử lý, 
+bạn bắt đầu bằng cách viết một phần tử error-page. Trong phần tử này, bạn viết hai phần tử con: 
+phần tử exception-type và phần tử location. Phần tử exception-type chỉ định loại ngoại lệ 
+bằng cách xác định tên gói và tên lớp cho ngoại lệ. Phần tử location chỉ định vị trí của 
+trang lỗi tùy chỉnh.
+
+Ví dụ thứ ba cho thấy cách viết phần tử error-page xử lý tất cả các ngoại lệ Java. 
+Ở đây, phần tử exception-type chỉ định lớp Throwable trong gói java.lang. 
+Vì tất cả các ngoại lệ kế thừa lớp này, điều này dẫn đến việc hiển thị một trang lỗi 
+tùy chỉnh cho tất cả các ngoại lệ không được xử lý. Tuy nhiên, nếu bạn muốn hiển thị 
+các trang lỗi khác nhau cho các loại ngoại lệ khác nhau, 
+bạn có thể viết nhiều phần tử error-page. Ví dụ, bạn có thể hiển thị một trang lỗi cho các 
+ngoại lệ kiểu NullPointerException và một trang lỗi khác cho các ngoại lệ kiểu ServletException.
+
+Ví dụ thứ tư hiển thị một số mã cho một trang lỗi tùy chỉnh xử lý tất cả các ngoại lệ Java. 
+Trang lỗi này sử dụng EL để hiển thị tên lớp ngoại lệ và thông báo của nó. 
+Để biết thêm thông tin về EL, xem chương 8.
+
+XML elements for working with error handling
+<error-page>: 
+Đây là một phần tử trong tệp web.xml được sử dụng để chỉ định trang lỗi tùy chỉnh 
+cho một mã trạng thái HTTP hoặc một loại ngoại lệ cụ thể.
+
+<error-code>: 
+Đây là một phần tử con của phần tử <error-page>. Nó chỉ định mã trạng thái HTTP mà 
+trang lỗi tùy chỉnh sẽ được áp dụng. 
+Ví dụ: 404 cho lỗi không tìm thấy trang, 500 cho lỗi máy chủ.
+
+<exception-type>: 
+Đây là một phần tử con của phần tử <error-page>. Nó chỉ định loại ngoại lệ mà trang lỗi 
+tùy chỉnh sẽ được áp dụng. Bạn cần xác định tên gói và tên lớp của ngoại lệ. 
+Ví dụ: java.lang.NullPointerException.
+
+<location>: 
+Đây là một phần tử con của phần tử <error-page>. Nó chỉ định vị trí của trang lỗi tùy chỉnh. 
+Đây thường là một URL đến trang JSP hoặc servlet được sử dụng để hiển thị thông báo lỗi 
+hoặc xử lý lỗi.
+
+Khi bạn viết một trang lỗi tùy chỉnh, bạn có thể sử dụng một tài liệu HTML hoặc một trang JSP. 
+Nếu bạn sử dụng một trang JSP, bạn có thể sử dụng đối tượng exception để tùy chỉnh trang lỗi. 
+Ngoài ra, bạn có thể sử dụng bất kỳ kỹ thuật nào khác mà có sẵn cho một trang JSP.
+
+Phần 2 của hình 5-13 cho thấy cách các trang lỗi hiển thị trong trình duyệt. Ở đây, màn hình 
+đầu tiên hiển thị trang lỗi được hiển thị cho mã trạng thái HTTP 404. 
+Tuy nhiên, theo mặc định, trình duyệt Microsoft Internet Explorer sử dụng các trang lỗi riêng
+của nó cho mã trạng thái HTTP. Vì vậy, nếu bạn muốn sử dụng trình duyệt này để xem một trang 
+tùy chỉnh, bạn phải chọn lệnh Tools -> Internet Options và sử dụng tab Advanced của hộp thoại 
+để bỏ chọn tùy chọn "Show friendly HTTP error messages". Đó là lý do tại sao tôi sử dụng Chrome 
+để hiển thị trang lỗi này.
+
+Màn hình thứ hai hiển thị trang lỗi được hiển thị khi một servlet ném một ngoại lệ. 
+Ở đây, các chi tiết ở phần dưới của trang cho thấy rằng một trong các đường dẫn 
+được sử dụng bởi ứng dụng đã ném ra một IllegalArgumentException. Ngoài ra, thông báo 
+cho biết rằng ngoại lệ được ném ra vì không có dấu gạch chéo phía trước được mã hóa ở đầu 
+đường dẫn cho tệp thanks.jsp.
+
+Trong trường hợp này, đây là tất cả thông tin bạn cần để gỡ lỗi lỗi. Tuy nhiên, trang lỗi 
+này không cung cấp nhiều thông tin như các trang lỗi được cung cấp bởi Tomcat. 
+Do đó, việc gỡ lỗi lỗi dễ dàng hơn khi bạn sử dụng các trang lỗi của Tomcat. 
+Đó là lý do tại sao bạn chỉ nên sử dụng một trang lỗi như thế này khi bạn sẵn sàng đưa 
+ứng dụng web của bạn vào môi trường sản xuất. 
+Còn trong quá trình sản xuất thì nên sử dụng trang lỗi của tomcat

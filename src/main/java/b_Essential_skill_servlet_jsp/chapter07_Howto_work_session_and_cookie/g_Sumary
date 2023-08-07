@@ -1,0 +1,25 @@
+Tóm tắt
+- Bởi vì HTTP là một giao thức không có trạng thái, các ứng dụng web phải cung cấp việc theo dõi phiên.
+Điều này giúp ứng dụng có thể liên kết mỗi yêu cầu với một trình duyệt cụ thể và dữ liệu cho phiên đó.
+
+- Để cung cấp việc theo dõi phiên, Java tạo một đối tượng phiên cho mỗi trình duyệt. Sau đó, bạn có thể
+thêm các thuộc tính như biến và đối tượng vào đối tượng phiên này và bạn có thể lấy giá trị của các thuộc tính
+này trong bất kỳ servlet và JSP nào chạy trong phiên đó.
+
+- Nói chung, việc triển khai việc theo dõi phiên bằng cách sử dụng cookies được coi là một thực hành tốt.
+Sau đó, ID phiên được lưu trữ trong một cookie trên trình duyệt của người dùng. Loại theo dõi phiên này được
+thực hiện tự động bởi API servlet, nhưng nó không hoạt động trừ khi trình duyệt cho phép cookies.
+
+- Cookies bền vững được lưu trữ trên máy tính của người dùng, trong khi cookies theo phiên bị xóa khi phiên kết thúc.
+
+- Cũng có thể triển khai việc theo dõi phiên bằng cách sử dụng mã hóa URL. Điều này hoạt động ngay cả khi
+trình duyệt không cho phép cookies. Tuy nhiên, nó có thể dẫn đến việc chiếm đoạt phiên. Do đó, nó được coi
+là một thực hành xấu.
+
+- Để tạo cookies, sử dụng các phương thức của lớp Cookie. Để lưu trữ một cookie trên trình duyệt của người dùng,
+sử dụng phương thức addCookie của đối tượng response. Để lấy cookies từ trình duyệt, sử dụng phương thức getCookies
+của đối tượng request.
+
+- Để truyền các tham số đến một servlet, bạn có thể sử dụng URL rewriting hoặc các trường ẩn.
+Khi sử dụng các trường ẩn, bạn có thể dễ dàng bao gồm khoảng trống và ký tự đặc biệt trong các giá trị
+tham số của bạn. Ngoài ra, bạn có thể truyền các tham số một cách an toàn hơn so với URL rewriting.

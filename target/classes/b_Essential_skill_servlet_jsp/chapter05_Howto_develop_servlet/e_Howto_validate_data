@@ -1,0 +1,149 @@
+Làm thế nào để xác thực dữ liệu
+
+Khi người dùng nhập dữ liệu vào một ứng dụng, ứng dụng thường cần kiểm tra dữ liệu 
+để đảm bảo rằng dữ liệu là hợp lệ. Điều này được gọi là xác thực dữ liệu. 
+Sau đó, nếu người dùng nhập dữ liệu không hợp lệ, ứng dụng có thể hiển thị một 
+thông báo lỗi và cho phép người dùng có một cơ hội khác để nhập dữ liệu.
+
+- Cách xác thực dữ liệu trên phía khách hàng
+- Cách xác thực dữ liệu trên phía máy chủ
+
+
+1. 
+Cách xác thực dữ liệu trên phía khách hàng
+
+Trong một ứng dụng web thông thường, dữ liệu được nhập bởi người dùng được xác thực 
+bằng JavaScript trong trình duyệt. Điều này giúp phát hiện và sửa các giá trị không 
+hợp lệ trước khi chúng được gửi đến máy chủ để xử lý. Điều này làm cho ứng dụng 
+phản hồi nhanh hơn với người dùng và giảm công việc cho máy chủ. 
+Để tìm hiểu cách thực hiện xác thực dữ liệu trên phía khách hàng, chúng tôi 
+khuyến nghị bạn tham khảo sách "Murach's JavaScript and jQuery"
+
+2.
+Cách xác thực dữ liệu trên phía máy chủ
+Dù dữ liệu người dùng có được xác thực trên phía khách hàng hay không, thì nó luôn 
+được xác thực trên máy chủ. Một trong những lý do cho điều này là JavaScript trên 
+phía khách hàng không thể luôn thực hiện tất cả các quy tắc xác thực cần thiết. 
+Ví dụ, kiểm tra xem một địa chỉ email đã tồn tại trong cơ sở dữ liệu chỉ có thể được 
+thực hiện trên máy chủ. 
+Một lý do khác là xác thực trên phía khách hàng không hoạt động nếu JavaScript bị tắt 
+trên trình duyệt của người dùng.
+
+Hình 5-10
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <meta charset="utf-8"> 
+    <title>Murach's Java Servlets and JSP</title> 
+    <link rel="stylesheet" href="styles/main.css" type="text/css"/> 
+</head> 
+<body> 
+    <h1>Join our email list</h1> 
+    <p>To join our email list, enter your name and email address below.</p>
+    <p><i>${message}</i></p> 
+    <form action="emailList" method="post"> 
+        <input type="hidden" name="action" value="add"> 
+        <label class="pad_top">Email:</label>
+        <input type="email" name="email" value="${user.email}"><br> 
+        <label class="pad_top">First Name:</label>
+        <input type="text" name="firstName" value="${user.firstName}"><br> 
+        <label class= "pad_top" >Last Name: </label> 
+        <input type="text" name="lastName" value="${user.lastName}"><br> 
+        <label>&nbsp;</label> 
+        <input type="submit" value="Join Now" class="margin_left"> 
+    </form> 
+</body> 
+</html> 
+
+
+Để minh họa xác thực dữ liệu trên máy chủ, hình 5-10 trình bày một phiên bản nâng cao 
+của ứng dụng Email List. Để bắt đầu, mã cho trang đầu tiên của ứng dụng được lưu trữ 
+trong một tệp JSP, chứ không phải là tệp HTML. Điều này cho phép trang đầu tiên sử dụng EL 
+để hiển thị thông báo xác thực như trong hình này, và cho phép trang đầu tiên sử dụng EL 
+để lưu giữ bất kỳ giá trị hợp lệ nào mà người dùng đã nhập.
+
+Khi người dùng yêu cầu trang JSP này lần đầu tiên, trang không hiển thị thông báo xác thực 
+và hiển thị các chuỗi rỗng trong ba ô văn bản của biểu mẫu. Sau đó, nếu người dùng gửi 
+dữ liệu với các chuỗi không hợp lệ trong bất kỳ ô văn bản nào, trang JSP này hiển thị một 
+thông báo xác thực nghiêng trước biểu mẫu và hiển thị bất kỳ giá trị nào mà người dùng đã nhập 
+trong các ô văn bản. Điều này giúp người dùng không cần phải nhập lại bất kỳ giá trị hợp lệ 
+nào mà họ đã nhập trước đó.
+
+Khi người dùng nhấp vào nút "Tham gia ngay", trang này gửi các giá trị trong các ô văn bản 
+đến servlet. Sau đó, nếu một giá trị vẫn còn thiếu, servlet chuyển tiếp yêu cầu đến trang JSP 
+này một lần nữa. Nói cách khác, chu kỳ yêu cầu và phản hồi này tiếp tục cho đến khi người dùng 
+nhập dữ liệu hợp lệ hoặc kết thúc kết thúc ứng dụng.
+
+Phía servler: 
+
+@Override 
+protected void doPost (HttpServletRequest request, HttpServletResponse response)  
+        throws ServletException, IOException { 
+    String url = "/index.jsp"; 
+    // get current action 
+    String action = request.getParameter("action"); 
+    if(action == null) { 
+        action = "join"; // default action 
+    } 
+    // Kiểm tra giá trị action và đặt URL thích hợp
+    if (action.equals("join")) { 
+        url = "/index.jsp"; // the "join" page 
+    } 
+    else if (action.equals("add")) { 
+        // get parameters from the request 
+        String firstName = request.getParameter("firstName"); 
+        String lastName = request .get Parameter("lastName"); 
+        String email = request.getParameter("email"); 
+    } 
+
+    // store data in User object 
+    User user = new User(firstName, lastName, email); 
+    // validate the parameters 
+    String message; 
+    if (firstName == null || lastName == null || email == null " 
+        || firstName.isEmpty() || lastName.isEmpty() || email.isEmpty()) { 
+        message = "Please fill out all three text boxes."; 
+        url = "/index.jsp"; 
+    } 
+    else { 
+        message = "";
+        url = "/thanks.jsp"; 
+        UserDB.insert(user); 
+    } 
+
+    request.setAttribute("user", user); 
+    request.setAttribute("message", message); 
+    getServletContext().getRequestDispatcher(url).forward(request, response);
+
+Phần 2 của hình này hiển thị mã trong phương thức `doPost` của servlet, xác thực dữ liệu 
+trên máy chủ. 
+Mã này bắt đầu bằng cách lấy ba tham số yêu cầu từ biểu mẫu và lưu trữ chúng trong một đối tượng User. 
+Sau đó, nó kiểm tra xem người dùng đã nhập giá trị cho tất cả ba tham số hay chưa. 
+Nếu không, mã này đặt biến có tên là `message` thành thông báo xác thực phù hợp và đặt biến 
+có tên là `url` thành JSP hiển thị thông báo xác thực (index.jsp).
+
+Nếu không, mã này đặt biến có tên là `message` thành chuỗi rỗng để không hiển thị thông báo xác thực, 
+nó đặt biến có tên là `url` thành JSP hiển thị dữ liệu cho người dùng (thanks.jsp), 
+và sử dụng lớp UserDB để ghi dữ liệu trong đối tượng User vào cơ sở dữ liệu.
+
+Sau câu lệnh if/else, servlet lưu trữ đối tượng User và chuỗi `message` trong đối tượng request. 
+Sau đó, nó chuyển tiếp yêu cầu đến URL được chỉ định. Ví dụ, nếu người dùng chưa nhập dữ liệu hợp lệ, 
+mã này chuyển tiếp yêu cầu đến JSP được hiển thị trong phần 1 của hình này.
+
+Nếu bạn nghiên cứu servlet này, nó sẽ giúp bạn hiểu rõ hơn về cách một servlet có thể hoạt động 
+như một bộ điều khiển trong mô hình MVC. Đặc biệt, điều này cho thấy cách một servlet có thể 
+lấy dữ liệu từ yêu cầu, cập nhật mô hình dựa trên dữ liệu đó và chuyển tiếp yêu cầu đến phần thích hợp 
+của giao diện.
+
+Tuy nhiên, hãy lưu ý rằng việc kiểm tra xem một trường đã được nhập hay chưa chỉ là một phần nhỏ 
+của việc xác thực dữ liệu. Trong thực tế, mã kiểm tra xác thực dữ liệu cũng sẽ kiểm tra xem địa chỉ 
+email có phải là một địa chỉ email hợp lệ với ký tự @, dấu chấm và các yêu cầu khác.
+
+Vì servlet này làm việc với các chuỗi, nó không cần bất kỳ mã chuyển đổi dữ liệu nào. 
+Nhưng nếu bạn muốn đảm bảo rằng người dùng nhập một số nguyên, bạn có thể cố gắng chuyển đổi chuỗi 
+thành giá trị số nguyên trong một khối try/catch. Sau đó, nếu quá trình phân tích không thành công 
+và một ngoại lệ được ném ra, servlet có thể cung cấp mã trong khối catch để hiển thị thông báo 
+xác thực phù hợp và chuyển tiếp yêu cầu đến JSP thích hợp.
+
+
+

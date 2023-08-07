@@ -1,0 +1,26 @@
+Cách tắt EL
+Đối với JSP 2.0 và phiên bản sau, máy chủ servlet đánh giá bất kỳ mã nào nằm trong các ký tự ${} như một biểu thức EL.
+Hầu hết thời gian, điều này là những gì bạn muốn. Tuy nhiên, có một khả năng nhỏ rằng bạn có thể có một hoặc nhiều
+tệp JSP cũ sử dụng cú pháp EL cho một mục đích khác.
+Trong trường hợp đó, bạn có thể tắt EL như được hiển thị trong hình 8-9.
+
+Để tắt EL cho một trang JSP duy nhất, bạn thêm một chỉ thị trang (page directive) vào JSP và đặt thuộc tính isELignored
+thành true. Sau đó, máy chủ servlet sẽ không đánh giá bất kỳ biểu thức nào sử dụng cú pháp EL.
+Thay vào đó, máy chủ servlet chuyển cú pháp này đến trình duyệt web, điều này thường dẫn đến việc trình duyệt web hiển
+thị biểu thức.
+
+Để tắt EL cho nhiều trang, bạn có thể chỉnh sửa thẻ jsp-config trong tệp web.xml của ứng dụng. Ví dụ này,
+hình ảnh hiển thị cách tắt EL cho tất cả các trang JSP trong ứng dụng. Tuy nhiên, nếu cần thiết, bạn có thể sửa
+đổi phần tử url-pattern để chỉ tắt EL cho các trang JSP được chọn trong ứng dụng.
+
+How to disable EL
+For a single page (a page directive)
+<%@ page isELIgnored ="true" %>
+
+For the entire application (the web.xml file)
+<jsp-config>
+    <jsp-property-group>
+        <url-pattern>*.jsp</url-pattern>
+        <el-ignored>true</el-ignored>
+    </jsp-property-group>
+</jsp-config>

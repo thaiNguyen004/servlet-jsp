@@ -1,0 +1,13 @@
+Quan điểm
+Mục tiêu của chương này đã là hướng dẫn bạn cách sử dụng EL để lấy dữ liệu từ JavaBeans,
+bản đồ (maps), mảng (arrays) và danh sách (lists) đã được lưu trữ như một thuộc tính trong một trong bốn phạm vi
+của ứng dụng web. Trong quá trình này, bạn đã học cách sử dụng một số đối tượng EL ẩn và các toán tử ngụ ý để
+thực hiện một số nhiệm vụ hữu ích khác. Mặc dù còn nhiều điều để tìm hiểu về EL, nhưng có lẽ đây là đủ cho bạn
+nếu bạn sử dụng mô hình MVC trong ứng dụng web của mình.
+
+Khi bạn sử dụng EL, bạn có thể loại bỏ một phần lớn các mã script Java và biểu thức khỏi các trang JSP của mình,
+điều này làm cho mã của bạn dễ đọc và dễ bảo trì hơn. Điều này cũng làm cho việc làm việc với các trang này
+dễ dàng hơn đối với các nhà thiết kế web. Tuy nhiên, để đưa điều này thêm một bước xa hơn, chương tiếp theo
+sẽ chỉ cho bạn cách sử dụng Thư viện Thẻ Chuẩn JSP (JSTL) để loại bỏ phần còn lại của mã script từ các trang
+JSP của bạn. Như bạn sẽ thấy, các thẻ JSTL hoạt động tốt với EL và hai loại này thường được kết hợp trong một trang JSP.
+

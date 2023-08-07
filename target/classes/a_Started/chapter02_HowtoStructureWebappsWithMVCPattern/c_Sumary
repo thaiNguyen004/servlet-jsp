@@ -1,0 +1,32 @@
+Tóm tắt
+- Mô hình Model 1 sử dụng JSP để xử lý toàn bộ quá trình và hiển thị cho ứng dụng.
+Đây thường được coi là một thực hành kém tốt.
+
+- Mô hình Model 2, còn được gọi là mô hình Model-View-Controller (MVC), sử dụng các
+đối tượng business để xác định model, trang HTML và JSP để xác định view,
+và servlet để làm nhiệm vụ như controller.
+
+- Dữ liệu cho các đối tượng business trong ứng dụng web được lưu trữ trong các kho
+dữ liệu như tệp tin và cơ sở dữ liệu. Điều này có thể được gọi là lưu trữ dữ liệu lâu dài.
+Để làm việc với kho dữ liệu, thông thường bạn sử dụng một lớp truy cập dữ liệu.
+
+- Một tệp tin HTML chứa các thẻ xác định nội dung của trang web và một tệp tin
+CSS (Cascading Style Sheet) chứa định dạng cho các trang web.
+
+- Một servlet là một loại đặc biệt của lớp Java chạy trên máy chủ và thực hiện
+quá trình cho các trang web động của ứng dụng web.
+
+- Một tệp tin web.xml mô tả cách cấu hình một ứng dụng web khi được triển khai
+trên máy chủ. Do đó, nó được gọi là mô tả triển khai (DD).
+
+- Một JavaBean, hoặc bean, là một lớp Java cung cấp (1) một hàm tạo không tham số,
+(2) các phương thức get và set cho tất cả các biến thành viên riêng tư,
+và (3) triển khai giao diện Serializable hoặc Externalizable.
+
+- Một Enterprise JavaBean (EJB) tương tự như một JavaBean thông thường ở một số khía cạnh.
+Tuy nhiên, EJB phức tạp và khó viết hơn JavaBean và không cần thiết cho hầu hết các trang web.
+
+- Vì JavaBeans chỉ là các lớp Java, chúng là một loại đối tượng Java cũ (POJO).
+
+- Một trang JavaServer (JSP) bao gồm các thẻ Java đặc biệt như thẻ Expression Language (EL)
+được nhúng trong mã HTML. Một thẻ EL bắt đầu bằng ký hiệu đô la ($).

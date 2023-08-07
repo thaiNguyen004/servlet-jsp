@@ -1,0 +1,94 @@
+1. 
+Cách yêu cầu một servlet
+
+Sau khi bạn đã tạo và ánh xạ một servlet, bạn có thể yêu cầu servlet đó để kiểm tra. 
+Khi làm điều đó, bạn có thể sử dụng yêu cầu HTTP GET hoặc POST.
+
+Cách sử dụng phương thức HTTP GET
+Hình 5-4 cho thấy một số cách để yêu cầu một servlet. Để làm điều đó, bạn thường 
+code một thẻ form hoặc một thẻ anchor(a) yêu cầu servlet như được hiển thị trong 
+các ví dụ trong hình này. Tuy nhiên, nếu máy chủ web và servlet engine đang chạy, 
+bạn cũng có thể nhập một URL trực tiếp vào trình duyệt.
+
+http://localhost:8080/ch05email/emailList?action=add&firstName=John 
+http://www.murach.com/email/list?action=add&firstName=John
+
+Khi bạn kiểm tra một servlet, bạn thường cần chuyển các tham số cho nó. Để làm điều đó, 
+bạn có thể thêm các tham số vào cuối URL như được hiển thị trong ví dụ đầu tiên. 
+
+emailList?action=add
+emailList?firstName=John&lastName=Smith
+
+Ở đây, dấu chấm hỏi sau URL của servlet cho biết sẽ có một hoặc nhiều tham số theo sau. 
+Sau đó, bạn code tên tham số, dấu bằng và giá trị tham số cho mỗi tham số được chuyển 
+và phân tách nhiều tham số bằng dấu &.
+
+Trình duyệt được hiển thị trong hình này chứa một URL gọi một servlet và chuyển ba tham số 
+có tên action, firstName và lastName. Vì yêu cầu này không bao gồm một tham số cho địa chỉ email, 
+địa chỉ email không được hiển thị trên trang web kết quả.
+
+Có ba cách bạn có thể yêu cầu một servlet. Thứ nhất, bạn có thể nhập URL của nó vào trình duyệt 
+như được hiển thị trong tập ví dụ thứ hai. Ở đây, URL đầu tiên yêu cầu một servlet được ánh xạ 
+với thư mục emailList đang chạy trên một máy chủ cục bộ sử dụng cổng 8080 trong một ứng dụng 
+có tên ch05email. Sau đó, URL thứ hai yêu cầu một servlet được ánh xạ với thư mục email/list 
+đang chạy trên máy chủ web của www.murach.com sử dụng cổng mặc định, cổng 80.
+
+
+<form action="emailList"> 
+<form action="emailList" method= "get">
+Thứ hai, bạn có thể sử dụng một thẻ form để yêu cầu một servlet. Khi bạn sử dụng kỹ thuật này, 
+bạn code thuộc tính action của form để cung cấp một đường dẫn và tên tệp cho URL của servlet. 
+Trong hình này, thẻ form đầu tiên yêu cầu một servlet được ánh xạ với thư mục con emailList của 
+thư mục hiện tại. Tuy nhiên, nếu servlet được lưu trữ trong một thư mục khác, bạn có thể chỉ định 
+một đường dẫn tương đối hoặc tuyệt đối cho thuộc tính action.
+
+
+2. 
+Cách sử dụng phương thức HTTP POST
+
+Khi bạn sử dụng một thẻ form để yêu cầu một URL, bạn có thể sử dụng phương thức HTTP POST. 
+Để làm điều đó, bạn sử dụng thuộc tính method để chỉ định phương thức POST như được hiển thị 
+trong ví dụ: <form action="emailList" method="post">
+
+Sau đó, yêu cầu sử dụng phương thức POST và trình duyệt không hiển thị các tham số yêu cầu 
+trong URL của nó.
+
+3.
+Khi nào sử dụng phương thức HTTP GET và POST
+
+Vậy, khi nào bạn nên sử dụng phương thức HTTP GET và khi nào bạn nên sử dụng phương thức POST? 
+Nói chung, bạn nên sử dụng phương thức GET khi bạn muốn lấy (đọc) dữ liệu từ máy chủ. 
+Tương tự, bạn nên sử dụng phương thức POST khi bạn muốn gửi (ghi) dữ liệu đến máy chủ.
+
+Khi bạn sử dụng phương thức GET, bạn cần đảm bảo rằng trang có thể thực thi nhiều lần 
+mà không gây ra bất kỳ vấn đề nào. Ví dụ, nếu servlet chỉ đọc dữ liệu từ máy chủ và hiển thị 
+nó cho người dùng, không có vấn đề gì khi thực thi servlet nhiều lần. 
+Ví dụ, nếu người dùng nhấp vào nút Refresh, trình duyệt yêu cầu URL lại, và điều này không 
+gây ra bất kỳ vấn đề gì.
+
+Tuy nhiên, nếu servlet ghi hoặc gửi dữ liệu đến máy chủ, thông thường bạn không muốn người 
+dùng thực thi servlet nhiều lần. Do đó, việc sử dụng phương thức POST có ý nghĩa hơn. 
+Khi đó, nếu người dùng nhấp vào nút Refresh, trình duyệt hiển thị một hộp thoại như trong 
+hình này để cảnh báo người dùng rằng dữ liệu sắp được gửi đi một lần nữa. 
+Tại thời điểm đó, người dùng có thể nhấp vào nút Hủy bỏ để hủy bỏ yêu cầu.
+
+Cũng có một vài lý do khác để sử dụng phương thức POST. Đầu tiên, vì phương thức POST 
+không gắn các tham số vào cuối URL, nó phù hợp hơn khi làm việc với dữ liệu nhạy cảm. 
+Thứ hai, vì phương thức POST ngăn trình duyệt web bao gồm các tham số trong một (URL), 
+bạn sẽ muốn sử dụng nó nếu bạn không muốn các tham số được bao gồm trong đánh dấu trang. 
+Thứ ba, nếu các tham số của bạn chứa hơn 4 KB dữ liệu, phương thức GET sẽ không hoạt động, 
+vì vậy bạn sẽ cần sử dụng phương thức POST.
+
+Đối với tất cả các ứng dụng khác, phương thức GET được ưa chuộng. Nó chạy nhanh hơn một chút 
+so với phương thức POST và cho phép người dùng đánh dấu trang cùng với các tham số được gửi đến trang.
+
+Khi bạn yêu cầu một servlet bằng cách sử dụng một thẻ anchor hoặc nhập URL vào trình duyệt, 
+hãy nhớ rằng các kỹ thuật này tự động sử dụng phương thức HTTP GET. Do đó, một servlet chỉ 
+có thể xử lý những yêu cầu này nếu nó đã triển khai phương thức doGet. Nếu bạn cố gắng sử dụng 
+một trong những phương pháp này với một servlet mà không triển khai phương thức doGet, 
+máy chủ sẽ trả về một thông báo lỗi cho biết phương thức HTTP GET không được hỗ trợ bởi URL 
+được chỉ định (the HTTP GET method is not supported by the specified URL). 
+Tương tự, nếu bạn sử dụng phương thức HTTP POST để yêu cầu một servlet mà không triển khai 
+phương thức doPost, máy chủ sẽ trả về một thông báo lỗi cho biết phương thức HTTP POST 
+không được hỗ trợ bởi URL được chỉ định. (the HTTP POST method is not supported by the specified 
+URL)

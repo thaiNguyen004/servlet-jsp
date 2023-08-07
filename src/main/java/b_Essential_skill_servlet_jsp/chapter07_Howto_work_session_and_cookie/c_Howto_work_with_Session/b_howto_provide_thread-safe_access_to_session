@@ -1,0 +1,65 @@
+
+How to provide thread-safe access to the session
+Cách cung cấp luồng truy cập an toàn vào phiên
+
+Trong chương 5, bạn đã học rằng bộ chứa servlet chỉ tạo và tải một phiên bản duy nhất
+của servlet. Sau đó, nó sử dụng một luồng cho mỗi yêu cầu được thực hiện bởi một khách hàng.
+Hầu hết thời gian, điều đó có nghĩa là chỉ có một luồng cho mỗi khách hàng có thể truy cập
+vào đối tượng phiên. Kết quả là, gần như luôn luôn là an toàn cho luồng truy cập vào
+đối tượng phiên với các phương thức getAttribute và setAttribute.
+
+Tuy nhiên, có khả năng rằng người dùng có thể truy cập cùng một servlet
+từ nhiều tab trong cùng một trình duyệt như được thể hiện trong hình 7-5. Trong trường hợp đó,
+tất cả các tab trong trình duyệt chạy trong các luồng khác nhau mà có quyền truy cập vào
+cùng một đối tượng phiên. Kết quả là, có thể (mặc dù không thường xuyên) có hai luồng cố gắng
+lấy hoặc thiết lập một thuộc tính trong đối tượng phiên cùng một lúc,
+điều này có thể dẫn đến mất cập nhật hoặc một vấn đề khác.
+
+Ngoài ra, HTML5 cho phép một trang web duy nhất có nhiều luồng công việc (worker threads)
+thực hiện các yêu cầu HTTP độc lập. Kết quả là, thậm chí một tab trình duyệt duy nhất cũng
+có thể cố gắng sửa đổi phiên cùng một lúc thông qua lập trình front-end lỏng lẻo.
+
+Đối với nhiều ứng dụng, bạn có thể không cần phải làm việc truy cập vào đối tượng phiên
+an toàn đối với luồng. Tuy nhiên, nếu bạn cần làm cho việc truy cập vào đối tượng phiên
+an toàn đối với luồng, bạn không thể đồng bộ hóa trên đối tượng phiên như sau:
+
+synchronized (session) {
+    session.setAttribute("cart", cart);
+}
+
+Vấn đề với mã này là các quy tắc servlet không đảm bảo rằng nó sẽ luôn trả về cùng
+một đối tượng phiên. Kết quả là, mã này không an toàn đối với luồng.
+Thay vào đó, bạn phải sử dụng mã được hiển thị trong hình.
+
+An example that synchronizes access to the session object
+Cart cart;
+final Object lock = request.getSession().getId().intern();
+synchronized(lock) {
+    cart = (Cart) session.getAttribute("cart");
+}
+
+Another example that synchronizes access to the session object
+final Object lock = request.getSession().getId().intern();
+synchronized(lock) {
+    session.setAttribute("cart",cart);
+}
+
+Mã trong hình hoạt động bởi vì quy tắc servlet đảm bảo rằng ID phiên sẽ luôn giống nhau,
+ngay cả khi đối tượng phiên khác nhau. Kết quả là, bạn có thể tạo một đối tượng khóa dựa
+trên ID phiên và đồng bộ hóa trên đối tượng đó.
+
+Phương thức `intern` là một phương thức ít được biết đến của lớp String cho phép bạn
+lưu trữ một chuỗi trong một bể chuỗi (string pool). Mục đích là tiết kiệm bộ nhớ và giảm
+thiểu việc thu gom rác bằng cách chỉ lưu trữ một đối tượng chuỗi duy nhất trong bể,
+thay vì tạo ra các đối tượng riêng biệt cho mỗi chuỗi, ngay cả khi chúng có cùng nội dung.
+Kết quả là, lần đầu tiên mã này truy cập vào một ID phiên và gọi phương thức `intern`
+trên nó, chuỗi sẽ được lưu trữ trong bể chuỗi. Sau đó, mỗi lần mã này yêu cầu ID phiên,
+nó nhận được đối tượng chuỗi được chia sẻ từ bể chuỗi thay vì một đối tượng chuỗi mới.
+Bởi vậy, việc đồng bộ hóa trên chuỗi ID phiên được lưu trữ trong bể là an toàn.
+
+Rất tiếc, giải pháp này không an toàn đối với luồng trong môi trường nơi có nhiều máy chủ
+ứng dụng đang chạy đằng sau một cân bằng tải (load balancer).
+Trong trường hợp đó, mỗi máy chủ có bể chuỗi (string pool) riêng của riêng nó. May mắn thay,
+loại môi trường này thường chỉ cần thiết cho các trang web có lượng lớn lượt truy cập.
+Kết quả là, đây không phải là vấn đề đối với hầu hết các trang web.
+

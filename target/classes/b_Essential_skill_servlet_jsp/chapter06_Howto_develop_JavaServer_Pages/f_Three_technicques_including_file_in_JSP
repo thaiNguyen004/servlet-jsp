@@ -1,0 +1,77 @@
+JSP cung cấp ba kỹ thuật để bao gồm tệp. 
+Hình 6-10 hiển thị tất cả ba kỹ thuật này. Mỗi kỹ thuật này đều có nhược điểm 
+và ưu điểm riêng.
+
+Hình 6-10:
+How to include a file at compile-time with an include directives
+Syntax 
+<%@ include file="fileLocationAndNarne" %> 
+Examples 
+<%@ include file="/includes/header.html" %> 
+<%@ include file="/includes/footer.jsp" %> 
+
+How to include a file at runtime with include jsp tag
+Syntax 
+<jsp:include page="fileLocationAndNarne" /> 
+Examples 
+<jsp:include page="/includes/header.html" /> 
+<jsp:include page="/includes/footer.jsp" />
+
+How to include a file at runtime with JSTL import tag
+Syntax 
+<c:import url="fileLocationAndNarne" /> 
+Examples 
+<c:import url= "/includes/header.html" /> 
+<c:import url= "/includes/footer.jsp" /> 
+<c:import url= "http://localhost:8080/musicStore/includes/footer.jsp" /> 
+<c:import url= "www.murach.com/includes/footer.jsp" /> 
+
+
+Để bao gồm một tệp trong quá trình biên dịch, bạn có thể sử dụng chỉ thị include 
+như được hiển thị trong ví dụ đầu tiên. Trong thẻ này, bạn gõ từ khóa include, 
+tiếp theo là thuộc tính file và đường dẫn tương đối của tệp. 
+Ví dụ này bao gồm các tệp header và footer nằm trong một thư mục có tên là "includes" 
+trong thư mục gốc của ứng dụng web.
+
+Để bao gồm một tệp trong quá trình chạy, bạn có thể sử dụng include action (thẻ jsp:include) 
+như được hiển thị trong ví dụ thứ hai. Để làm điều đó, bạn mã hóa thẻ jsp:include. 
+Trong thẻ này, bạn đặt thuộc tính page là đường dẫn tương đối của tệp được bao gồm.
+
+Hoặc, bạn có thể bao gồm một tệp trong quá trình chạy bằng cách sử dụng thẻ import JSTL 
+như được hiển thị trong ví dụ thứ ba. Để làm điều đó, bạn mã hóa thẻ import và đặt 
+thuộc tính url của nó là đường dẫn của tệp được bao gồm.
+
+Cả include action và thẻ import JSTL đều không sử dụng scriptlet. Kết quả là, 
+thường không quan trọng bạn sử dụng thẻ nào. Tuy nhiên, thẻ nhập JSTL 
+cung cấp một ưu điểm: nó cho phép bạn bao gồm các tệp từ các ứng dụng và máy chủ web khác. 
+Ví dụ, dòng cuối cùng trong mã cho thấy cách bao gồm một tệp footer.jsp có sẵn từ 
+máy chủ cho trang web www.murach.com.
+
+Khi bạn bao gồm một tệp trong quá trình biên dịch, mã trong tệp trở thành một phần 
+của servlet đã được tạo ra. Ưu điểm của phương pháp này là cho phép máy chủ servlet 
+trả về một phản hồi nhanh hơn đến trình duyệt. Tuy nhiên, nếu bạn thay đổi tệp 
+được bao gồm, máy chủ có thể không hiển thị thay đổi cho đến khi JSP được chỉnh sửa 
+và biên dịch lại.
+
+Khi bạn bao gồm một tệp trong quá trình chạy, tệp được bao gồm không bao giờ 
+trở thành một phần của servlet đã được tạo ra, vì vậy servlet thực hiện cuộc gọi
+thời gian chạy để lấy tệp được bao gồm mỗi khi trang được yêu cầu. 
+Ưu điểm của phương pháp này là máy chủ luôn sử dụng phiên bản mới nhất của tệp được bao gồm. 
+Tuy nhiên, vì phương pháp này làm cho servlet đã được tạo ra thực hiện công việc 
+phụ bổ sung với mỗi yêu cầu, nên nó không chạy hiệu quả như phương pháp đầu tiên.
+
+Cuối cùng, phương pháp mà bạn chọn phụ thuộc vào yêu cầu của ứng dụng của bạn. 
+Nếu bạn khá chắc chắn rằng các tệp được bao gồm sẽ không thay đổi thường xuyên, 
+bạn nên sử dụng phương pháp đầu tiên vì nó hiệu quả hơn. 
+Ví dụ, vì các tệp header và footer được trình bày trong hình trước có thể không 
+thay đổi sau khi ứng dụng web được triển khai, việc bao gồm chúng trong quá trình 
+biên dịch là hợp lý. Ngoài ra, nhiều máy chủ servlet, bao gồm Tomcat 5 và các 
+phiên bản sau, tự động phát hiện các thay đổi trong các tệp được bao gồm. 
+Kết quả là, nếu bạn sử dụng một máy chủ servlet mới hơn, bạn thường có thể bao gồm 
+các tệp trong quá trình biên dịch.
+
+Tuy nhiên, nếu bạn muốn sử dụng các tệp được bao gồm để hiển thị thông tin có thể 
+thay đổi thường xuyên và bạn cần đảm bảo rằng những thay đổi này sẽ được hiển thị 
+ngay lập tức, bạn nên sử dụng phương pháp thứ hai hoặc thứ ba. Điều đó có nghĩa là 
+servlet cho JSP không cần được tạo lại và biên dịch lại để hiển thị tệp được bao gồm 
+đã cập nhật.

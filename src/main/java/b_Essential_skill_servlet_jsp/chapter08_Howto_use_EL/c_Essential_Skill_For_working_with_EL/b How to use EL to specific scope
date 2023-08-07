@@ -1,0 +1,53 @@
+Cách sử dụng EL để xác định phạm vi
+Vì Java tự động tìm kiếm qua các đối tượng phạm vi khi bạn sử dụng EL, thường thì bạn không cần phải sử dụng
+các đối tượng EL ngầm định được hiển thị trong hình 8-3 để xác định phạm vi. Tuy nhiên, nếu có xung đột tên,
+bạn có thể cần sử dụng chúng. Khi làm việc với những đối tượng này, bạn nên nhận thức rằng chúng đều là các
+bản đồ (maps). Do đó, bạn có thể sử dụng toán tử dấu chấm để chỉ định một khóa khi bạn muốn trả về đối tượng cho khóa đó.
+
+hình 8-3:
+Implicit EL
+page     : pageScope
+request  : requestScope
+session  : sessionScope
+application : applicationScope
+
+Example:
+Syntax
+${scope.attribute}
+
+Servlet code
+Date currentDate = new Date();
+request. setAttribute ("currentDate", currentDate);
+
+JSP code
+<p>The current date is ${requestScope.currentDate}</p>
+
+Để minh họa việc sử dụng các đối tượng EL này, hình này trình bày các ví dụ giống như hình 8-3.
+Tuy nhiên, chúng hoạt động ngay cả khi có một thuộc tính cùng tên được lưu trữ trong một phạm vi lớn hơn.
+Ở đây, ví dụ đầu tiên sử dụng phạm vi request để xác định đối tượng người dùng.
+Ví dụ thứ hai sử dụng phạm vi session.
+
+An example that specifies session scope
+Syntax
+${scope.attribute.property}
+
+Servlet code
+User user = new User{firstName, lastName, email);
+session.setAttribute("user", user);
+
+JSP code
+<p>Hello ${sessionScope.user.firstName}</p>
+
+Nếu hai thuộc tính có cùng tên và cùng phạm vi trong ứng dụng web, thì khi truy xuất thông qua EL, thuộc tính được
+trả về sẽ là thuộc tính xuất hiện đầu tiên trong phạm vi đó.
+
+Ví dụ, nếu bạn lưu trữ một thuộc tính có tên "username" trong phạm vi session và sau đó lưu trữ một thuộc tính khác
+cũng có tên "username" trong cùng phạm vi session, khi bạn truy xuất thuộc tính "username" bằng EL như sau:
+${sessionScope.username}
+EL sẽ trả về giá trị của thuộc tính "username" xuất hiện đầu tiên trong phạm vi session, tức là giá trị của thuộc tính
+mà bạn lưu trữ trước đó.
+Điều này đồng nghĩa rằng nếu bạn thay đổi giá trị của thuộc tính "username" sau khi đã lưu trữ, giá trị mới sẽ được
+truy xuất qua EL.
+Tránh việc sử dụng cùng tên cho các thuộc tính trong cùng một phạm vi là cách tốt nhất để tránh nhầm lẫn và xung đột
+trong quá trình phát triển ứng dụng web.
+

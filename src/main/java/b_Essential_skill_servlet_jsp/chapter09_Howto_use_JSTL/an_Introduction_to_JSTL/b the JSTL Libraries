@@ -1,0 +1,13 @@
+Các thư viện JSTL
+Hình 9-1 cho thấy năm thư viện thẻ được bao gồm trong JSTL 1.2. Trong chương này, bạn sẽ tìm hiểu chi tiết
+về cách làm việc với các thẻ thông thường trong thư viện lõi. Thư viện này chứa các thẻ bạn có thể sử dụng
+để mã hóa URL, lặp qua các tập hợp và viết mã câu lệnh if/else. Nếu bạn sử dụng mô hình MVC, các thẻ trong
+thư viện lõi thường là những thẻ JSTL duy nhất bạn cần khi phát triển JSP của bạn.
+Tuy nhiên, nếu cần, bạn có thể sử dụng bốn thư viện khác để làm việc với đa quốc gia, cơ sở dữ liệu, XML hoặc chuỗi.
+
+
+<dependency>
+  <groupId>org.apache.taglibs</groupId>
+  <artifactId>taglibs-standard-impl</artifactId>
+  <version>1.2.5</version>
+</dependency>

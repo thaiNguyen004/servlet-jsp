@@ -1,0 +1,42 @@
+Tóm tắt về sử dụng Java Server Page (JSP)
+- JavaBean là một loại đối tượng đặc biệt cung cấp cách tiếp cận chuẩn để truy cập 
+các thuộc tính của nó.
+
+- JSP Expression Language (EL) cung cấp cú pháp ngắn gọn cho việc lấy thuộc tính 
+và các thuộc tính JavaBean từ đối tượng yêu cầu.
+
+- JSP Standard Tag Library (JSTL) cung cấp các thẻ cho các nhiệm vụ thông thường 
+cần thực hiện trong JSPs.
+
+- Trước khi bạn có thể sử dụng các thẻ JSTL, bạn phải import thư viện JSTL, 
+làm cho các tệp jstl-impl.jar và jstl-api.jar có sẵn cho ứng dụng.
+
+- Trước khi bạn có thể sử dụng các thẻ JSTL core trong một JSP, bạn phải viết 
+một (directive) chỉ thị taglib dành cho thư viện JSTL core.
+
+- Bạn sử dụng một chỉ thị page JSP được gọi là chỉ thị trang để import 
+các lớp sử dụng trong JSP.
+
+- Trong một JSP, bạn có thể bao gồm scriptlet và expression chứa mã Java.
+
+- Trong các scriptlet và expression, bạn có thể sử dụng các phương thức của 
+đối tượng yêu cầu ẩn để làm việc với yêu cầu HTTP được truyền vào JSP.
+
+- Bạn có thể sử dụng các thẻ JSP standard (tiêu chuẩn) để làm việc với JavaBeans 
+đã được lưu trữ như một thuộc tính của ứng dụng web.
+
+- Thẻ JSP useBean cho phép bạn truy cập hoặc tạo một đối tượng bean, và các thẻ 
+getProperty và setProperty của JSP cho phép bạn lấy và đặt các thuộc tính của đối tượng.
+
+- Khi bạn sử dụng các comment JSP, các comment không được biên dịch hoặc thực thi 
+hoặc trả về cho trình duyệt. Ngược lại, các comment HTML được biên dịch và thực thi 
+và trả về cho trình duyệt, nhưng trình duyệt không hiển thị chúng.
+
+- Bạn có thể bao gồm các tệp như các tệp header và footer trong một JSP vào 
+thời gian biên dịch hoặc chạy. Điều này được gọi là làm việc với các thẻ include.
+
+- Khi làm việc với JSPs, lỗi HTTP Status 500 thường chỉ ra rằng trình biên dịch JSP 
+không thể biên dịch lớp servlet cho JSP.
+
+- Khi làm việc với JSPs, lỗi HTTP Status 404 thường chỉ ra rằng trình duyệt gửi một 
+yêu cầu tới máy chủ nhưng máy chủ không tìm thấy đường dẫn được chỉ định.

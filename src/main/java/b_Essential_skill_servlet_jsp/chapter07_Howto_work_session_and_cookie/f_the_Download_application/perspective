@@ -1,0 +1,17 @@
+Quan điểm
+
+Mục tiêu của chương này đã là hướng dẫn bạn cách sử dụng API servlet để theo dõi phiên và làm việc với cookie.
+Nếu bạn hiểu mã trong ứng dụng Download được trình bày ở cuối chương này, chương này đã đạt được mục tiêu của nó.
+Kết quả là, bạn hiện đã có khả năng phát triển các ứng dụng web yêu cầu theo dõi phiên.
+
+Trong chương trước, bạn đã học cách làm việc với một loại lớp Java đặc biệt được gọi là JavaBean.
+Trong chương đó, bạn đã lưu trữ một JavaBean như một thuộc tính của đối tượng yêu cầu.
+Tuy nhiên, cũng phổ biến là lưu trữ một JavaBean như một thuộc tính của đối tượng phiên
+như được hiển thị trong chương này.
+
+Vào những ngày đầu của lập trình servlet/JSP, việc tắt cookie theo phiên của các trình duyệt web
+và các lỗi bảo mật với mã hóa URL chưa được rộng rãi biết đến.
+Kết quả là, việc sử dụng mã hóa URL để cung cấp việc theo dõi phiên là phổ biến hơn.
+
+Hiện nay, việc tắt cookie theo phiên của các trình duyệt web ít phổ biến hơn và các lỗ hổng bảo mật
+với mã hóa URL được rộng rãi biết đến. Do đó, việc sử dụng mã hóa URL không được xem là một thực hành tốt.

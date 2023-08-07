@@ -1,0 +1,25 @@
+Trong chương 6, bạn đã học cách viết mã cho một JavaBean. Bên cạnh đó, bạn đã học cách sử dụng
+Expression Language (EL) được giới thiệu từ JSP 2.0 để lấy các thuộc tính từ JavaBean đó.
+Bây giờ, bạn sẽ tìm hiểu thêm về việc sử dụng EL. Ngoài ra, bạn sẽ thấy rằng EL là một cải tiến
+đáng kể so với các thẻ JSP tiêu chuẩn mà thường được sử dụng trước JSP 2.0.
+
+Nếu bạn đã bỏ qua chương 6, bạn vẫn có thể hiểu chương này, miễn là bạn biết cách viết mã cho một
+JavaBean. Nếu bạn không biết, hãy quay lại chương 6 và đọc về JavaBeans ở đầu chương đó. Sau đó,
+bạn sẽ sẵn sàng cho chương này.
+
+
+Một giới thiệu về Ngôn ngữ Biểu thức JSP (JSP Expression Language)
+Ưu điểm của EL
+Nhược điểm của EL
+Kỹ năng cần thiết để làm việc với EL
+Cách sử dụng toán tử dấu chấm để làm việc với JavaBeans và bản đồ
+Cách sử dụng EL để xác định phạm vi
+Cách sử dụng toán tử [] để làm việc với mảng và danh sách
+Cách sử dụng toán tử dấu chấm để truy cập thuộc tính lồng nhau
+Các kỹ năng khác để làm việc với EL
+Cách sử dụng toán tử [] để truy cập các thuộc tính
+Cách làm việc với các đối tượng EL ngầm định khác
+Cách làm việc với các toán tử EL khác
+Cách vô hiệu hóa EL
+Cách vô hiệu hóa kịch bản (scripting)
+Quan điểm

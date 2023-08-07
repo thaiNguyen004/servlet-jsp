@@ -1,0 +1,230 @@
+Cách tạo và ánh xạ một servlet
+
+Có hai bước để tạo một servlet. 
+Bạn phải viết mã cho lớp servlet và phải ánh xạ lớp đó với một URL. 
+Trước phiên bản servlet 3.0 (Tomcat 7.0), bạn phải sử dụng file web.xml để ánh xạ 
+một servlet với một URL. Với phiên bản servlet 3.0 và sau đó, bạn có thể sử dụng 
+Annotation @WebServlet để ánh xạ một servlet với một hoặc nhiều mẫu URL.
+
+Hình 5-1
+package murach.email;
+
+import java.io.IOException;
+import java.io.PrintWriter; 
+import javax.servlet.ServletException; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+
+public class TestServlet extends HttpServlet { 
+    @Override 
+    protected void doPost (HttpServletRequest request, 
+            HttpServletResponse response) throws ServletException, IOException { 
+        
+        response.setContentType("text/html"); 
+        PrintWriter out = response.getWriter{); 
+        try { 
+            out.println("<hl>HTML from servlet</hl>");
+        finally { 
+            out.close {); 
+        } 
+        
+        @Override 
+        protected void doGet(HttpServletRequest request,HttpServletResponse response) 
+                throws ServletException, IOException { 
+            doPost(request, response);
+        }
+
+1.
+Cách tạo một servlet
+Hình 5-1 hiển thị cấu trúc cơ bản cho một servlet xử lý cả yêu cầu HTTP GET và POST. 
+Trong lúc này, bạn có thể sử dụng cấu trúc cơ bản này để bắt đầu với servlets. 
+Khi bạn tiến bộ qua chương này, bạn sẽ tìm hiểu thêm về việc làm việc với servlets.
+
+Tuyên bố đầu tiên cho servlet này chỉ định gói cho lớp servlet. Gói này phải tương ứng 
+với thư mục chứa servlet.
+Tiếp theo, sáu tuyên bố tiếp theo import các lớp được yêu cầu bởi servlet này. 
+Hầu hết các lớp này đều được yêu cầu bởi tất cả các servlet. 
+Chỉ có lớp PrintWriter không được yêu cầu bởi tất cả các servlet, nó chỉ cần thiết 
+cho một servlet cần gửi văn bản như HTML hoặc XML đến máy khách.
+
+Sau bốn tuyên bố đầu tiên, khai báo lớp cung cấp tên cho lớp và cho biết nó mở rộng 
+lớp HttpServlet. Lý thuyết, một servlet có thể mở rộng lớp GenericServlet. 
+Trong thực tế, tuy nhiên, tất cả các servlet đều mở rộng lớp HttpServlet.
+
+Các phương thức doGet và doPost trong hình này chấp nhận cùng các đối số và 
+ném cùng các ngoại lệ. Trong các phương thức này, bạn có thể sử dụng các phương thức 
+của đối tượng request để nhận dữ liệu đầu vào và bạn có thể sử dụng các phương thức 
+của đối tượng response để thiết lập dữ liệu ra.
+
+Trong ví dụ này, phương thức doGet gọi phương thức doPost. Kết quả là, một yêu cầu 
+HTTP GET thực thi phương thức doPost của servlet. Điều này cho phép một servlet 
+sử dụng cùng mã để xử lý cả hai phương thức GET và POST của một yêu cầu HTTP. 
+Mặc dù đây là một thực hành phổ biến, tốt hơn là sử dụng các phương thức doGet và doPost 
+chỉ để thực thi mã phù hợp với phương thức tương ứng của yêu cầu HTTP.
+
+Câu lệnh thứ hai trong phương thức doGet gọi phương thức getWriter của đối tượng 
+response để nhận một đối tượng PrintWriter được đặt tên là "out". 
+Khi bạn có đối tượng này, bạn có thể sử dụng một câu lệnh println hoặc một loạt các 
+câu lệnh print và println để trả về HTML hoặc văn bản khác cho trình duyệt như 
+được thể hiện bởi câu lệnh thứ ba. Vì câu lệnh này có thể ném ra một IOException, 
+nó được bao quanh bởi một khối try.
+
+Câu lệnh cuối đóng và xả luồng đầu ra và giải phóng bất kỳ tài nguyên nào đang 
+được sử dụng bởi đối tượng PrintWriter. Vì luôn muốn thực thi câu lệnh này, 
+ngay cả khi xảy ra một ngoại lệ, nó được bao quanh bởi một khối finally.
+
+
+2. 
+Cách ánh xạ một servlet với tệp web.xml
+
+Trước khi bạn có thể yêu cầu một servlet, bạn cần ánh xạ servlet đó vào một URL. 
+
+Một cách để làm điều đó là sử dụng tệp web.xml cho ứng dụng như được hiển thị 
+trong hình minh họa này. Lợi ích của phương pháp này là nó hoạt động với tất cả 
+các phiên bản của Tomcat, cả mới và cũ. 
+Tuy nhiên, nếu bạn đang sử dụng phiên bản servlet 3.0 (Tomcat 7.0) hoặc mới hơn, 
+bạn có thể thấy dễ dàng hơn khi sử dụng annotation để ánh xạ servlet như được 
+hiển thị trong hình tiếp theo.
+
+Hình 5-2
+!-- the definitions for the servlets --> 
+<servlet> 
+    <servlet-name>EmailListServlet</servlet-name> 
+    <servlet-class>murach.email.EmailListServlet</servlet-class> 
+</servlet> 
+<servlet> 
+    <servlet-name>TestServlet</servlet-name> 
+    <servlet-class>murach.email.TestServlet</servlet-class> 
+</servlet> 
+<!-- the mapping for the servlets --> 
+<servlet-mapping> 
+    <servlet-name>EmailListServlet</servlet-name> 
+    <url-pattern>/emailList</url-pattern> 
+</servlet-mapping> 
+<servlet-mapping> 
+    <servlet-name>EmailListServlet</servlet-name> 
+    <url-pattern>/email/*</url-pattern> 
+</servlet-mapping> 
+<servlet-mapping> 
+    <servlet-name>TestServlet</servlet-name> 
+    <url-pattern>/test</url-pattern> 
+</servlet-mapping>
+
+Trong hình 5-2, tệp web.xml chứa các phần tử XML ánh xạ hai servlet. 
+Phần tử servlet đầu tiên trong hình này khai báo một tên trỏ tới lớp 
+EmailListServlet được hiển thị trong hình trước đó. Ở đây, phần tử servlet-name 
+cung cấp một tên duy nhất cho lớp. Tên này được sử dụng nội bộ bởi tệp web.xml. 
+Sau đó, phần tử servlet-class sử dụng tên đầy đủ để xác định lớp cho servlet. 
+
+Trong ví dụ này, mục nhập servlet-name giống với tên của lớp, nhưng nó không được 
+định kèm bởi tên gói. Đây là một quy ước phổ biến để đặt tên cho một servlet. 
+Tuy nhiên, nếu cùng tên servlet được sử dụng trong hai hoặc nhiều gói, bạn có thể 
+sử dụng các phần tử servlet để chỉ định một tên duy nhất cho mỗi servlet, 
+ví dụ: 
+<servlet>
+  <servlet-name>myServlet1</servlet-name>
+  <servlet-class>com.example.package1.MyServlet</servlet-class>
+</servlet>
+
+<servlet>
+  <servlet-name>myServlet2</servlet-name>
+  <servlet-class>com.example.package2.MyServlet</servlet-class>
+</servlet>
+
+Phần tử servlet thứ hai sử dụng cùng quy ước đặt tên như phần tử servlet đầu tiên. 
+Nó khai báo một tên nội bộ là TestServlet cho một servlet có tên TestServlet được 
+lưu trữ trong gói murach.email.
+
+Phần tử servlet-mapping đầu tiên ánh xạ EmailListServlet vào một URL duy nhất có sẵn 
+từ thư mục gốc của ứng dụng. Như kết quả, người dùng có thể yêu cầu servlet này 
+bằng cách chỉ định một mẫu URL như sau:
+http://localhost:8080/ch05email/emailList
+Lưu ý rằng URL này loại bỏ từ "Servlet" ở cuối tên servlet. Tôi đã sử dụng quy ước 
+này trong toàn bộ cuốn sách này vì nó rút ngắn URL và che giấu thực tế rằng ứng dụng 
+này sử dụng servlets khỏi người dùng.
+
+Phần tử servlet-mapping thứ hai sử dụng ký tự đại diện (*) để ánh xạ EmailListServlet 
+vào bất kỳ URL nào thuộc thư mục email. Điều này cho phép servlet này được yêu cầu bởi 
+nhiều URL. Ví dụ, bạn có thể yêu cầu servlet này với URL này:
+http://localhost:8080/ch05email/email/add
+Hoặc, bạn có thể yêu cầu servlet này với URL này:
+http://localhost:8080/chOSemail/email/addToList
+Quan trọng là ánh xạ servlet này vẫn hoạt động ngay cả khi thư mục email là một 
+thư mục ảo không tồn tại thực sự trên máy chủ.
+
+Phần tử servlet-mapping thứ ba ánh xạ TestServlet vào một URL duy nhất. 
+Phần tử này sử dụng cùng quy ước đặt tên như phần tử servlet-mapping đầu tiên.
+
+XML elements for working with servlet mapping 
+- <servlet-class>: 
+Đây là một phần tử trong tệp web.xml được sử dụng để xác định tên lớp (class) 
+của servlet. Nó chỉ định đường dẫn đầy đủ (fully-qualified) đến lớp servlet 
+được sử dụng để xử lý các yêu cầu của client. 
+Ví dụ: <servlet-class>com.example.MyServlet</servlet-class>.
+
+- <servlet-name>: 
+Đây là một phần tử trong tệp web.xml dùng để đặt tên định danh cho một servlet cụ thể. 
+Tên này được sử dụng để liên kết servlet với các phần tử khác trong web.xml 
+như <servlet-mapping>. Nó cung cấp một tên duy nhất để xác định servlet trong phạm 
+vi ứng dụng web. 
+Ví dụ: <servlet-name>myServlet</servlet-name>.
+
+- <servlet-pattern>: 
+Đây là một phần tử trong tệp web.xml dùng để chỉ định mẫu (pattern) URL cho servlet. 
+Nó xác định URL hoặc một tập hợp các URL mà servlet sẽ được gọi khi nhận yêu cầu 
+từ client. Có thể sử dụng các ký tự đại diện như `*` hoặc `/` để xác định mẫu URL. 
+Phần tử <servlet-pattern> thường được sử dụng trong phần tử <servlet-mapping>. 
+Ví dụ: <servlet-pattern>/myServlet</servlet-pattern>.
+
+/emailList: Chỉ định URL emailList trong thư mục gốc của ứng dụng.
+/email/*: Chỉ định bất kỳ URL nào trong thư mục email.
+/email/add: Chỉ định URL add trong thư mục email.
+
+
+3. 
+Ánh xạ servlet với Annotation
+Cách ánh xạ một servlet bằng chú thích
+Như đã đề cập trước đó, nếu bạn sử dụng đặc tả servlet 3.0 (Tomcat 7.0) hoặc mới hơn, 
+bạn có thể sử dụng chú thích để ánh xạ các servlet như được thể hiện trong hình 5-3. 
+Lợi ích của phương pháp này là nó yêu cầu ít mã hơn. Ngoài ra, một số nhà phát triển 
+thấy dễ dàng hơn để duy trì ánh xạ servlet khi nó được lưu trữ trong cùng tệp với 
+mã nguồn của servlet.
+
+Nếu bạn muốn sử dụng chú thích để ánh xạ servlet của bạn, bạn có thể bắt đầu bằng 
+việc thêm một câu lệnh import cho lớp WebServlet. Sau đó, bạn có thể viết chú thích 
+@WebServlet ngay trước khai báo lớp cho servlet. Để ánh xạ một servlet với một URL 
+duy nhất, bạn có thể viết URL trong dấu ngoặc đơn theo sau chú thích @WebServlet 
+như được thể hiện trong ví dụ đầu tiên: 
+
+package murach.email; 
+import java.io.IOException; 
+import java.io.PrintWriter; 
+import javax.servlet.ServletException; 
+import javax.servlet.annotation.WebServlet; 
+import javax.servlet.http.HttpServlet; 
+import javax.servlet.http.HttpServletRequest; 
+import javax.servlet.http.HttpServletResponse; 
+@WebServlet ("/test") 
+public class TestServlet extends HttpServlet { 
+••• 
+••• 
+
+
+Tuy nhiên, nếu bạn muốn ánh xạ một servlet với nhiều URL, bạn có thể sử dụng 
+thuộc tính urlPatterns của chú thích @WebServlet như được thể hiện trong ví dụ thứ hai. 
+
+@WebServlet(urlPatterns={"/emailList", "/email/*"}) 
+
+Ở đây, bạn viết dấu bằng (=) tiếp theo là một cặp dấu ngoặc nhọn ({ }). 
+Sau đó, trong cặp ngoặc nhọn, bạn viết hai hoặc nhiều URL, ngăn cách mỗi URL bằng 
+dấu phẩy. Nếu bạn muốn, bạn có thể sử dụng ký tự đại diện (*) để ánh xạ một servlet 
+với bất kỳ URL nào trong một thư mục. Điều này hoạt động như mô tả trong hình trước.
+
+Mặc định, tên nội bộ được sử dụng cho servlet là tên lớp của servlet, điều này 
+thường hoạt động tốt. Tuy nhiên, nếu điều này dẫn đến xung đột tên, bạn có thể sử dụng
+thuộc tính name của chú thích @WebServlet để chỉ định một tên nội bộ duy nhất cho 
+servlet. Ví dụ, nếu bạn có một lớp servlet có tên TestServlet trong hai gói khác nhau, 
+bạn có thể sử dụng thuộc tính name để chỉ định một tên nội bộ duy nhất cho mỗi servlet. 
+Ví dụ thứ ba:
+@WebServlet (name="MurachTestServlet", urlPatterns={"/test"})

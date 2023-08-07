@@ -1,0 +1,39 @@
+Một lớp tiện ích để làm việc với cookie
+Như đã thấy, bạn phải lặp qua một mảng các cookie mỗi khi bạn muốn lấy giá trị cho một cookie.
+Vì điều này có thể làm phiền, thường thì bạn đặt mã lặp qua mảng cookie vào một lớp tiện ích như
+lớp được hiển thị trong hình 7-10. Sau đó, bạn có thể dễ dàng lấy giá trị của một cookie
+bằng cách gọi lớp tiện ích này.
+
+A utility class that gets the value of a cookie
+package murach.util;
+
+import javax.servlet.http.*;
+
+public class CookieUtil {
+    public static String getCookieValue(Cookie[] cookies, String cookieName) {
+        String cookieValue = "";
+            if (cookies != null) {
+                for (Cookie cookie: cookies) {
+                    if (cookieName.equals(cookie.getName()) {
+                        cookieValue = cookie.getValue();
+                    }
+                }
+            }
+            return cookieValue;
+    }
+}
+
+Code that uses the CookieUtil class to get the value of a cookie
+Cookie[] cookies = request.getCookies();
+String emailAddress = CookieUtil.getCookieValue(cookies, "emailCookie");
+
+Lớp CookieUtil trong hình này chứa một phương thức tĩnh có tên là getCookieValue. Phương thức
+này chấp nhận một mảng các cookie và tên của cookie mà bạn muốn lấy. Sau đó, nó lặp qua mảng
+các cookie và trả về giá trị phù hợp với tên của cookie. Nếu nó không tìm thấy tên cookie
+trong mảng, phương thức này trả về một chuỗi rỗng.
+
+Vì bạn có thể muốn truy cập lớp này từ nhiều servlet hoặc JSP hơn, bạn nên lưu trữ lớp này ở
+một vị trí trung tâm. Ví dụ, lớp này được lưu trữ trong gói murach.util.
+Do đó, bạn cần nhập lớp này trước khi bạn có thể sử dụng nó. Sau khi làm điều đó, bạn có thể
+sử dụng các câu lệnh Java như hai câu lệnh cuối cùng trong hình này để lấy giá trị của bất kỳ cookie nào.
+

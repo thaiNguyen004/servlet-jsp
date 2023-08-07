@@ -1,0 +1,11 @@
+Cách khắc phục các lỗi thường gặp trong JSP
+Hình 6-11 trình bày hai lỗi phổ biến nhất mà bạn sẽ gặp khi làm việc với JSP. 
+Mã trạng thái HTTP 404 có nghĩa là Tomcat nhận yêu cầu HTTP nhưng không thể tìm 
+thấy tài nguyên được yêu cầu. Để khắc phục loại vấn đề này, hãy đảm bảo rằng bạn 
+đã nhập đúng đường dẫn và tên tệp cho yêu cầu, và tệp được yêu cầu nằm ở vị trí đúng.
+
+Ngược lại, mã trạng thái HTTP 500 có nghĩa là máy chủ đã nhận yêu cầu và tìm 
+thấy tài nguyên nhưng không thể xử lý yêu cầu. Điều này thường có nghĩa là trình 
+biên dịch JSP không thể biên dịch JSP do lỗi mã hóa trong JSP. Để khắc phục loại 
+lỗi này, bạn có thể xem lại thông tin được cung cấp bởi trang lỗi.
+

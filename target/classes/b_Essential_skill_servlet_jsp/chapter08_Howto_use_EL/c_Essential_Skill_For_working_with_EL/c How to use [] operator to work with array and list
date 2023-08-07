@@ -1,0 +1,61 @@
+Cách sử dụng toán tử [ ] để làm việc với mảng và danh sách
+
+The syntax for the [] operator 
+${attribute["propertyKeyOrIndex"]}
+
+An example that works with a JavaBean property 
+Servlet code 
+User user = new User("John", "Smith", "jsmith@gmail.com");
+session.setAttribute("user", user);
+JSP code 
+<p>Hello ${user["firstName"]}</p>
+
+An example that works with an array 
+Servlet code 
+String[] colors = {"Red", "Green", "Blue" };
+ServletContext application = this.getServletContext{); 
+application.setAttribute("colors", colors);
+JSP code 
+<p>The first color is ${colors[O]}<br>
+The second color is ${colors[1]}</p>
+Another way to write the JSP code 
+<p>The first color is ${colors["0"]}<br>
+The second color is ${colors["1"]}
+</p> 
+
+An example that works with a list 
+Servlet code 
+ArrayList<User> users = UserIO.getUsers(path); 
+session.setAttribute("users", users);
+JSP code 
+<p>The first address on our list is ${users[O].email}<br>
+The second address on our list is ${users[1].email}
+</p> 
+Another way to write the JSP code 
+<p>The first address on our list is ${users["0"].email}<br>
+The second address on our list is ${users["1"].email}
+</p>
+
+Hình 8-4 cho thấy cách sử dụng toán tử []. Mặc dù toán tử này có thể được sử dụng để làm việc với JavaBeans
+và các bản đồ (maps), nhưng thường được sử dụng để làm việc với mảng và danh sách.
+Ví dụ đầu tiên trong hình này cho thấy cách sử dụng toán tử [] để truy cập thuộc tính firstName của một thuộc tính
+có tên là user. Điều này có cùng hiệu quả với ví dụ thứ hai trong hình 8-2.
+Tuy nhiên, ví dụ thứ hai trong hình đó dễ viết mã và đọc hơn. Đó là lý do tại sao bạn thường sử dụng toán tử
+dấu chấm (dot operator) để truy cập các thuộc tính của JavaBeans và các giá trị của các bản đồ (maps).
+Trường hợp ngoại lệ chính của điều này là khi bạn sử dụng dấu chấm trong một tên. Ví dụ, nếu bạn sử dụng một khóa bản đồ
+có tên là "murach.address", bạn không thể sử dụng toán tử dấu chấm để truy cập giá trị đó.
+Tuy nhiên, bạn có thể sử dụng toán tử [] để làm điều này. Nếu cần thiết, bạn có thể sử dụng một đối tượng EL ẩn để xác định
+phạm vi để bạn có thể sử dụng toán tử [] để truy cập một thuộc tính có tên chứa dấu chấm.
+
+Ví dụ thứ hai cho thấy cách sử dụng toán tử [] để truy cập một mảng chuỗi.
+Ở đây, mã servlet tạo một mảng chuỗi lưu trữ ba màu sắc. Sau đó, nó nhận một đối tượng ServletContext để lưu trữ mảng
+trong đối tượng này, làm cho nó có sẵn cho toàn bộ ứng dụng. Cuối cùng, mã JSP sử dụng EL để lấy hai chuỗi đầu tiên được
+lưu trữ trong mảng.
+Lưu ý rằng mã này tương tự cú pháp Java để truy cập chuỗi được lưu trữ trong một mảng, và các giá trị chỉ số có thể được
+bao quanh bởi dấu ngoặc kép. Mặc dù dấu ngoặc kép là bắt buộc khi sử dụng toán tử [] để truy cập một thuộc tính của
+JavaBean hoặc một khóa của một bản đồ (map), nhưng chúng là tùy chọn khi xác định chỉ số của một mảng hoặc danh sách.
+Ví dụ thứ ba cho thấy cách sử dụng toán tử [ ] để truy cập một danh sách các đối tượng User.
+Ở đây, mã servlet sử dụng phương thức getUsers của lớp UserIO để lấy danh sách các đối tượng User.
+Sau đó, mã servlet lưu trữ danh sách này trong đối tượng session. Cuối cùng, mã JSP sử dụng toán tử []
+để truy cập hai đối tượng User đầu tiên và sử dụng toán tử dấu chấm để hiển thị thuộc tính emailAddress
+của các đối tượng này. Điều này cho thấy bạn có thể kết hợp toán tử [] và dấu chấm nếu điều đó cần thiết.

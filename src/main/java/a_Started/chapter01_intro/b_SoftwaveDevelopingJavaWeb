@@ -1,0 +1,28 @@
+1. Các máy chủ web cho ứng dụng web Java
+Hình 1-10 mô tả hai máy chủ web phổ biến cho ứng dụng web Java. Cuốn sách này hướng dẫn cách sử dụng
+máy chủ Tomcat, là máy chủ phổ biến nhất cho ứng dụng web Java.
+
+Tomcat bao gồm một máy chủ web có tên là Coyote và một bộ điều khiển servlet/JSP có tên là Catalina.
+Nhờ vậy, máy chủ này có thể làm việc với phần servlet/JSP của quy định Java EE.
+
+Ngược lại, máy chủ GlassFish thực hiện toàn bộ quy định Java EE. Vì nó không chỉ là một bộ điều khiển
+servlet/JSP, nó được biết đến như một máy chủ ứng dụng. Lợi ích của việc sử dụng máy chủ ứng dụng
+như GlassFish là nó cung cấp nhiều tính năng hơn để làm việc với các phần khác của quy định Java EE
+như JSF và JPA. Một nhược điểm là nó yêu cầu nhiều tài nguyên hệ thống hơn so với Tomcat.
+Do đó, nó có thể không chạy nhanh trên máy tính của bạn.
+
+Hình này cũng liệt kê bốn máy chủ web phổ biến khác cho các ứng dụng Java.
+Các máy chủ web này bao gồm WildFly (trước đây được biết đến là JBoss), Jetty, Oracle WebLogic và IBM WebSphere.
+Mỗi máy chủ thực hiện một số hoặc tất cả các quy định Java EE, và mỗi máy chủ có ưu điểm và nhược điểm riêng.
+
+
+
+2. Các máy chủ cơ sở dữ liệu cho ứng dụng web Java
+Hình này cũng mô tả máy chủ cơ sở dữ liệu phổ biến nhất cho ứng dụng web Java, máy chủ cơ sở dữ liệu MySQL.
+Đây là máy chủ cơ sở dữ liệu mà bạn sẽ học cách sử dụng trong cuốn sách này. Giống như Tomcat và GlassFish,
+MySQL là mã nguồn mở và chạy trên tất cả các hệ điều hành hiện đại. Ngoài ra, MySQL thực hiện hầu hết các
+tiêu chuẩn SQL. Do đó, mã cơ sở dữ liệu phát triển cho máy chủ MySQL nên có thể di động giữa các máy chủ
+cơ sở dữ liệu.
+
+
+

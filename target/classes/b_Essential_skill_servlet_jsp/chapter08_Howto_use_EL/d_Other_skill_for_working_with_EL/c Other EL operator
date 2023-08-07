@@ -1,0 +1,57 @@
+Cách làm việc với các toán tử EL khác
+Trong phần đầu của chương này, bạn đã học cách sử dụng toán tử dấu chấm và toán tử [ ] có sẵn từ EL.
+Bây giờ, hình 8-8 trình bày cách sử dụng một số toán tử khác có sẵn từ EL. Nếu cần thiết, bạn có thể sử dụng
+những toán tử này để thực hiện các phép tính và so sánh.
+
+Nếu bạn đã biết cách viết biểu thức toán học, quan hệ và logic trong Java như được mô tả trong Chương trình Java của Murach,
+bạn không nên gặp bất kỳ khó khăn nào khi sử dụng những toán tử này vì chúng hoạt động tương tự như các toán tử Java.
+Mặc dù bạn thường không cần sử dụng những toán tử này, chúng có thể hữu ích trong một số trường hợp cụ thể.
+
+Bạn có thể sử dụng các toán tử số học để thực hiện các phép tính toán học. Các ví dụ trong hình này cho thấy bạn có thể
+sử dụng biểu thức khoa học cho các số cực lớn hoặc cực nhỏ và bạn có thể sử dụng dấu ngoặc đơn để kiểm soát hoặc làm rõ
+thứ tự ưu tiên.
+
+Các ví dụ này cũng cho thấy EL xử lý bất kỳ giá trị null nào như số không. Để minh họa, hãy giả sử bạn có một thuộc tính
+có tên là userID có thể lưu trữ một giá trị int. Sau đó, nếu thuộc tính lưu trữ một giá trị int, EL sử dụng giá trị int
+trong phép tính. Tuy nhiên, nếu thuộc tính lưu trữ giá trị null, EL sử dụng số không trong phép tính.
+
+Bạn có thể sử dụng các toán tử quan hệ để so sánh hai toán hạng và trả về một giá trị true hoặc false. Mặc dù các toán
+tử này hoạt động giống như các toán tử tiêu chuẩn trong Java, bạn có thể sử dụng cú pháp thay thế sử dụng hai kết hợp
+chữ cái thay vì biểu tượng. Ví dụ, bạn có thể sử dụng "eq" thay vì "==".
+
+Khi bạn tạo biểu thức quan hệ, bạn có thể sử dụng từ khóa "null" để chỉ định giá trị null, từ khóa "true" để chỉ định
+giá trị true và từ khóa "false" để chỉ định giá trị false. Ngoài ra, khi bạn tạo biểu thức quan hệ, EL xử lý giá trị null
+như giá trị false. Để minh họa, hãy giả sử bạn có một thuộc tính có tên là "isDirty" lưu trữ một giá trị Boolean.
+Sau đó, nếu thuộc tính lưu trữ giá trị true hoặc false, EL sử dụng giá trị đó trong biểu thức. Tuy nhiên, nếu thuộc tính
+lưu trữ giá trị null, EL sử dụng giá trị false cho thuộc tính "isDirty".
+
+Các toán tử:
++       cộng
+-       trừ
+*       nhân
+/       chia
+%       mod
+
+==      eq
+!=      ne
+<       lt
+>       gt
+<=      le
+>=      ge
+
+Logical operator
+&&      and
+||      or
+!       not
+
+${"s1" == "s2 && "s1" <= 2}
+${"s1" eq "s2" and "s1" le 2}
+${!true}
+${not true}
+${empty x}  : trả về true nếu giá trị x là null hoặc rỗng
+
+Toán tử 3 ngôi
+${true ? "s1" : "s2"}       => s1
+${false ? "s1" : "s2"}      => s2
+
+

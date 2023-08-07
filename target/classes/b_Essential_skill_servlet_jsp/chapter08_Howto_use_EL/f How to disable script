@@ -1,0 +1,26 @@
+Cách tắt viết mã script
+Một trong những lợi ích của EL là nó cho phép bạn loại bỏ các mã script JSP khỏi trang JSP của bạn, điều này làm
+cho việc làm việc với chúng dễ dàng hơn đối với các nhà thiết kế web. Trên thực tế, sau khi bạn học cách sử dụng
+EL với JSTL như được mô tả trong chương tiếp theo, bạn thường có thể loại bỏ toàn bộ viết mã script khỏi ứng dụng của bạn.
+
+Khi bạn thay thế các mã script JSP cũ bằng EL và JSTL, đôi khi khó để xác định liệu bạn đã loại bỏ tất cả mã script
+khỏi trang JSP hay chưa. Khi đó, để kiểm tra xem bạn đã làm như vậy, bạn có thể tắt viết mã script cho toàn bộ ứng dụng
+như được mô tả trong hình ảnh này. Sau đó, khi bạn yêu cầu một trang JSP chứa mã script, máy chủ servlet sẽ hiển thị
+một trang lỗi. Trong trường hợp đó, bạn có thể chỉnh sửa trang JSP để thay thế viết mã script bằng EL, JSTL hoặc một
+kết hợp của cả hai.
+
+Khi bạn phát triển các ứng dụng web mới, bạn có thể muốn tắt viết mã script từ đầu. Điều này buộc bạn
+(và bất kỳ lập trình viên nào khác làm việc trên ứng dụng) phải luôn sử dụng các thẻ JSP tiêu chuẩn, EL và JSTL
+thay vì viết mã script. Mặc dù điều này có thể yêu cầu bạn phải làm nhiều công việc hơn từ đầu để có cấu trúc đúng
+cho ứng dụng web với mô hình MVC, nhưng điều này sẽ đáng giá trong tương lai bằng cách làm mã của bạn
+dễ đọc và dễ bảo trì hơn.
+
+
+How to disable scripting
+For the entire application (the web.xml file)
+<jsp-config>
+    <jsp-property-group>
+        <url-pattern>*.jsp</url-pattern>
+        <scripting-invalid>true</scripting-invalid>
+    </jsp-property-group>
+</jsp-config>

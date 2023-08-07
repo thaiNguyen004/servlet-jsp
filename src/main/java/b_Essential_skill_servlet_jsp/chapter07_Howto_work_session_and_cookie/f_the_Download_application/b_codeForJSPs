@@ -1,0 +1,92 @@
+Mã cho các trang JSP
+Phần 3 trình bày mã cho trang Index. Ở đây, các liên kết cho mỗi album truyền hai
+tham số tới lớp DownloadServlet. Tham số đầu tiên có tên là action và có giá trị là checkUser.
+Tham số thứ hai có tên là product và có giá trị xác định mã sản phẩm cho album.
+<!DOCTYPE html>
+<html>
+<head>...</head>
+<body>
+<h1>List of albums</h1>
+<p>
+<a href="download?action=checkUser&amp;productCode=8601">
+    86(the band) - True Life Songs and Pictures
+</a><br>
+
+<a href="download?action=checkUser&amp;productCode=pfO1">
+    Paddle-foot - The First CD
+</a><br>
+
+<a href="download?action=checkUser&amp;productCode=pf02">
+    Paddle-foot - The Second CD
+</a><br>
+
+<a href="download?action=checkUser&amp;productCode=jrO1">
+    Joe Rut - Genuine Wood Grained Finish
+</a>
+</p>
+</body>
+</html>
+
+
+Phần 4 trình bày mã cho trang Đăng ký. Vì mã này hoạt động tương tự ứng dụng Email List
+trong các chương trước, nên dễ dàng theo dõi. Ở đây, biểu mẫu truyền một trường ẩn tới lớp
+DownloadServlet. Trường ẩn này có tên là action và có giá trị là registerUser.
+
+<!DOCTYPE html>
+<html>
+<head> ... </head>
+<body>
+<h1>Download registration</h1>
+
+<p>To register for our downloads, enter your name and email
+    address below. Then, click on the Submit button.</p>
+
+<form action="download" method="post">
+    <input type="hidden" name="action" value=" registerUser">
+    <label class="pad_top">Email:</label>
+    <input type="email" name=" email" value="${user.email}"><br>
+    <label class= "pad_top" >First Name: </label>
+    <input type="text" name=" firstName" value="${user.firstName}"><br>
+    <label class="pad_top">Last Name:</label>
+    <input type="text" name="lastName" value="${user.lastName}"><br>
+    <label>&nbsp;</label>
+    <input type="submit" value="Register" class="margin_left" >
+</form>
+</body>
+</html>
+
+
+Phần 5 trình bày mã cho trang Tải xuống. Mã này sử dụng mã sản phẩm được lưu trữ trong 
+đối tượng phiên để tìm các tệp âm thanh MP3 cho album. Trên hầu hết các hệ thống, 
+nhấp vào một trong những liên kết này sẽ tải xuống tệp MP3 và tự động bắt đầu phát.
+
+
+The code for the 8601_download.jsp file 
+<!DOCTYPE html> 
+<html> 
+<head>...</head>
+<body> 
+<h1>Downloads</h1> 
+<h2>86 (the band) - True Life Songs and Pictures</h2>
+<table> 
+<tr> 
+    <th>Song title</th>
+    <th>Audio Format</th>
+</tr>
+<tr> 
+    <td>You Are a Star</td> 
+    <td> 
+        <a href = "/musicStore/sound/${productCode}/star.mp3">MP3</a>
+    </td> 
+</tr> 
+
+<tr>
+    <td>Don't Make No Difference</td>
+    <td>
+        <a href="/musicStore/sound/${productCode}/no_difference.mp3">MP3</a>
+    </td>
+</tr> 
+</table>
+
+</body> 
+</html>

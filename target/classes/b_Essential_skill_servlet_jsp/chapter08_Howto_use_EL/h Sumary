@@ -1,0 +1,26 @@
+Tóm tắt
+• Ngôn ngữ Biểu thức JSP (EL) cung cấp một cú pháp gọn nhẹ cho phép bạn lấy dữ liệu từ JavaBeans, bản đồ (maps),
+mảng (arrays) và danh sách (lists) đã được lưu trữ như một thuộc tính của một ứng dụng web.
+
+• JavaBean là một loại đối tượng đặc biệt cung cấp một cách tiêu chuẩn để truy cập vào các thuộc tính của nó.
+
+• Bản đồ (map) là một loại tập hợp đặc biệt được sử dụng để lưu trữ các cặp khóa/giá trị.
+
+• Danh sách (list) là một loại tập hợp sử dụng chỉ mục để truy xuất đối tượng được lưu trữ trong tập hợp.
+
+• Bạn có thể sử dụng toán tử chấm để làm việc với JavaBeans và bản đồ (maps).
+
+• Bạn có thể sử dụng toán tử [ ] để làm việc với mảng và danh sách.
+
+• Nếu biểu thức bên trong toán tử [ ] không được bao trong dấu ngoặc kép, EL sẽ đánh giá biểu thức đó.
+
+• Nếu cần, bạn có thể sử dụng các đối tượng EL ngụ ý để xác định phạm vi một cách rõ ràng.
+
+• Bạn có thể sử dụng EL để lấy các thuộc tính lồng nhau.
+
+• Bạn có thể sử dụng các đối tượng EL ngụ ý để làm việc với tham số yêu cầu, tiêu đề HTTP, cookie, tham số khởi tạo
+ngữ cảnh và đối tượng pageContext ngụ ý có sẵn cho tất cả các trang JSP.
+
+• Bạn có thể sử dụng các toán tử EL khác để thực hiện tính toán và so sánh.
+
+• Nếu cần, bạn có thể tắt EL hoặc viết mã script cho một hoặc nhiều trang trong ứng dụng web.

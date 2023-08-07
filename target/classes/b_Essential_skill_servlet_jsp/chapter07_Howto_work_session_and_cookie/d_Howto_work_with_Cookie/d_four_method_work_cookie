@@ -1,0 +1,35 @@
+Bốn phương thức để làm việc với cookie
+Hầu hết thời gian, bạn sẽ sử dụng các kỹ thuật được hiển thị trong hai hình trước để
+làm việc với đối tượng Cookie. Tuy nhiên, hình 7-9 cung cấp thêm thông tin về bốn
+phương thức của đối tượng Cookie mà bạn có thể thấy hữu ích.
+
+Như bạn đã thấy, bạn có thể sử dụng phương thức setPath để đặt đường dẫn cho một cookie.
+Mặc định, khi trình duyệt trả lại một cookie, nó trả lại cookie đó cho thư mục gốc đã gửi
+cookie đó đến trình duyệt và tất cả các thư mục con của thư mục đó. Nhưng thường thì điều đó
+không phải là mong muốn của bạn.
+Ví dụ, nếu một servlet được ánh xạ đến thư mục email gửi một cookie đến trình duyệt,
+sau đó một servlet hoặc JSP có sẵn từ thư mục download sẽ không thể truy cập vào cookie.
+Kết quả là, thường bạn sử dụng phương thức setPath để đặt đường dẫn cho cookie thành
+dấu gạch chéo (/) để toàn bộ ứng dụng web có thể truy cập vào cookie.
+
+Bạn có thể sử dụng phương thức setDomain để đặt miền cho một cookie.
+Mặc định, khi trình duyệt trả lại một cookie, nó chỉ trả lại cookie đó cho tên miền chính xác
+đã gửi cookie đó đến trình duyệt. Vì thường là điều bạn muốn, bạn thường không cần sử dụng
+phương thức này. Nhưng nếu bạn có một trang web sử dụng các server con miền, bạn có thể
+sử dụng phương thức này để trả lại cookie cho tất cả các server con.
+
+Ví dụ, giả sử bạn có một trang web có tên là www.murach.com có hai server con là www.java.murach.com
+và www.cobol.murach.com. Sau đó, nếu bạn đặt miền là ".murach.com", tất cả ba miền này đều có thể
+truy cập vào cookie. Nói cách khác, khi trình duyệt trả lại cookie cho một server con,
+các server con khác cũng có thể lấy lại cookie.
+
+Bạn có thể sử dụng phương thức setSecure để tạo một cookie an toàn. Mặc định, trình duyệt trả lại
+một cookie qua kết nối HTTP thông thường hoặc qua kết nối bảo mật đã mã hóa. Nhưng nếu bạn
+đang gửi dữ liệu nhạy cảm, bạn có thể sử dụng phương thức này để chỉ định rằng cookie
+chỉ được gửi qua kết nối an toàn.
+
+Bạn có thể sử dụng phương thức setVersion để đặt phiên bản của giao thức cookie mà bạn muốn sử dụng.
+Mặc định, cookie sử dụng phiên bản 0 của giao thức cookie. Vì giao thức này đã tồn tại lâu nhất và
+được hỗ trợ rộng rãi nhất, đó thường là điều bạn muốn. Nhưng nếu có lý do thuyết phục để sử dụng
+phiên bản 1 của giao thức cookie, bạn có thể sử dụng giao thức này bằng cách chỉ định giá trị
+nguyên số 1 cho phương thức này.
