@@ -1,0 +1,49 @@
+Phương thức và trường của lớp PageContext
+Hình 10-8 trình bày một số phương thức và trường của lớp PageContext. Vì một thể hiện của lớp này có tên là pageContext
+đã được tích hợp cho tất cả các trang JSP và các lớp thẻ, nó cho phép trang JSP và các lớp thẻ giao tiếp thông qua
+việc lấy và đặt các đối tượng và thuộc tính.
+
+The pageContext object defined in the TagSupport class
+protected PageContext pageContext 
+
+1. getOut():
+Trả về đối tượng JspWriter từ trang JSP.
+
+2. getRequest():
+Trả về đối tượng yêu cầu từ trang JSP.
+
+3. getResponse():
+Trả về đối tượng phản hồi từ trang JSP.
+
+4. setAttribute(String name, Object o):
+Đặt thuộc tính có tên với phạm vi trang cho giá trị đã cho.
+
+5. setAttribute(String name, Object o, int scope):
+Đặt thuộc tính có tên với phạm vi được xác định cho giá trị đã cho.
+Để thiết lập phạm vi, bạn có thể sử dụng các trường được hiển thị dưới đây.
+
+6. getAttribute(String name):
+Tìm kiếm thuộc tính với tên cụ thể trong phạm vi trang. Nếu phương thức này tìm thấy thuộc tính,
+nó trả về một đối tượng kiểu Object. Nếu không, nó trả về giá trị null.
+
+7. getAttribute(String name, int scope):
+Tìm kiếm thuộc tính với tên cụ thể trong phạm vi được xác định. Nếu phương thức này tìm thấy thuộc tính,
+nó trả về một đối tượng kiểu Object. Nếu không, nó trả về giá trị null. Để thiết lập phạm vi, bạn có thể
+sử dụng các trường được hiển thị dưới đây.
+
+8. findAttribute(String name):
+Tìm kiếm thuộc tính có tên cụ thể trong phạm vi trang, yêu cầu, phiên và ứng dụng theo thứ tự đó.
+Nếu phương thức này tìm thấy thuộc tính cụ thể, nó trả về một đối tượng kiểu Object.
+Nếu không, nó trả về giá trị null.
+
+Để lấy các đối tượng từ trang JSP gọi, bạn có thể sử dụng ba phương thức đầu tiên được hiển thị trong hình này.
+Vì bạn đã thấy cách một lớp thẻ có thể sử dụng phương thức getOut để lấy đối tượng JspWriter cho trang JSP gọi,
+bạn không nên gặp nhiều khó khăn khi hiểu cách các phương thức getRequest và getResponse có thể trả về các
+đối tượng yêu cầu và phản hồi cho trang JSP gọi.
+
+Để đặt và lấy các thuộc tính, bạn có thể gọi bất kỳ phương thức nào trong các phương thức set và get của lớp pageContext.
+Nếu bạn không chỉ rõ phạm vi khi đặt một thuộc tính, thuộc tính chỉ có sẵn trong phạm vi trang.
+Tuy nhiên, bạn có thể sử dụng các trường của lớp PageContext để chỉ định phạm vi. Sau đó, bạn có thể sử dụng các
+trường này để chỉ định phạm vi khi bạn cố gắng lấy thuộc tính, hoặc bạn có thể sử dụng phương thức findAttribute
+để tìm kiếm qua tất cả bốn phạm vi từ nhỏ đến lớn nhất.
+

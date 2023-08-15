@@ -1,0 +1,32 @@
+Chủ đề này tóm tắt các lớp, phương thức và trường thông thường khi làm việc với các thẻ tùy chỉnh.
+Vì chương này đã trình bày các ví dụ sử dụng các lớp này, chủ đề này sẽ giúp bạn xem lại những kỹ năng
+bạn đã học được. Ngoài ra, nó cũng sẽ mang đến cho bạn một số ý tưởng về cách sử dụng những khả năng
+khác của các thẻ tùy chỉnh.
+
+Phương thức và trường của lớp TagSupport
+Hình 10-7 trình bày các phương thức thông thường của lớp TagSupport và cho thấy các Field mà
+các phương thức này có thể trả về. Khi một thẻ được xử lý, phương thức doStartTag được gọi trước,
+tiếp theo là phương thức doEndTag, sau đó là phương thức release.
+Khi bạn mở rộng lớp này, bạn chỉ cần ghi đè các phương thức mà bạn muốn viết mã.
+
+Đối với nhiều loại thẻ, bạn cần ghi đè phương thức doStartTag.
+Nếu thẻ không có thân, sau các câu lệnh xử lý thẻ, bạn có thể trả về trường SKIP_BODY. Lúc đó,
+phần thân của thẻ sẽ không được đánh giá. Tuy nhiên, nếu thẻ có thân, bạn có thể trả về trường
+EVAL_BODY_INCLUDE. Lúc đó, phần thân của thẻ sẽ được đánh giá.
+
+Sau khi phương thức doStartTag thực thi xong, phương thức doEndTag được gọi.
+Mặc định, phương thức này trả về trường EVAL_PAGE, khiến phần còn lại của trang JSP được đánh giá.
+Vì thường đó là điều bạn muốn, thường thì bạn không cần phải ghi đè phương thức này. Tuy nhiên,
+nếu bạn không muốn tiếp tục đánh giá JSP bên dưới thẻ tùy chỉnh, bạn có thể ghi đè phương thức
+này và trả về trường SKIP_PAGE. Lúc đó, bất kỳ phần nào của JSP bên dưới thẻ tùy chỉnh sẽ không
+được hiển thị.
+
+Sau khi phương thức doEndTag thực thi xong, phương thức release được gọi. Bạn có thể sử dụng
+phương thức này để làm sạch các tài nguyên hệ thống đang được sử dụng. Ví dụ, bạn có thể sử
+dụng phương thức này để đóng các luồng mà bạn đã sử dụng trong lớp thẻ.
+
+The fields of the PageContext class for setting scope
+PAGE_SCOPE
+REQUEST_SCOPE
+SESSION_SCOPE
+APPLICATION_SCOPE

@@ -1,0 +1,33 @@
+Phương thức và trường của lớp BodyTagSupport
+
+Hình 10-9 trình bày một số phương thức và trường của lớp BodyTagSupport. Vì lớp này mở rộng lớp Tag Support,
+bạn có thể truy cập đối tượng pageContext và các phương thức của nó trực tiếp từ lớp BodyTagSupport.
+Ngoài ra, các phương thức doEndTag và release hoạt động tương tự như trong lớp Tag Support.
+
+Mặc định, phương thức doStartTag của lớp BodyTagSupport trả về trường EVAL_BODY_BUFFERED.
+Trường này cho biết thẻ có thân và nó gây ra việc gọi các phương thức doInitBody và doAfterBody.
+Vì vậy, bạn chỉ cần ghi đè phương thức này nếu bạn muốn thêm mã viết dữ liệu vào trang JSP trước khi thân
+được đánh giá, hoặc nếu bạn muốn bỏ qua phần thân trong một số điều kiện nhất định. Để bỏ qua phần thân,
+phương thức doStartTag có thể trả về trường SKIP_BODY. Trong trường hợp đó, các phương thức doEndTag và release được gọi.
+
+Nếu phương thức doStartTag trả về EVAL_BODY_BUFFERED, phương thức doInitBody được gọi. Sau đó, bạn có thể ghi đè
+phương thức này để khởi tạo bất kỳ giá trị nào trước khi thân được đánh giá lần đầu tiên. Sau khi phương thức doInitBody
+được thực thi, thân được đánh giá. Nói cách khác, thân được đọc và đặt vào đối tượng bodyContent tích hợp sẵn, lưu trữ thân.
+Trong hình ảnh tiếp theo, bạn sẽ tìm hiểu thêm về cách làm việc với đối tượng bodyContent.
+
+Sau khi phương thức doInitBody thực thi xong, phương thức doAfterBody được gọi. Bạn có thể ghi đè phương thức này để
+viết các câu lệnh cần được thực thi mỗi khi thân được đánh giá. Nếu bạn muốn đánh giá lại thân và thêm nó vào đối tượng
+bodyContent, bạn trả về trường EVAL_BODY_AGAIN. Sau đó, khi bạn hoàn thành việc đánh giá thân, bạn trả về trường SKIP_BODY.
+Nhưng trước tiên, bạn có thể sử dụng đối tượng bodyContent để viết thân được lưu trữ trong đối tượng bodyContent vào trang JSP.
+
+Sau khi phương thức doAfterBody trả về trường SKIP_BODY, phương thức doEndTag và release được gọi. Vì giá trị mặc định
+của các phương thức này thường là đủ, thường bạn không cần ghi đè các phương thức này.
+
+Description:
+Lớp BodyTagSupport mở rộng lớp TagSupport. Kết quả là, các phương pháp và trường có sẵn trong lớp TagSupport cũng có sẵn trong lớp BodyTagSupport.
+• Nếu bạn muốn thực hiện một số xử lý ban đầu cho một thẻ, bạn có thể ghi đè phương thức doStartTag của lớp BodyTagSupport.
+• Nếu phương thức doStartTag trả về trường EVAL_BODY_BUFFERED, các phương thức doinitBody và doAfterBody sẽ được gọi để hiển thị nội dung của thẻ.
+• Phương thức doinitBody nên chứa tất cả các câu lệnh khởi tạo cần thiết cho việc đánh giá ban đầu của nội dung.
+• Phương thức doAfterBody nên chứa tất cả các câu lệnh cần thiết cho các đánh giá bổ sung của nội dung.
+• Nếu phương thức doAfterBody trả về trường EVAL_BODY_AGAIN, nội dung được thêm vào đối tượng bodyContent và phương thức doAfterBody được gọi lại.
+• Nếu phương thức doAfterBody trả về trường SKIP_BODY, việc xử lý cho thẻ được kết thúc và nội dung được bỏ qua.

@@ -1,0 +1,58 @@
+Cách sử dụng thẻ url
+
+1
+An example that doesn't use the url tag 
+<a href="cart">Continue Shopping</a>
+
+2
+An example that uses the url tag 
+<a href ="<c:url value='/cart'/>">Continue Shopping</a>
+
+3
+An example that adds a parameter
+<a href="<c:url value='/cart?productCode=8601' />">Add To Cart </a>
+
+4
+An example that uses EL to specify the value of a parameter
+<a href = "< c:url value= '/cart?productCode=${product.code}'/>">
+    Add To Cart
+</a>
+
+5
+Another way to code the previous example
+<a href="<c:url value='/cart'
+            <c:param name="productCode" value="${product.code}" />
+        </c:url>
+    Add to Cart
+</a>
+
+
+A web.xml file fragment that turns off URL encoding
+Đoạn tệp web.xml tắt mã hóa URL
+<session-config>
+    <session-timeout>30</session-timeout>
+    <tracking-mode>COOKIE</tracking-mode>
+</session-config>
+
+Hình 9-9 minh họa cách sử dụng thẻ url. Ở đây, ví dụ đầu tiên cho thấy một thuộc tính href không sử dụng thẻ url.
+Thay vào đó, nó sử dụng mã HTML thông thường để chỉ định một thư mục cart tương đối với thư mục hiện tại.
+Ví dụ thứ hai sử dụng thẻ url để chỉ định một URL tương đối với thư mục gốc của ứng dụng web.
+Kết quả, điều này gọi đến URL /cart tương đối với thư mục gốc bất kể mã này được lưu trữ ở đâu.
+Ngược lại, mã trong ví dụ đầu tiên chỉ gọi đến URL /cart tương đối với thư mục gốc nếu nó được lưu trữ trong thư mục gốc.
+
+Ba ví dụ tiếp theo cho thấy cách sử dụng thẻ url kèm theo một tham số. Ở đây, ví dụ thứ ba cho thấy cách sử dụng thẻ url
+để mã hóa một URL bao gồm một tham số có tên là productCode với giá trị cố định là 8601. Sau đó, ví dụ thứ tư và thứ năm
+đều sử dụng thẻ url để mã hóa một URL sử dụng biểu thức EL để cung cấp giá trị cho tham số. Ở đây, biểu thức EL lấy
+thuộc tính code của một đối tượng Product có tên là product. Sự khác biệt là ví dụ thứ năm cho thấy cách sử dụng
+thẻ param trong thẻ url để chỉ định tên và giá trị cho một tham số. Lợi ích của việc sử dụng thẻ param là nó tự động
+mã hóa bất kỳ ký tự không an toàn nào trong URL, chẳng hạn như khoảng trắng, thành các ký tự đặc biệt như dấu cộng.
+
+Nói chung, lợi ích của việc sử dụng thẻ url là cho phép bạn chỉ định các URL tương đối với ngữ cảnh ứng dụng.
+Kết quả, nếu ngữ cảnh thay đổi sau này, mã của bạn vẫn hoạt động. Nhược điểm chính là chúng yêu cầu một chút thời gian
+và công sức hơn để viết mã, và các thẻ lồng nhau làm cho mã khó đọc hơn.
+
+Một vấn đề cần lưu ý khi sử dụng thẻ url là nó mã hóa session ID trong các URL trả về cho máy khách.
+Tính năng này được thiết kế để cho phép ứng dụng của bạn theo dõi phiên ngay cả khi máy khách không hỗ trợ cookie.
+Rất tiếc, điều này không an toàn vì nó có thể dẫn đến chiếm phiên. Để ngăn session ID được mã hóa trong URL, bạn có thể
+thêm một phần tử tracking-mode vào tệp web.xml như ví dụ cuối cùng. Phần tử tracking-mode này được đặt thành giá trị
+COOKIE để chỉ định rằng ứng dụng chỉ nên sử dụng cookie cho việc theo dõi phiên.

@@ -1,0 +1,17 @@
+Cách sử dụng thẻ choose
+
+<c:choose>
+
+    <c:when test="${cart.count == 0}">
+        <p>Your cart is empty.</p>
+    </c:when>
+
+    <c:when test="${cart.count == 1}">
+        <p>You have 1 item in your cart.</p>
+    </c:when>
+
+    <c:otherwise>
+        <p>You have ${cart.count} items in your cart.</p>
+    </c:otherwise>
+
+</c:choose>

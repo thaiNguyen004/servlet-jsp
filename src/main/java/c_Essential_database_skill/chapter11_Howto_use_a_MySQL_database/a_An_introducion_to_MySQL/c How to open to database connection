@@ -1,0 +1,36 @@
+Cách mở kết nối cơ sở dữ liệu
+Trước khi bạn có thể làm việc với một cơ sở dữ liệu, bạn cần kết nối đến máy chủ 
+cơ sở dữ liệu. Khi bạn khởi động MySQL Workbench, phần MySQL Connection 
+hiển thị một danh sách các kết nối đã lưu.
+
+Mặc định, MySQL Workbench có một kết nối đã lưu trong danh sách này. Kết nối này 
+có tên là "Local instance MySQL80", và nó kết nối dưới tư cách người dùng root 
+đến một máy chủ MySQL đang chạy trên cổng 3306 của máy tính localhost. 
+(Điều này giả định bạn đang sử dụng MySQL phiên bản 5.5. Nếu bạn đang sử dụng 
+phiên bản khác, số ở cuối tên kết nối sẽ khác.) Vì đây là điều bạn muốn khi bạn 
+mới bắt đầu, thường bạn sử dụng kết nối này để kết nối đến máy chủ. 
+Để làm điều đó, bạn nhấp đúp vào kết nối và nhập mật khẩu cho người dùng root 
+nếu bạn được yêu cầu.
+
+Nếu bạn đã cài đặt MySQL theo hướng dẫn trong phụ lục A (PC) hoặc B (Mac), mật khẩu 
+cho người dùng root là "sesame". Điều này là cần thiết để các ứng dụng được trình 
+bày trong cuốn sách này hoạt động đúng cách.
+
+Hình 11-4 hiển thị hộp thoại mà MySQL Workbench hiển thị để yêu cầu mật khẩu. 
+Hộp thoại này cho thấy nó đang cố gắng sử dụng người dùng root để kết nối đến máy 
+chủ MySQL đang chạy trên cổng 3306 của máy tính localhost. Ngoài việc nhập mật khẩu 
+trong hộp thoại này, bạn có thể chọn tùy chọn "Lưu mật khẩu trong kho" để lưu 
+mật khẩu để bạn không phải nhập mật khẩu mỗi khi bạn kết nối đến máy chủ này. 
+Sau đó, nếu bạn muốn xóa mật khẩu khỏi kho, bạn có thể chọn mục Connection manager
+từ menu database, chọn connect và nhấn nút delete.
+
+Nếu bạn cần kết nối dưới tư cách người dùng khác hoặc nếu bạn cần kết nối đến 
+máy chủ MySQL đang chạy trên máy tính khác, bạn có thể sử dụng MySQL Workbench 
+để chỉ định các tham số kết nối tùy chỉnh. Để làm điều đó, chọn mục Quản lý 
+Kết nối từ menu Cơ sở dữ liệu. Điều này hiển thị hộp thoại cho phép bạn chỉ 
+định các tham số kết nối, chẳng hạn như tên người dùng, địa chỉ máy chủ và số cổng.
+
+Nếu bạn muốn lưu kết nối tùy chỉnh, bạn có thể nhấp vào biểu tượng "+" bên phải 
+của Kết nối MySQL trong tab Trang chủ và nhập các tham số cho kết nối. Sau đó, 
+kết nối này sẽ xuất hiện trong danh sách kết nối và bạn có thể nhấp đúp vào nó 
+để sử dụng nó.

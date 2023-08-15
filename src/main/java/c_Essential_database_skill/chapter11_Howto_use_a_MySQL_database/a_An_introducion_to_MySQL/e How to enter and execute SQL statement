@@ -1,0 +1,22 @@
+Cách nhập và thực thi câu lệnh SQL
+Khi bạn kết nối lần đầu với máy chủ MySQL trong MySQL Workbench, 
+một tab SQL sẽ tự động mở ra. Hình 11-6 cho thấy cách sử dụng tab SQL để nhập 
+và thực thi câu lệnh SQL. 
+Lưu ý rằng bạn có thể mở nhiều tab SQL cùng lúc. Cách dễ nhất để mở một tab 
+SQL là nhấp vào nút 'Create a new SQL tab for executing queries' trong thanh 
+công cụ Trình soạn thảo SQL hoặc nhấn tổ hợp phím Ctrl+T.
+
+Sau khi bạn mở một tab SQL, bạn có thể sử dụng các kỹ thuật tiêu chuẩn để nhập 
+hoặc chỉnh sửa câu lệnh SQL. Khi bạn nhập các câu lệnh, bạn sẽ thấy rằng MySQL 
+Workbench tự động áp dụng màu sắc cho các phần tử khác nhau. Ví dụ, nó hiển thị 
+các từ khóa bằng màu xanh lá cây. Điều này làm cho các câu lệnh của bạn dễ đọc 
+và hiểu, và có thể giúp bạn xác định các lỗi lập trình.
+
+Để thực thi một câu lệnh SQL đơn như trong hình này, bạn có thể nhấn tổ hợp phím 
+Ctrl+Enter hoặc nhấp vào nút 'execute current statement' trong thanh công cụ 
+Trình soạn thảo SQL. Nếu câu lệnh trả về dữ liệu, dữ liệu đó sẽ được hiển thị bên 
+dưới cửa sổ Trình soạn thảo SQL trong một tab Kết quả tương ứng. 
+Ví dụ trong hình này, tập dữ liệu kết quả trả về bởi câu lệnh SELECT được hiển thị. 
+Nếu cần thiết, bạn có thể điều chỉnh chiều cao của tab Kết quả bằng cách kéo thanh dọc 
+ngăn cách tab Trình soạn thảo SQL và tab Kết quả.
+

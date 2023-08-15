@@ -1,0 +1,82 @@
+Phần tử thẻ
+Để sử dụng các thuộc tính trong một thẻ tùy chỉnh, bạn phải thêm thông tin về các thuộc tính vào TLD.
+Ví dụ, để xác định một thẻ "ifEmptyMark" có một thuộc tính "color" và một thuộc tính "field", bạn có thể thêm
+phần tử thẻ được hiển thị trong phần 2 của hình vẽ này.
+
+The syntax for the attribute element in a tag element
+<attribute>
+    <name>attributeName</name>
+    <required>true|false|yes|no</required>
+    <rtexprvalue>true|false|yes|no</rtexprvalue>
+    <type>data_type</type>
+</attribute>
+The tag element with two attributes
+<tag>
+    <name>ifEmptyMark</name>
+    <tagclass>murach.tags.IfEmptyMarkTag</tagclass>
+    <bodycontent>empty</bodycontent>
+    <attribute>
+        <name>color</name>
+        <required>false</required>
+    </attribute>
+    <attribute>
+        <name>field</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+</tag>
+
+Để xác định một thuộc tính, bạn viết một phần tử "attribute" trong phần tử thẻ. Trong phần tử "attribute",
+bạn có thể viết bốn phần tử được hiển thị trong hình vẽ này.
+Đầu tiên, bạn phải viết một phần tử "name" để xác định tên của thuộc tính. Sau đó, bạn có thể viết phần tử
+"required" để xác định xem thuộc tính có bắt buộc không. Trong ví dụ đầu tiên trong hình vẽ này, thuộc tính "color"
+là tùy chọn trong khi thuộc tính "field" là bắt buộc.
+
+Nếu một thuộc tính được đặt thành một biểu thức được xác định tại thời gian chạy, bạn cũng phải đặt phần
+tử "rtexprvalue" thành true hoặc yes. Điều này thông báo cho động cơ JSP rằng giá trị của thuộc tính sẽ không được
+xác định cho đến khi trang được yêu cầu. Trong ví dụ đầu tiên, phần tử này được đặt thành true cho thuộc tính "field".
+
+Mặc định, một thuộc tính được xác định bằng biểu thức tại thời gian chạy được trả về dưới dạng một chuỗi,
+nhưng bạn có thể sử dụng phần tử "type" để tự động chuyển đổi một thuộc tính chuỗi thành một kiểu dữ liệu nguyên thủy
+hoặc thành một đối tượng của một lớp bao của kiểu dữ liệu nguyên thủy. Ví dụ, ví dụ thứ hai trong hình vẽ này cho
+thấy định nghĩa cho thuộc tính "count" của một thẻ tự động chuyển đổi biểu thức thành một giá trị int.
+Nếu không, bạn có thể sử dụng lớp thẻ để chuyển đổi thủ công kiểu dữ liệu.
+
+The tag element with two attributes
+    <tag>
+    <name>ifEmptyMark</name>
+    <tagclass>murach.tags.IfEmptyMarkTag</tagclass>
+    <bodycontent>empty</bodycontent>
+    <attribute>
+        <name>color</name>
+        <required>false</required>
+    </attribute>
+    <attribute>
+        <name>field</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+</tag>
+
+An attribute element that uses the integer data type
+<attribute>
+    <name>count</name>
+    <required>true</required>
+    <rtexprvalue>true</rtexprvalue>
+    <type>int</type>
+</attribute>
+
+<name>:
+Tên của thuộc tính.
+
+<required>:
+Giá trị true/false xác định xem thuộc tính này có yêu cầu bắt buộc không.
+Nếu không yêu cầu, lớp thẻ nên cung cấp một giá trị mặc định.
+
+<rtexprvalue>:
+Một giá trị true/false xác định xem giá trị của thuộc tính có được xác định từ một biểu thức thời gian chạy hay không.
+Nếu có, phần tử "type" có thể là bất kỳ kiểu dữ liệu nào. Ngược lại, phần tử "type" là một chuỗi.
+<type>:
+Kiểu dữ liệu của giá trị thuộc tính. Bạn chỉ cần viết phần tử này khi giá trị của thuộc tính được xác định từ một
+biểu thức thời gian chạy và kiểu dữ liệu không phải là chuỗi.
+

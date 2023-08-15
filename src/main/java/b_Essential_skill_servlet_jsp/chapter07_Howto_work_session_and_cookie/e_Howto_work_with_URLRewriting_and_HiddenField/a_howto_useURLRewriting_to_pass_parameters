@@ -29,7 +29,7 @@ cuối URL hiển thị trong trình duyệt.
 Ví dụ thứ ba cho thấy bạn có thể sử dụng EL để truyền một giá trị vào URL. Ở đây, EL cung cấp một
 mã sản phẩm được đánh giá tại thời điểm chạy.
 
-<a href="download?action=checkUser&amp;productCode=8601">D0wnload</a>
+<a href="download?action=checkUser&amp;productCode=8601">Download</a>
 Ví dụ thứ tư cho thấy cách thêm nhiều tham số vào URL. Ở đây, mã này sử dụng thực thể HTML
 cho dấu &amp; để tách các tham số. Mặc dù dấu & đơn giản (&) hoạt động trong hầu hết các trường hợp,
 bạn cần sử dụng thực thể HTML nếu bạn muốn viết HTML5 hợp lệ.

@@ -1,0 +1,71 @@
+Cách cấu hình một persistance unit
+
+The persistence.xml file 
+<?xml version="l.0" encoding="UTF-8" ?> 
+<persistence version="2.1" 
+    xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+    xmlns: xsi= "http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence 
+        http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd "> 
+    
+    <persistence-unit name="emailListPU" transaction-type="RESOURCE_LOCAL"> 
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider> 
+        <exclude-unlisted-classes>false</exclude-unlisted-classes> 
+        <properties> 
+            <property name= "javax.persistence.jdbc.url" 
+                value= "jdbc:mysql://localhost :3306/murach_jpa"/> 
+            <property name= "javax.persistence.jdbc.user" 
+                value="root"/> 
+            <property name= "javax.persistence.jdbc.password" 
+                value="sesame"/> 
+            <property name= "javax.persistence.jdbc.driver" 
+                value= "com.mysql.jdbc.Driver"/> 
+            <property name="javax.persistence.schema-generation.database.action" 
+                value="create"/> 
+        </properties> 
+    </persistence-unit> 
+</persistence>
+
+Hình 13-3 trình bày một tệp persistence.xml đơn giản cho phiên bản JPA của 
+ứng dụng EmailList. 
+Để bắt đầu, bạn sử dụng thuộc tính name của phần tử persistence-unit để chỉ định 
+tên mà bạn sử dụng trong mã nguồn để có được một entity manager cho persistance unit. 
+Sau đó, bạn có thể đặt thuộc tính transaction-type thành RESOURCE_LOCAL. Điều này 
+cho biết JPA rằng bạn dự định viết mã tạo các quản lý thực thể và xử lý giao dịch. 
+Các tùy chọn khác yêu cầu máy chủ Java EE đầy đủ thực hiện điều này tự động. 
+Do đó, cuốn sách này không bao gồm chúng.
+
+Phần tử provider chỉ định đường dẫn đầy đủ cho lớp PersistenceProvider. 
+Trong trường hợp này, nó chỉ định lớp cho việc thực hiện của EclipseLink của JPA.
+
+Phần tử exclude-unlisted-classes xác định xem bạn có muốn persistance unit này 
+quản lý tất cả các lớp bạn đã gắn chú thích như entity, hay chỉ các lớp cụ thể 
+bạn liệt kê ở đây. Ứng dụng này chỉ sử dụng một cơ sở dữ liệu duy nhất và một 
+persistence unit duy nhất. Do đó, bạn muốn đặt giá trị này thành false. 
+Nếu bạn viết một ứng dụng phức tạp sử dụng nhiều cơ sở dữ liệu và nhiều 
+persistance unit, bạn có thể đặt giá trị này thành true để có thể liệt kê rõ ràng 
+các lớp entity mà bạn muốn persistance unit này quản lý.
+
+Phần tử shared-cache-mode chỉ định chiến lược caching mà bạn muốn persistance unit 
+này sử dụng. Caching cho phép lưu kết quả của các truy vấn cơ sở dữ liệu gần đây 
+trong bộ nhớ. Sau đó, khi ứng dụng yêu cầu kết quả đó một lần nữa, ứng dụng nhận 
+được chúng từ bộ nhớ cache thay vì thực hiện việc tra cứu cơ sở dữ liệu tốn kém hơn.
+Điều này có thể cải thiện đáng kể hiệu suất ứng dụng, nhưng đổi lại là sự tăng cường 
+trong việc sử dụng bộ nhớ.
+
+Bốn phần tử thuộc tính đầu tiên chỉ định thông tin kết nối JDBC. Nếu bạn đã đọc 
+hai hình đầu tiên của chương trước, bạn nên hiểu cách các phần tử này hoạt động.
+
+Phần tử thuộc tính thứ năm, cho biết JPA nên thực hiện điều gì khi ứng dụng 
+khởi động và gặp các thực thể mà chưa có bảng tương ứng trong cơ sở dữ liệu. 
+Trong trường hợp này, giá trị "create" cho biết JPA tự động tạo bảng cho các thực thể, 
+cũng như bất kỳ bảng cần thiết để tạo mối quan hệ giữa các bảng. Mặc dù điều này 
+thuận tiện, nhưng nó khiến ứng dụng tạm dừng một thời gian rất dài sau mỗi lần 
+khởi động khi JPA kiểm tra các thực thể và lược đồ cơ sở dữ liệu để xác định xem 
+có cần thực hiện bất kỳ thay đổi nào hay không. Do đó, bạn thường muốn tắt việc 
+tạo lược đồ tự động sau khi JPA đã tạo bảng. Để làm điều đó, bạn có thể đặt thuộc 
+tính này thành giá trị "none".
+
+Đặc tả JPA không yêu cầu các nhà cung cấp hỗ trợ việc tạo lược đồ tự động. 
+Tuy nhiên, tất cả các nhà cung cấp phổ biến, bao gồm cả EclipseLink và Hibernate, 
+đều hỗ trợ chức năng này.

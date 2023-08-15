@@ -1,0 +1,72 @@
+Mặc dù có nhiều hệ thống quản lý cơ sở dữ liệu hoạt động tốt với ứng dụng web, 
+MySQL là một trong những hệ thống phổ biến nhất cho các ứng dụng web Java. 
+Nó cũng miễn phí cho mục đích của cuốn sách này. Đó là lý do tại sao chúng tôi 
+sử dụng nó làm hệ thống quản lý cơ sở dữ liệu cho các ứng dụng trong cuốn sách này. 
+Trong chương này, bạn sẽ tìm hiểu cách tạo cơ sở dữ liệu MySQL và cách sử dụng 
+các câu lệnh SQL để làm việc với dữ liệu trong cơ sở dữ liệu đó.
+
+Trước khi bạn bắt đầu chương này, bạn nên biết rằng nó giả định bạn đã có một 
+số kiến thức hoặc kinh nghiệm về cơ sở dữ liệu. Nó giả định, ví dụ, bạn biết rằng 
+cơ sở dữ liệu liên quan được tạo thành từ các bảng bao gồm các cột và hàng, 
+các bảng liên quan nhau bằng các khóa, và bạn sử dụng các câu lệnh SQL để 
+truy cập và cập nhật dữ liệu trong cơ sở dữ liệu. Mặc dù chương này có đánh giá 
+lại một số thuật ngữ này, tập trung chính của nó là các kỹ năng cụ thể mà bạn 
+cần để sử dụng MySQL.
+
+Một giới thiệu về MySQL
+Hình 11-1 trình bày một giới thiệu về MySQL, một hệ thống quản lý cơ sở dữ liệu 
+mã nguồn mở (DBMS) mà bạn có thể tải xuống miễn phí từ trang web MySQL 
+(www.mysql.com), như mô tả trong phụ lục A (PC) hoặc B (Mac). Nó cũng có sẵn 
+như một phần của gói lưu trữ từ nhiều Nhà cung cấp Dịch vụ Internet (ISP).
+
+Những gì MySQL cung cấp
+Hình 11-1 bắt đầu bằng việc liệt kê một số lý do mà MySQL đang được các nhà phát 
+triển web ưa chuộng. Để bắt đầu, nó có giá rẻ và dễ sử dụng so với các sản phẩm 
+như Oracle Database hoặc Microsoft SQL Server. Nó hoạt động nhanh so với những 
+sản phẩm đó, đặc biệt khi bạn xem xét về chi phí. Và nó hoạt động trên hầu hết 
+các hệ thống điều hành hiện đại, trong khi Microsoft SQL Server chỉ chạy trên Windows.
+
+Mặc dù miễn phí cho phần lớn mục đích sử dụng, MySQL cung cấp hầu hết các tính năng 
+mà bạn mong đợi từ một hệ thống quản lý cơ sở dữ liệu liên kết hiện đại (RDBMS). 
+Đặc biệt, nó cung cấp hỗ trợ cho Ngôn ngữ Truy vấn Cấu trúc (SQL), tiêu chuẩn ngành. 
+Nó cung cấp hỗ trợ cho nhiều khách hàng. Và nó cung cấp khả năng kết nối và bảo mật.
+
+Đối với các ứng dụng web, điều đó có nghĩa bạn có thể viết các ứng dụng Java 
+sử dụng các câu lệnh SQL để truy cập và cập nhật dữ liệu trong cơ sở dữ liệu MySQL. 
+Bạn có thể kết nối ứng dụng web Java với cơ sở dữ liệu MySQL đang chạy trên mạng nội bộ 
+hoặc Internet. Và bạn có thể bảo mật dữ liệu của mình bằng cách hạn chế quyền 
+truy cập vào nó.
+
+Kể từ phiên bản 5.5, MySQL cung cấp tính toàn vẹn tham chiếu và xử lý giao dịch 
+theo mặc định. Kết quả là, những tính năng này có thể được xử lý ở phía sau, 
+giảm nguy cơ dữ liệu bị hỏng. Điều này hoạt động tương tự như các cơ sở dữ liệu 
+thương mại như Oracle Database và Microsoft SQL Server.
+
+Trước phiên bản MySQL 5.0, MySQL không cung cấp tính toàn vẹn tham chiếu hoặc 
+xử lý giao dịch. Kết quả là, mỗi ứng dụng sử dụng MySQL phải tự cung cấp những 
+tính năng này. Trong những ngày đầu của lập trình web, điều này đủ cho nhiều 
+loại ứng dụng web. Ngày nay, thường là hợp lý để MySQL thực hiện những tính năng này.
+
+MySQL là...
+
+Chương 11: Cách sử dụng cơ sở dữ liệu MySQL 
+• Giá rẻ. MySQL miễn phí cho phần lớn mục đích sử dụng và tương đối giá rẻ cho các mục đích khác.
+• Nhanh. Theo nhiều báo cáo, MySQL là một trong những cơ sở dữ liệu liên quan nhanh nhất hiện có.
+• Dễ sử dụng. So với các hệ thống quản lý cơ sở dữ liệu khác, MySQL dễ cài đặt và sử dụng.
+• Di động. MySQL chạy trên hầu hết các hệ thống điều hành hiện đại bao gồm Windows, OS X và Linux.
+
+MySQL cung cấp...
+• Hỗ trợ cho SQL. Giống như bất kỳ sản phẩm cơ sở dữ liệu hiện đại nào, MySQL 
+hỗ trợ SQL, ngôn ngữ tiêu chuẩn để làm việc với dữ liệu được lưu trữ trong các 
+cơ sở dữ liệu liên quan.
+• Hỗ trợ cho nhiều khách hàng. MySQL hỗ trợ truy cập từ nhiều khách hàng thông 
+qua nhiều giao diện và ngôn ngữ lập trình khác nhau bao gồm Java, PHP, Python, Perl và C.
+• Kết nối. MySQL có thể cung cấp truy cập vào dữ liệu thông qua mạng nội bộ hoặc Internet.
+• Bảo mật. MySQL có thể bảo vệ quyền truy cập vào dữ liệu của bạn, chỉ cho phép 
+người dùng được ủy quyền xem dữ liệu.
+• Toàn vẹn tham chiếu. Từ phiên bản 5.5 trở đi, các bảng InnoDB được sử dụng 
+theo mặc định trong MySQL. Những bảng này hỗ trợ tính toàn vẹn tham chiếu, 
+giống như các cơ sở dữ liệu thương mại như Oracle Database hoặc Microsoft SQL Server.
+• Xử lý giao dịch. Từ phiên bản 5.5, MySQL sử dụng bảng InnoDB theo mặc định. 
+Những bảng này hỗ trợ xử lý giao dịch, giống như các cơ sở dữ liệu thương mại như 
+Oracle Database hoặc Microsoft SQL Server.

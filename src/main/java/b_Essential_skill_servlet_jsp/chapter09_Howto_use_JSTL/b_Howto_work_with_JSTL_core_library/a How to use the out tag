@@ -1,0 +1,64 @@
+Bây giờ bạn đã có một cái nhìn tổng quan về cách JSTL hoạt động, bạn đã sẵn sàng để tìm hiểu chi tiết về cách
+mã hóa các thẻ JSTL phổ biến nhất. Tất cả các thẻ này đều có sẵn từ thư viện JSTL core.
+
+Cách sử dụng thẻ "out"
+Cho đến nay trong cuốn sách này, mã đã sử dụng EL để xuất dữ liệu ra trình duyệt. Thật không may, phương pháp
+này dễ bị tổn thương bởi một loại tấn công được biết đến là tấn công cross-site scripting (XSS). Trong một cuộc
+tấn công cross-site scripting (XSS), kẻ tấn công cố gắng chèn mã Javascript vào trang của bạn để lừa người dùng
+của bạn gửi cho họ dữ liệu cá nhân như tên người dùng và mật khẩu.
+
+Để ngăn chặn một cuộc tấn công XSS, bạn có thể sử dụng thẻ "out" để thoát khỏi dữ liệu đầu ra cho ứng dụng của bạn.
+Điều này thay thế các ký tự như dấu nhọn góc trái (<) và dấu nhọn góc phải (>) bằng các thực thể HTML tương ứng
+của chúng. Kết quả là, nếu kẻ tấn công cố gắng chèn các thẻ HTML, trình duyệt sẽ hiển thị chúng thay vì thực
+thi chúng, điều này thường là điều bạn muốn. Vì vậy, nó thường được coi là một thực hành tốt để thoát khỏi tất
+cả đầu ra được gửi đến trình duyệt. Ví dụ, ví dụ đầu tiên trong hình 9-3 cho thấy cách sử dụng thẻ "out" để thoát
+khỏi dữ liệu đầu ra cho trang thứ hai của ứng dụng Danh sách Email.
+
+An example that escapes output entered by the user
+<label>Email:</label>
+<span><c:out value="${user.email}"/></span><br>
+<label>First Name:</label>
+<span><c:out value="${user.firstName}" /></span><br>
+<label>Last Name:</label>
+<span><c:out value="${user.lastName}"/></span><br>
+
+Mặc dù rất quan trọng để thoát khỏi dữ liệu đầu ra đã được nhập bởi người dùng, nhưng cũng được coi là một
+thực hành tốt để thoát khỏi dữ liệu đầu ra khi nó đến từ các phần khác của yêu cầu HTTP như cookie và các
+tiêu đề khác. Đó là lý do tại sao ví dụ thứ hai trong hình này sử dụng thẻ "out" để thoát khỏi tên và
+giá trị của các cookie. Nếu bạn đã đọc chương trước, bạn nên hiểu cách bạn có thể sử dụng EL để truy cập
+vào đối tượng cookie ngầm định.
+
+An example that escapes output that displays cookie names and values
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Value</th>
+    </tr>
+    <c:forEach var="cook" items="${cookie}">
+    <tr>
+        <td><c:out value="${cook.value.name}" /></td>
+        <td><c:out value="${cook.value.value}" /></td>
+    </tr>
+    </c:forEach>
+</table>
+
+Trong hình tiếp theo, bạn sẽ tìm hiểu thêm về cách sử dụng thẻ "forEach" để mã hóa một vòng lặp.
+Ví dụ thứ ba cho thấy hai kỹ thuật để hiển thị một giá trị mặc định. Cách đầu tiên sử dụng thuộc tính
+"default" để chỉ định thông điệp mặc định, và cách thứ hai sử dụng phần thân của thẻ. Dù cách nào,
+nếu thuộc tính "message" có giá trị null, thẻ "out" sẽ đầu ra thông điệp mặc định là "No message".
+Khi bạn mã hóa các thẻ JSTL, bạn cần nhận thức rằng chúng sử dụng cú pháp XML, không phải cú pháp HTML.
+Do đó, bạn phải sử dụng viết hoa chính xác như được hiển thị trong ví dụ này cho tên của thẻ và các
+thuộc tính của nó. Ngoài ra, bạn phải bao bọc các thuộc tính bằng dấu ngoặc kép hoặc dấu ngoặc đơn.
+Thông thường, bạn có thể sử dụng dấu ngoặc kép. Tuy nhiên, nếu toàn bộ thẻ "out" được mã hóa trong
+dấu ngoặc kép, bạn có thể sử dụng dấu ngoặc đơn để phân biệt giữa các giá trị thuộc tính lồng nhau
+như được hiển thị trong ví dụ thứ tư.
+
+An example that displays a default value 
+Using the default attribute 
+<p><c:out value="${message}" default="No message" /></p>
+Using the tag's body 
+<p><c:out value="${message}">No message</c:out></p>
+
+
+An example that uses single quotes
+<input type="hidden" name="productCode" value="<c:out value='${item.product.code}' />">

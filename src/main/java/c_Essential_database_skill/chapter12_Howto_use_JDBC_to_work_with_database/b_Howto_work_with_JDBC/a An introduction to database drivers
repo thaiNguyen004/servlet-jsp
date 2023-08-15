@@ -1,0 +1,63 @@
+Để viết mã Java hoạt động với cơ sở dữ liệu, bạn có thể sử dụng JDBC, thường 
+được gọi là Java Database Connectivity. API JDBC cốt lõi được lưu trữ trong 
+gói java.sql, là một phần của Bản chuẩn của Java. Trong chủ đề này, bạn sẽ 
+tìm hiểu cách sử dụng JDBC để kết nối với cơ sở dữ liệu và làm thế nào để
+truy xuất và sửa đổi dữ liệu được lưu trữ trong cơ sở dữ liệu.
+
+Một giới thiệu về trình điều khiển cơ sở dữ liệu
+Trước khi bạn có thể kết nối với cơ sở dữ liệu, bạn phải làm cho một trình 
+điều khiển cơ sở dữ liệu có sẵn cho ứng dụng của bạn. Hình 12-1 liệt kê bốn loại 
+trình điều khiển cơ sở dữ liệu JDBC mà bạn có thể sử dụng. 
+
+Loại 1:
+Một trình điều khiển cầu nối JDBC-ODBC chuyển đổi các cuộc gọi JDBC thành các 
+cuộc gọi ODBC để truy cập giao thức DBMS. Đối với phương pháp truy cập 
+dữ liệu này, trình điều khiển ODBC phải được cài đặt trên máy khách.
+
+Loại 2:
+Một trình điều khiển giao thức cơ sở dữ liệu bản địa một phần chuyển đổi các 
+cuộc gọi JDBC thành các cuộc gọi trong giao thức cơ sở dữ liệu bản địa. 
+Vì việc chuyển đổi này diễn ra trên máy khách, một số mã nhị phân phải 
+được cài đặt trên máy khách.
+
+Loại 3:
+Một trình điều khiển giao thức mạng toàn bộ bằng Java chuyển đổi các cuộc gọi 
+JDBC thành một giao thức mạng độc lập với bất kỳ giao thức cơ sở dữ liệu bản địa nào. 
+Sau đó, phần mềm trung gian chạy trên máy chủ chuyển đổi giao thức mạng thành 
+giao thức cơ sở dữ liệu bản địa. Vì việc chuyển đổi này diễn ra trên phía máy chủ, 
+không cần cài đặt nào trên máy khách.
+
+Loại 4:
+Một trình điều khiển giao thức cơ sở dữ liệu bản địa toàn bộ bằng Java chuyển 
+đổi các cuộc gọi JDBC thành một giao thức cơ sở dữ liệu bản địa. Vì việc chuyển 
+đổi này diễn ra trên phía máy chủ, không cần cài đặt nào trên máy khách.
+
+
+Sau đó, nó chỉ ra cách tải về một trình điều khiển cơ sở dữ liệu và làm cho nó 
+có sẵn cho các ứng dụng web của bạn. 
+Vì các trình điều khiển cơ sở dữ liệu loại 1 và loại 2 đòi hỏi cài đặt trên 
+phía máy khách, chúng không phải là lựa chọn lý tưởng để cho phép ứng dụng đang 
+chạy trên máy khách truy cập trực tiếp vào cơ sở dữ liệu đang chạy trên máy chủ. 
+Kết quả là, bạn thường sẽ muốn sử dụng trình điều khiển loại 3 hoặc loại 4 
+cho loại ứng dụng này.
+
+Với một ứng dụng web, tất nhiên, tất cả mã truy cập dữ liệu chạy trên phía máy chủ. 
+Kết quả là, bạn có thể sử dụng bất kỳ loại trình điều khiển nào để kết nối với 
+cơ sở dữ liệu. Tuy nhiên, bạn thường sẽ muốn sử dụng trình điều khiển loại 4 
+mỗi khi có sẵn cho cơ sở dữ liệu mà bạn đang sử dụng.
+
+Nếu bạn muốn kết nối với cơ sở dữ liệu MySQL, bạn có thể sử dụng trình điều khiển 
+loại 4 có tên Connector/J mà có sẵn miễn phí từ trang web MySQL. Tuy nhiên, 
+trình điều khiển này thường được bao gồm trong thư mục lib của Tomcat. 
+Kết quả là, bạn thường không cần phải tải trình điều khiển này từ trang web MySQL.
+
+Đối với các loại cơ sở dữ liệu khác, bạn thường có thể tải về trình điều khiển 
+loại 4 từ trang web của cơ sở dữ liệu đó. Tài liệu cho những trình điều khiển này 
+thường chỉ ra cách cài đặt và cấu hình trình điều khiển.
+
+Để sử dụng trình điều khiển cơ sở dữ liệu trong ứng dụng, bạn phải thêm tệp JAR 
+chứa trình điều khiển cơ sở dữ liệu vào classpath của ứng dụng. Cách dễ nhất để 
+làm điều đó là sử dụng IDE của bạn để thêm tệp JAR cho trình điều khiển cơ sở dữ liệu 
+vào ứng dụng của bạn. Để thêm trình điều khiển MySQL vào NetBeans, bạn có thể nhấp 
+chuột phải vào thư mục Thư viện của dự án, chọn lệnh Add Libraries và sử dụng hộp 
+thoại kết quả để chọn thư viện có tên MySQL JDBC Driver.

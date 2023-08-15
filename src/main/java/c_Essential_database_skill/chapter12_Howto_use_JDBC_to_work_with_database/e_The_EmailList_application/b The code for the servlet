@@ -1,0 +1,81 @@
+Hình 12-14 hiển thị mã cho phương thức doPost của lớp EmailListServlet. Đến thời 
+điểm này, hầu hết mã trong phương thức doPost này nên là sự xem xét lại, 
+trừ các câu lệnh gọi phương thức từ lớp UserDB.
+
+Cụ thể, câu lệnh if lồng nhau sử dụng phương thức emailExists của lớp UserDB để 
+kiểm tra xem địa chỉ email đã tồn tại trong cơ sở dữ liệu chưa. Nếu có, biến message 
+sẽ được đặt thành một thông báo phù hợp và biến url sẽ được đặt thành JSP được
+hiển thị trong hình ảnh trước đó. Nếu không, phương thức insert của lớp UserDB 
+được sử dụng để ghi dữ liệu được lưu trong đối tượng User vào cơ sở dữ liệu và 
+biến url sẽ được đặt thành một JSP hiển thị dữ liệu đã được nhập.
+
+Vì các phương thức của lớp UserDB không ném ra bất kỳ ngoại lệ nào, lớp servlet 
+không cần xử lý bất kỳ ngoại lệ nào. Tuy nhiên, nếu cần, nó có thể sử dụng các 
+giá trị được trả về bởi các phương thức của lớp UserDB để xác định xem hành động 
+đã thành công hay thất bại và hiển thị thông báo thích hợp. Ví dụ, nếu phương thức 
+insert của lớp UserDB thành công, nó trả về một giá trị int cho biết số dòng đã 
+thêm vào cơ sở dữ liệu. Nếu phương thức này trả về giá trị 0, không có dòng nào 
+được thêm vào cơ sở dữ liệu. Mặc dù mã trong hình ảnh này không kiểm tra giá trị này, 
+bạn có thể dễ dàng thêm mã để kiểm tra.
+
+Nếu bạn xem xét mã này, tôi nghĩ bạn sẽ đồng ý rằng các phương thức của lớp UserDB 
+dễ sử dụng. Điều này bởi vì các phương thức này xử lý tất cả các chi tiết cho 
+việc làm việc với cơ sở dữ liệu. Ví dụ, các phương thức này xử lý tất cả các 
+chi tiết để lấy một kết nối đến cơ sở dữ liệu từ connection pool và xử lý tất cả 
+các chi tiết để thực thi các câu lệnh SQL thích hợp. Để thấy cách điều này hoạt động, 
+bạn có thể xem mã được hiển thị trong hình ảnh tiếp theo. Tuy nhiên, bây giờ hãy 
+chú ý đến cách tách lớp cơ sở dữ liệu khỏi phần còn lại của ứng dụng cho phép servlet 
+tập trung vào nhiệm vụ của nó như là bộ điều khiển trong mô hình MVC.
+
+
+package murach.controller;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@WebServlet(name = "emailList", urlPatterns = "/emailList")
+public class EmailListServlet extends HttpServlet{
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String url = "/index.html";
+        
+        // get current action 
+        String action = req.getParameter("action");
+        if(action == null) {
+            action = "join"; // default action
+        }
+        
+        // perform (thực hiện) action and set URL to appropriate(phù hợp) page
+        if(action.equals("add")) {
+            // get parameters from the request
+            String firstName = req.getParameter("firstName");
+            String lastName = req.getParameter("lastName");
+            String email = req.getParameter("email");
+            
+            // store data in User object
+            User user = new User(firstName, lastName, email);
+            
+            // validate the parameters
+            if(UserDB.emailExists(user.getEmail())) {
+                message = "This email address already exists. <br>"
+                        + "Please enter another email address.";
+                url = "/index.jsp";
+            } else {
+                message = "";
+                url = "/WEB-INF/thanks.jsp";
+                UserDB.insert(user);
+            }
+            req.setAttribute("user", user);
+            req.setAttribute("message", message);
+        }
+        getServletContext()
+                .getRequestDispatcher(url)
+                .forward(req, resp);
+    }
+}
+

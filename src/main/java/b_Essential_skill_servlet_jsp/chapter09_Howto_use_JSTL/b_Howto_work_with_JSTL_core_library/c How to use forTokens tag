@@ -1,0 +1,55 @@
+Cách sử dụng thẻ "forTokens"
+Bạn có thể sử dụng thẻ "forTokens" để lặp qua các mục được lưu trữ trong một chuỗi miễn là các mục trong
+chuỗi được phân tách bởi một hoặc nhiều dấu phân tách, đó là các ký tự được sử dụng để phân tách các mục.
+Ví dụ, chuỗi trong ví dụ đầu tiên trong hình 9-5 sử dụng dấu phẩy làm dấu phân tách. Do đó, chuỗi này
+có thể được gọi là chuỗi phân tách bằng dấu phẩy.
+
+An example that uses JSTL to loop through a comma-delimited (phân tách bằng dấu phẩy) string
+Servlet code
+session. setAttribute ("productCodes", "8601, pf01, pf02, jr01");
+JSP code
+<p>Product codes</p>
+<ul>
+    <c:forTokens var="productCode" items="${productCodes}" delims="," >
+        <li>${productCode}</li>
+    </c:forTokens>
+</ul>
+Product codes
+• 8601
+• pr01
+• pr02
+• jr01
+
+Ví dụ đầu tiên trong hình này cũng cho thấy cách sử dụng thẻ "forTokens" để lặp qua bốn mã sản phẩm được
+lưu trữ trong chuỗi. Ở đây, thuộc tính "var" xác định một tên biến là "productCode" để xác định mỗi mã sản
+phẩm trong danh sách. Sau đó, thuộc tính "items" sử dụng EL để chỉ định thuộc tính "productCodes" là chuỗi
+lưu trữ các mục. Cuối cùng, thuộc tính "delims" xác định dấu phẩy làm dấu phân tách.
+
+Để giữ cho ví dụ này đơn giản, mã servlet tạo thuộc tính "productCodes" bằng cách lưu trữ một danh sách
+mã sản phẩm cố định gồm bốn mã được phân tách bằng dấu phẩy. Trong một ví dụ thực tế hơn, tất nhiên mã
+servlet sẽ tạo danh sách này theo cách động.
+
+
+Ví dụ thứ hai hoạt động tương tự như ví dụ đầu tiên, nhưng nó sử dụng hai dấu phân tách thay vì một dấu phân tách.
+Cụ thể, thuộc tính "delims" xác định dấu @ làm dấu phân tách đầu tiên và dấu chấm (.) làm dấu phân tách thứ hai.
+Kết quả là, vòng lặp xử lý ba mục, một cho mỗi phần của địa chỉ email.
+
+Nếu cần, bạn có thể lồng một thẻ "forTokens" trong một thẻ khác. Hoặc, bạn có thể lồng một thẻ "forTokens" trong một thẻ "forEach". Tuy nhiên, vì bạn hiếm khi cần phải lồng các thẻ "forTokens", kỹ thuật này không được minh họa trong hình này.
+
+
+An example that uses JSTL to parse a string (xử lý 1 chuỗi)
+Servlet code 
+session.setAttribute("emailAddress", "jsmith@gmail.com");
+JSP code 
+<p>Email parts</p>
+<ul>
+    <c:forTokens var="part" items="${emailAddress} " delims="@.">
+        <li>${part}</li> 
+    </c:forTokens> 
+</ul>
+
+Email parts
+• jsmith
+• gmail
+• com
+

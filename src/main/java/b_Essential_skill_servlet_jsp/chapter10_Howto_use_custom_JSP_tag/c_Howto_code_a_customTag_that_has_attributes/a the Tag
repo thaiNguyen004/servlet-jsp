@@ -1,0 +1,42 @@
+Cách viết một thẻ tùy chỉnh có thuộc tính
+Trong phần này, bạn sẽ tìm hiểu cách thêm các thuộc tính vào một thẻ tùy chỉnh. Mặc dù ví dụ trong
+phần này chỉ ra cách thêm thuộc tính vào một thẻ không có phần thân, bạn cũng có thể sử dụng các thuộc tính
+cho một thẻ có phần thân.
+
+Thẻ
+
+JSP code that uses a custom tag that has attributes
+To display the asterisk(dấu sao)
+<p><mma:ifEmptyMark color="blue" field=""/> marks required fields</p>
+
+To display the asterisk only if a field is empty (using a JSP expression)
+<label class="pad_top">Last Name: </label>
+<input type="text" name="lastName" value="<%=user.getLastName()%>">
+    <mma:ifEmptyMark color="blue" field="<%= user.getLastName() %>"/><br>
+
+To display the asterisk only if a field is empty (using EL)
+<label class= "pad_top" >Last Name: </label>
+<input type= "text" name= "lastName" value="${user.lastName}">
+<mma:ifEmptyMark color= "blue" field="$ {user.lastName}"/><br>
+
+Phần 1 của hình vẽ 10-3 trình bày một trang JSP sử dụng một thẻ tùy chỉnh có tên là "ifEmptyMark"
+để hiển thị một dấu sao sau một ô văn bản không chứa văn bản. Trong trang JSP, thẻ này được viết sau
+mỗi một trong ba ô văn bản. Hai thuộc tính của thẻ này là "color" và "field", được sử dụng để xác định
+màu của dấu sao và trường cần được kiểm tra xem có rỗng không.
+
+Ví dụ đầu tiên trong hình vẽ này cho thấy cách sử dụng thẻ "ifEmptyMark" để hiển thị một dấu sao màu xanh.
+Ở đây, thuộc tính "color" được đặt thành "blue" và thuộc tính "field" được đặt thành một chuỗi rỗng.
+Kết quả, dấu sao luôn được hiển thị.
+
+Ví dụ thứ hai cho thấy cách sử dụng biểu thức JSP làm giá trị của thuộc tính "field". Ở đây, thuộc tính "field"
+được đặt thành giá trị được trả về bởi phương thức "getLastName" của đối tượng người dùng. Sau đó, nếu phương thức
+trả về giá trị null hoặc chuỗi rỗng, thẻ này sẽ hiển thị một dấu sao bên phải của ô văn bản cho trường đó.
+Nếu không, xử lý thẻ không thực hiện bất kỳ hành động nào. Hiệu quả là xử lý thẻ cung cấp một loại kiểm tra dữ liệu.
+
+Ví dụ thứ ba hoạt động giống như ví dụ thứ hai, ngoại trừ việc sử dụng EL thay vì biểu thức JSP làm giá trị của
+thuộc tính "field". Nếu bạn so sánh hai ví dụ thứ hai và thứ ba, bạn có thể thấy rằng việc sử dụng EL làm cho mã code dễ đọc hơn.
+
+Vậy, tại sao bạn muốn sử dụng biểu thức JSP thay vì EL? Nói chung, bạn chỉ nên làm như vậy nếu bạn đang làm việc
+trên một ứng dụng kế thừa được phát triển trước JSP 2.0. Trong trường hợp đó, máy chủ web có thể không hỗ trợ EL,
+hoặc bạn có thể muốn sử dụng biểu thức JSP để duy trì tính nhất quán với mã cũ. Tuy nhiên, nếu bạn đang phát triển
+các ứng dụng mới, bạn nên sử dụng EL trong các thẻ tùy chỉnh của bạn.

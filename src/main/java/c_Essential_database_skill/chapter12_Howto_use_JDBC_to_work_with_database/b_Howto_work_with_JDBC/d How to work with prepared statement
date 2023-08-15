@@ -1,0 +1,63 @@
+Cách làm việc với (prepared statements)
+Mỗi lần một ứng dụng Java gửi một câu lệnh SQL mới tới máy chủ cơ sở dữ liệu, 
+máy chủ kiểm tra câu lệnh để tìm lỗi cú pháp, chuẩn bị một kế hoạch để thực thi 
+câu lệnh và thực thi câu lệnh. Tuy nhiên, nếu cùng một câu lệnh được gửi lại, 
+máy chủ cơ sở dữ liệu kiểm tra xem nó đã từng nhận được một câu lệnh giống hệt nó chưa. 
+Nếu có, máy chủ không cần kiểm tra cú pháp và chuẩn bị kế hoạch thực thi cho nó, 
+vì vậy máy chủ chỉ thực thi nó. 
+Điều này cải thiện hiệu suất các hoạt động cơ sở dữ liệu.
+
+Để tận dụng tính năng cơ sở dữ liệu này, Java cung cấp cách sử dụng câu lệnh prepare 
+như được thể hiện trong hình 12-6. Tính năng này cho phép bạn gửi các câu lệnh 
+tới máy chủ cơ sở dữ liệu để thực thi lặp đi lặp lại bằng cách chấp nhận các 
+giá trị tham số được gửi đến nó. Điều này cải thiện hiệu suất cơ sở dữ liệu vì 
+máy chủ cơ sở dữ liệu chỉ cần kiểm tra cú pháp và chuẩn bị kế hoạch thực thi 
+một lần cho mỗi câu lệnh.
+
+How to use a prepared statement 
+To return a resu It set 
+    String preparedSQL = ""
+        SELECT ProductCode, ProductDescription, ProductPrice 
+        FROM Product WHERE ProductCode = ?
+    ""; 
+    PreparedStatement ps = connection.prepareStatement(preparedSQL); 
+    ps.setString(l, productCode); 
+    ResultSet product = ps.executeQuery();
+ 
+To modify a row 
+String preparedSQL = 
+    ""
+    UPDATE Product SET 
+    ProductCode = ?, 
+    ProductDescription = ?,
+    ProductPrice = ?
+    WHERE ProductCode = ?
+    "";
+    PreparedStatement ps = connection.prepareStatement{preparedSQL); 
+    ps.setString(l, product.getCode()); 
+    ps.setString(2, product.getDescription()); 
+    ps.setDouble(3, product.getPrice()); 
+    ps.setString(4, product.getCode()); 
+    ps.executeUpdate();
+ 
+To insert a row 
+String preparedQuery = 
+"INSERT INTO Product (ProductCode, ProductDescription, ProductPrice) " 
++ "VALUES (?, ? , ?)";
+PreparedStatement ps = connection.prepareStatement(preparedQuery); 
+ps.setString(l, product.getCode()); 
+ps.setString(2, product.getDescription()); 
+ps.setDouble(3, product.getPrice()); 
+ps. executeUpdate();
+ 
+To delete a row 
+String preparedQuery = "DELETE FROM Product " 
++ "WHERE ProductCode = ?";
+PreparedStatement ps = connection.prepareStatement(preparedQuery); 
+ps.setString(l, productCode); 
+ps. executeUpdate (); 
+
+
+Ngoài ra, các câu lệnh prepare tự động kiểm tra các giá trị tham số của chúng 
+để ngăn chặn hầu hết các loại cuộc tấn công SQL injection. Kết quả là, thường 
+được coi là thực hành tốt sử dụng các câu lệnh prepare mỗi khi có thể.

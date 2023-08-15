@@ -1,0 +1,34 @@
+Cách sử dụng thẻ "forEach"
+
+An example that uses JSTL to loop through a collection 
+<c:forEach var="item" items="${cart.items}"> 
+<tr> 
+    <td>${item.quantity}</td> 
+    <td>${item.product.description}</td> 
+    <td>${item.product.priceCurrencyFormat}</td> 
+    <td>${item.totalCurrencyFormat}</td> 
+</tr> 
+</c:forEach>: 
+
+Bạn có thể sử dụng thẻ "forEach" để lặp qua các mục được lưu trữ trong hầu hết các tập hợp, bao gồm cả mảng.
+Ví dụ, hình 9-4 cho thấy cách sử dụng thẻ "forEach" để lặp qua các đối tượng LineItem có sẵn từ thuộc tính "items"
+của thuộc tính "cart".
+Ở đây, thuộc tính "var" xác định một tên biến là "item" để truy cập từng mục trong tập hợp. Sau đó, thuộc tính
+"items" sử dụng EL để chỉ định tập hợp lưu trữ dữ liệu. Trong trường hợp này, tập hợp là đối tượng ArrayList<LineItem>
+được trả về bởi phương thức "getItems" của đối tượng Cart cho phiên hiện tại. Đối tượng Cart này đã được lưu trữ như
+một thuộc tính với tên là "cart".
+
+Trong vòng lặp "forEach", mã JSP tạo một hàng với bốn cột cho mỗi mục trong giỏ hàng. Ở đây, mỗi cột sử dụng EL
+để hiển thị dữ liệu có sẵn từ đối tượng LineItem. Cụ thể, cột đầu tiên hiển thị số lượng,
+cột thứ hai hiển thị mô tả sản phẩm, cột thứ ba hiển thị giá mỗi mục, và cột thứ tư hiển thị tổng số tiền (số lượng nhân giá).
+Lưu ý rằng đối tượng LineItem bao gồm mã áp dụng định dạng tiền tệ cho giá và tổng số tiền.
+Nếu bạn gặp khó khăn trong việc hiểu các ví dụ trong hình này, bạn có thể muốn nghiên cứu mã cho các đối tượng Cart,
+LineItem và Product được trình bày trong hình 9-12. Đặc biệt, hãy chú ý cách một đối tượng Cart có thể chứa nhiều đối
+tượng LineItem và cách một đối tượng LineItem phải chứa một đối tượng Product. Hãy cũng chú ý cách các phương thức
+get thích hợp được cung cấp cho tất cả các thuộc tính được truy cập bằng EL. Ví dụ, lớp Cart cung cấp một phương thức
+có tên là "getItems" trả về một ArrayList của các đối tượng LineItem. Kết quả là, bằng EL, bạn có thể sử dụng thuộc tính
+"items" của thuộc tính "cart" để lấy đối tượng ArrayList này.
+Nếu cần, bạn có thể lồng một thẻ "forEach" trong một thẻ khác. Ví dụ, nếu bạn muốn hiển thị một số đối tượng
+Invoice trên một trang web duy nhất, bạn có thể sử dụng một thẻ "forEach" bên ngoài để lặp qua các đối tượng Invoice.
+Sau đó, bạn có thể sử dụng một thẻ "forEach" bên trong để lặp qua các đối tượng LineItem trong mỗi hóa đơn.
+Tuy nhiên, đối với hầu hết các trang JSP, bạn sẽ không cần lồng các câu lệnh forEach.

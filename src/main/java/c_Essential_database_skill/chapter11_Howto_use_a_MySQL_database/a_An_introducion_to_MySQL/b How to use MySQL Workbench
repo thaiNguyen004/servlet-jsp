@@ -1,0 +1,26 @@
+Cách sử dụng MySQL Workbench
+MySQL Workbench là một công cụ đồ họa miễn phí giúp bạn dễ dàng làm việc với MySQL. 
+Chúng tôi khuyến nghị sử dụng công cụ này khi bạn làm việc với cuốn sách này. 
+Đến thời điểm xuất bản cuốn sách này, phiên bản hiện tại của MySQL Workbench 
+là phiên bản 6.0, do đó đó là phiên bản được trình bày trong chương này. 
+Tuy nhiên, với một số biến thể nhỏ, các kỹ năng được trình bày trong chương này 
+nên hoạt động trên các phiên bản trước và sau cũng rất tốt.
+
+Tab Home của MySQL Workbench
+Khi bạn khởi động MySQL Workbench, nó hiển thị tab Home như được hiển thị trong 
+hình 11-3. Tab này được chia thành ba phần: Kết nối MySQL, Mô hình và Phím tắt.
+
+Phần Kết nối MySQL chứa các liên kết bạn có thể sử dụng để mở kết nối đến một 
+máy chủ MySQL. Sau đó, bạn có thể sử dụng kết nối đó để chạy các câu lệnh SQL. 
+Mặc định, tab này chứa một kết nối cho phép bạn kết nối đến máy chủ MySQL đang 
+chạy trên máy tính cục bộ với tư cách người dùng root. 
+Trong cuốn sách này, đây là kết nối duy nhất bạn cần. Tuy nhiên, bạn có thể sử 
+dụng biểu tượng "+" bên phải của Kết nối MySQL để tạo các kết nối khác.
+
+Phần Mô hình chứa các liên kết cho phép bạn tạo một biểu đồ cơ sở dữ liệu từ 
+một loại mô hình dữ liệu được biết đến là mô hình EER. Vì cuốn sách này không 
+hướng dẫn cách làm việc với mô hình EER, bạn có thể bỏ qua phần này.
+
+Bạn có thể quay lại tab Home bằng cách nhấp vào tab có biểu tượng nhà gần góc 
+trên bên trái của cửa sổ Workbench. Trong hình này, tab Home là tab duy nhất được 
+hiển thị, nhưng bạn sẽ thấy một số tab khác trong các hình kế tiếp.

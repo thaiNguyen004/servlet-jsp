@@ -1,0 +1,30 @@
+Quan điểm
+Mục tiêu của chương này đã là để hướng dẫn bạn cách tạo và sử dụng các thẻ JSP tùy chỉnh. Những thẻ này hữu ích
+khi bạn cần vượt qua chức năng có sẵn từ các thẻ JSP tiêu chuẩn hoặc các thẻ JSTL. Bạn cũng cần hiểu về các thẻ
+tùy chỉnh nếu bạn đang duy trì mã code cũ sử dụng chúng.
+
+Mặc dù việc tạo các thẻ tùy chỉnh đòi hỏi một lượng công sức đáng kể, nhưng cũng có một số lợi ích khi sử dụng chúng.
+Thứ nhất, các thẻ tùy chỉnh giảm thiểu lượng mã Java cần thiết trong trang JSP của bạn, điều này làm cho việc thiết kế
+web dễ dàng hơn cho các nhà thiết kế web làm việc với các trang JSP. Thứ hai, các thẻ tùy chỉnh giúp tổ chức mã của
+ứng dụng và giảm thiểu việc trùng lặp mã, từ đó làm cho việc duy trì ứng dụng dễ dàng hơn.
+
+Tóm tắt
+• Để tạo một thẻ tùy chỉnh có thể sử dụng trong JSP, bạn phải tạo một tệp XML gọi là Tệp Mô tả Thư viện Thẻ (TLD).
+Tệp TLD này xác định thư viện thẻ chứa các thẻ tùy chỉnh cho một ứng dụng.
+
+• Để thực hiện một thẻ tùy chỉnh được xác định trong TLD, bạn viết mã cho một lớp thẻ, cũng có thể gọi là lớp xử lý thẻ.
+Đây là một lớp triển khai giao diện Tag, thường bằng cách mở rộng lớp TagSupport.
+
+• Trước khi bạn có thể sử dụng một thẻ tùy chỉnh trong JSP, bạn phải viết một chỉ thị taglib chỉ định vị trí của TLD
+và một tiền tố. Sau đó, để sử dụng một thẻ tùy chỉnh, bạn viết tiền tố được theo sau bởi tên thẻ tùy chỉnh.
+
+• Bạn có thể sử dụng các thẻ tùy chỉnh có body, không có body, có thuộc tính và có body lặp lại.
+
+• Kể từ phiên bản JSP 2.0, bạn có thể sử dụng EL với các thẻ tùy chỉnh để lấy giá trị của một thuộc tính.
+Trước JSP 2.0, bạn phải sử dụng biểu thức JSP để lấy giá trị của một thuộc tính.
+
+• Trước JSP 2.0, việc sử dụng biến kịch bản để dễ dàng lấy giá trị của một thuộc tính là một thực hành phổ biến.
+Để cung cấp cho những biến này, bạn cần viết một lớp thông tin thẻ bổ sung (TEI) liên quan đến lớp thẻ thông qua TLD.
+
+• Khi bạn viết các lớp thẻ, bạn có thể sử dụng các phương pháp và trường của các lớp TagSupport, PageContext,
+BodyTagSupport và BodyContent trong Java EE API.

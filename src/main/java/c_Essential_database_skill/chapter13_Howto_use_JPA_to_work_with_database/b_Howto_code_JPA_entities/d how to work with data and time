@@ -1,0 +1,25 @@
+Cách làm việc với ngày và giờ
+Trong gói java.util, các kiểu Date và Calendar có thể ánh xạ với nhiều kiểu dữ 
+liệu SQL khả thi. Do đó, khi bạn sử dụng kiểu Date hoặc Calendar trong một thực thể, 
+bạn cần sử dụng chú thích @Temporal để chỉ định kiểu dữ liệu SQL tương ứng. 
+
+The annotation for a temporal type 
+@Temporal(TemporalType.TIMESTAMP) 
+private Date invoiceDate;
+
+
+three annotation value
+TemporalType.DATE       : java.sql.Date
+TemporalType.TIME       : java.sql.Time
+TemporalType.TIMESTAMP  : java.sql.TimeStamp
+
+Để làm điều đó, bạn có thể sử dụng những kỹ năng được hiển thị trong hình 13-7.
+Trong chú thích @Temporal, bạn có thể viết một trong ba giá trị được hiển thị
+trong hình này. Giá trị TemporalType.DATE chỉ định rằng JPA chỉ nên lưu trữ ngày, 
+không lưu trữ thời gian. Giá trị TemporalType.TIME chỉ định rằng JPA chỉ nên 
+lưu trữ thời gian, không lưu trữ ngày. Và giá trị TemporalType.TIMESTAMP chỉ định 
+rằng JPA nên lưu trữ cả ngày và thời gian.
+Trong hầu hết các trường hợp, nó có ý nghĩa sử dụng giá trị TemporalType.TIMESTAMP 
+để lưu trữ cả ngày và thời gian. Điều này có nghĩa là cả ngày và thời gian được 
+lưu trữ trong cơ sở dữ liệu. Sau đó, khi bạn viết mã cho ứng dụng của bạn, bạn có 
+thể bỏ qua bất kỳ phần nào của giá trị mà bạn không cần.

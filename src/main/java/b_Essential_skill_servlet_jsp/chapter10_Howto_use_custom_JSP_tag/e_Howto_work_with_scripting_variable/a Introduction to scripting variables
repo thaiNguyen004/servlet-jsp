@@ -1,0 +1,55 @@
+Nếu bạn đang sử dụng phiên bản 2.0 hoặc mới hơn của JSP, bạn có thể sử dụng EL cùng với các thẻ tùy chỉnh
+của mình để hiển thị các thuộc tính đã được lưu trữ bởi lớp thẻ. Trong trường hợp đó, bạn không cần phải
+sử dụng biến kịch bản. Tuy nhiên, nếu bạn đang sử dụng phiên bản cũ hơn của JSP, bạn cần sử dụng biểu thức
+JSP để hiển thị các thuộc tính đã được lưu trữ bởi lớp thẻ. Trong trường hợp đó, bạn có thể tạo các
+biến kịch bản để dễ dàng hiển thị những thuộc tính này.
+
+A custom JSP tag without scripting variables
+<mma:cart>
+<tr valign="top">
+    <td><%= pageContext.getAttribute("quantity") %></td>
+    <td><%= pageContext.getAttribute("productDescription") %></td>
+    <td><%= pageContext.getAttribute("productPrice") %></td>
+    <td><%= pageContext.getAttribute("total") %></td>
+</tr>
+</mma: cart>
+
+A custom JSP tag with scripting variables 
+<mma:cart> 
+<tr valign="top"> 
+    <td><%= quantity %></td>
+    <td><%= productDescription %></td>
+    <td><%= productPrice %></td>
+    <td><%= total %></td>
+</tr> 
+</mma:cart>
+
+The code in the tag class that adds the scripting variables to the pageContext object
+pageContext.setAttribute("productDescription",p.getDescription());
+pageContext.setAttribute("productPrice", p.getPriceCurrencyFormat());
+pageContext.setAttribute("quantity", new Integer {item.getQuantity()));
+pageContext.setAttribute("total", item.getTotalCurrencyFormat());
+
+The tag element in the TLD
+<tag>
+    <name>cart</name>
+    <tag-class>tags.CartTag</tag-class>
+    <tei-class>tags.CartTEI</tei-class>
+    <body-content>JSP</body-content>
+</tag>
+
+Giới thiệu về biến kịch bản
+Hình 10-5 cho thấy cách các biến kịch bản có thể được sử dụng để truy cập các biến đã được lưu trữ như
+thuộc tính của đối tượng pageContext. Ở đây, ví dụ đầu tiên cho thấy một thẻ JSP tùy chỉnh không sử
+dụng biến kịch bản. Kết quả là, thẻ này phải sử dụng phương thức getAttribute của đối tượng pageContext
+để có được ba biến đã được lưu trữ trong đối tượng pageContext bởi lớp thẻ.
+
+Ngược lại, ví dụ thứ hai sử dụng các biến kịch bản. Nhờ đó, bạn chỉ cần mã hóa tên của một biến kịch bản
+trong một biểu thức khi bạn muốn lấy thuộc tính liên quan từ đối tượng pageContext.
+
+Để làm việc này, bạn phải thực hiện ba nhiệm vụ.
+Đầu tiên, lớp thẻ phải thêm các biến kịch bản vào đối tượng
+pageContext như được thể hiện trong ví dụ thứ ba trong hình này.
+Thứ hai, bạn phải mã hóa một lớp TEI (Tag Extra Info) xác định các biến kịch bản như được thể hiện trong hình tiếp theo.
+Và thứ ba, bạn phải thêm một phần tử tei-class vào phần tử thẻ trong tệp TLD (Tag Library Descriptor)
+như được thể hiện trong ví dụ cuối cùng trong hình này.

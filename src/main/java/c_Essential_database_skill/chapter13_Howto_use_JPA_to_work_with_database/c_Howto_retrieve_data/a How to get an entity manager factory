@@ -1,0 +1,47 @@
+Cách lấy dữ liệu
+Việc truy vấn dữ liệu bằng JPA dễ dàng hơn đáng kể so với việc truy vấn dữ liệu 
+bằng JDBC. Khác với JDBC, JPA tự động chuyển đổi giữa đối tượng và SQL. 
+Kết quả là, bạn không cần phải viết các phương thức riêng của mình để làm điều 
+này. Hơn nữa, JPA tự động thực hiện bất kỳ phép nối nào cần thiết để thỏa mãn 
+các mối quan hệ giữa các thực thể.
+
+Cách lấy một entity manager factory
+Khi bạn sử dụng một máy chủ Java EE đầy đủ như Glassfish hoặc JBoss, máy chủ 
+cung cấp các entity manager tích hợp sẵn cho bạn. Khi bạn không sử dụng máy chủ 
+Java EE đầy đủ, JPA cung cấp một lớp có tên là EntityManagerFactory mà bạn có 
+thể sử dụng để lấy các entity manager.
+
+Các entity manager factory là luồng an toàn. Tuy nhiên, các entity manager 
+không phải luồng an toàn. Do đó, bạn cần yêu cầu một entity manager mới cho mỗi 
+phương thức mà bạn cần truy cập.
+
+A utility class that gets an entity manager factory 
+import javax.persistence.EntityManagerFactory; 
+import javax.persistence.Persistence; 
+public class DBUtil { 
+    private static final EntityManagerFactory emf = 
+                    Persistence.createEntityManagerFactory("emailListPU"); 
+    
+    public static EntityManagerFactory getEmFactory() { 
+        return emf; 
+    }
+}
+
+Cách dễ nhất để làm điều này là viết một lớp giống như lớp được hiển thị trong hình 
+13-8. Lớp này bắt đầu bằng cách tạo một entity manager factory tĩnh. Để làm điều đó, 
+nó bắt đầu bằng cách gọi phương thức tĩnh createEntityManagerFactory của lớp Persistence. 
+Phương thức này nhận tên persistance unit như một tham số. Điều này phải phù hợp 
+với tên bạn đã xác định trong tệp persistence.xml cho đơn vị bền này.
+
+Sau khi tạo một entity manager factory tĩnh, lớp này cung cấp một phương thức tĩnh 
+có tên là getEmFactory để lấy entity manager factory. Phương thức này làm cho 
+việc lấy entity manager factory dễ dàng bất kỳ khi bạn cần. Sau đó, bạn có thể 
+lấy một entity manager từ factory theo như được hiển thị trong hình tiếp theo.
+
+
+createEntityManagerFactory():
+Trả về một đối tượng EntityManagerFactory cho persistance unit được chỉ định. 
+Tên đơn vị bền phải khớp với tên đơn vị đã được xác định trong tệp persistence.xml.
+
+
+

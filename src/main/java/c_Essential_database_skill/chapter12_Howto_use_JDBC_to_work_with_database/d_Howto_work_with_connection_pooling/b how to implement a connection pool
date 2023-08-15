@@ -1,0 +1,113 @@
+Cách triển khai một connection pool (Connection Pool)
+Để tùy chỉnh Jakarta-Commons database connection pool để phù hợp với ứng dụng của bạn, 
+bạn có thể bắt đầu bằng cách chỉnh sửa tệp context.xml cho ứng dụng của bạn để 
+nó xác định các tham số cần thiết để cấu hình connection pool cho ứng dụng của bạn. 
+Ví dụ, hình 12-12 cho thấy tệp context.xml cho ứng dụng web có tên là ch12email.
+
+A context.xml file that configures a connection pool 
+<?xml version="l.0" encoding="UTF-8"?> 
+<Context path="/ch12email"> 
+
+    <Resource name="jdbc/murach" auth="Container"
+        driverClassName="com.mysql.jdbc.Driver"
+        url ="jdbc:mysql://localhost:3306/murach?autoReconnect=true" 
+        username="murach_user" password="sesame" 
+        maxActive="l00" maxIdle="30" maxWait="l0000"
+        logAbandoned="true" removeAbandoned="true"
+        removeAbandonedTimeout="60" type="javax.sql.DataSource" /> 
+</Context> 
+
+
+Tệp XML này chứa một phần tử Resource xác định một connection pool cho ứng dụng. 
+Nhiều thuộc tính của phần tử này là dễ hiểu và bạn có thể sử dụng nhiều giá trị 
+được hiển thị ở đây cho hầu hết các phần tử này. Tuy nhiên, bạn có thể sửa đổi 
+các thuộc tính này theo cần thiết để có thể kết nối đến cơ sở dữ liệu chính xác. 
+Ví dụ, bạn có thể sử dụng các thuộc tính username, password, driverClassName 
+và url để chỉ định thông tin cần thiết để kết nối đến cơ sở dữ liệu. 
+Đối với hầu hết các thuộc tính khác, bạn có thể sử dụng các giá trị được hiển thị 
+trong hình ảnh này vì chúng là đủ cho hầu hết các trang web nhỏ đến trung bình. 
+Tuy nhiên, nếu cần, bạn có thể sửa đổi các thuộc tính này để connection pool phù hợp 
+với trang web của bạn.
+
+Khi làm việc với một connection pool, một connection có thể bị bỏ nếu ứng dụng web 
+không đóng các đối tượng ResultSet, Statement và Connection của nó. Điều này có 
+thể gây ra "rò rỉ" dẫn đến không có kết nối nào khả dụng cuối cùng. Tuy nhiên, 
+phần tử Resource trong hình ảnh này được cấu hình để trả lại bất kỳ kết nối bị 
+bỏ nào vào bể. Cụ thể, phần tử này đặt thuộc tính removeAbandoned thành true 
+và đặt thuộc tính removeAbandonedTimeout thành 60. Như vậy, các kết nối bị bỏ 
+sẽ được trả lại vào bể sau khi chúng đã không hoạt động trong 60 giây. Ngoài ra, 
+phần tử này đặt thuộc tính logAbandoned thành true để mã nguồn đã gây ra việc 
+bỏ kết nối được viết vào tệp nhật ký cho connection pool.
+
+Sau khi bạn đã cấu hình tệp context.xml một cách chính xác, bạn có thể tạo một 
+lớp để dễ dàng lấy kết nối đến cơ sở dữ liệu. Trong hình ảnh này, ví dụ, lớp 
+ConnectionPool giúp cho bất kỳ lớp nào trong ứng dụng có thể lấy kết nối từ bể 
+kết nối cho cơ sở dữ liệu murach đang chạy trên máy chủ MySQL.
+
+
+A class that defines a connection pool 
+package murach.data; 
+ 
+import.java.sql.*;
+import javax.sql.DataSource; 
+import javax.naming.InitialContext; 
+import javax.naming.NamingException; 
+
+public class ConnectionPool { 
+
+    private static ConnectionPool pool = null; 
+    private static DataSource dataSource = null; 
+    
+    private ConnectionPool() { 
+        try {
+            InitialContext ic = new InitialContext(); 
+            dataSource = (DataSource) ic.lookup("java:/comp/env/jdbc/murach"); 
+        } catch (NamingException e) { 
+            System.out.println(e); 
+        }
+    }
+
+    public static synchronized ConnectionPool getinstance() {
+        if (pool == null) {
+            pool = new ConnectionPool(); 
+        return pool;
+    }
+}
+
+
+Để bắt đầu, lớp ConnectionPool nhập các giao diện và lớp cần thiết để có thể 
+lấy kết nối từ connection pool. Điều này bao gồm giao diện DataSource mà bể 
+kết nối Jakarta-Commons sử dụng để lưu trữ các kết nối và bao gồm lớp Initial Context 
+được sử dụng để lấy đối tượng DataSource.
+
+Sau khai báo lớp, lớp này khai báo một biến thể private static instance để 
+lưu trữ đối tượng ConnectionPool và khai báo một biến thể private static instance 
+để lưu trữ đối tượng DataSource.
+
+Sau những khai báo này, lớp ConnectionPool sử dụng một constructor private để 
+tạo một phiên bản của connection pool. Để thực hiện điều đó, nó sử dụng đối tượng 
+InitialContext để trả về một đối tượng DataSource. Lưu ý rằng mã này hoạt động 
+vì cuối chuỗi được truyền vào phương thức lookup (jdbc/murach) khớp với thuộc tính 
+name được xác định trong tệp context.xml.
+
+Sau constructor, phương thức static getinstance trả về một tham chiếu đến đối tượng 
+ConnectionPool. Để bắt đầu, phương thức này kiểm tra xem liệu ConnectionPool có
+tồn tại. Hầu hết thời gian, đối tượng tồn tại nên phương thức này chỉ trả về một 
+tham chiếu đến đối tượng ConnectionPool. Tuy nhiên, nếu đối tượng ConnectionPool 
+chưa được tạo, phương thức này sẽ tạo đối tượng ConnectionPool và trả về một 
+tham chiếu đến đối tượng này.
+
+Xin lưu ý rằng constructor private và phương thức getinstance của lớp ConnectionPool 
+chỉ cho phép tạo một phiên bản duy nhất của lớp ConnectionPool được tạo ra. 
+Điều này được gọi là mẫu singleton và thường được sử dụng bởi các lập trình viên 
+khi họ muốn đảm bảo rằng chỉ có một phiên bản duy nhất của một đối tượng được tạo ra.
+
+Khi connection pool đã được tạo, ứng dụng có thể sử dụng phương thức getConnection 
+trong hình ảnh này để trả về một đối tượng Connection có thể được sử dụng để 
+truy cập cơ sở dữ liệu. Để lấy một đối tượng connection, phương thức này gọi 
+phương thức getConnection của đối tượng DataSource. Nếu phương thức này ném một 
+SQLException, mã này sẽ in ra ngoại lệ và trả về giá trị null.
+
+Cuối cùng, ứng dụng có thể sử dụng phương thức freeConnection để đóng đối tượng 
+Connection cụ thể. Điều này trả kết nối về connection pool. Nếu phương thức close 
+của đối tượng Connection ném ra một SQLException, phương thức này sẽ in ra ngoại lệ.

@@ -1,0 +1,45 @@
+Cách sử dụng các chú thích getter và field!
+Trong hình trước, ví dụ đặt chú thích @Id trực tiếp phía trên trường UserId của 
+người dùng. Điều này gọi là chú thích trường (field annotation). Một tùy chọn khác 
+là đặt chú thích trực tiếp phía trên phương thức getUserid thay vì. 
+Điều này được gọi là chú thích getter (getter annotation). Hình 13-5 trình bày 
+ví dụ về cả chú thích getter và trường. Ngoài ra, nó mô tả một khác biệt quan trọng 
+giữa cách hai loại chú thích này hoạt động.
+Khi bạn sử dụng chú thích getter, JPA sử dụng các phương thức get và set của 
+lớp của bạn để lấy và đặt các trường. Điều này hoạt động như bạn viết mã sử dụng 
+các phương thức get và set để truy cập vào các trường này.
+Khi bạn sử dụng chú thích trường, JPA sử dụng reflection để lấy và đặt giá trị 
+của trường. Reflection là một chủ đề nâng cao không được bao gồm trong cuốn sách này. 
+Hiện tại, bạn chỉ cần biết rằng reflection cho phép JPA truy cập trực tiếp vào 
+các trường, ngay cả khi chúng là private. Điều này có nghĩa là ngay cả khi bạn có 
+các phương thức get và set trong lớp của bạn, JPA không gọi chúng khi bạn sử dụng 
+chú thích trường. Do đó, bất kỳ mã bạn có trong các phương thức get và set sẽ 
+không chạy khi bạn sử dụng chú thích trường. Vì vậy, nếu bạn cần chạy mã trong các 
+phương thức get hoặc set, bạn nên sử dụng chú thích getter, không phải chú thích 
+trường.
+
+Code that uses getter annotations
+private Long userId;
+
+@Id
+@GeneratedValue (strategy = GenerationType.AUTO)
+public Long getUserId() {
+    return userId;
+}
+
+public void setUserId(Long userId) {
+    this.userId = userId;
+}
+
+Code that uses field annotations
+@Id
+@GeneratedValue (strategy = GenerationType.AUTO)
+private Long userId;
+
+public Long getUserId() {
+    return userId;
+}
+
+public void setUserId(Long userId) {
+    this.userId = userId;
+}

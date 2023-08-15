@@ -1,0 +1,21 @@
+Các phương thức và Trường của lớp BodyContent
+
+The bodyContent object defined in the BodyTagSupport class
+protected BodyContent bodyContent
+
+Các phương pháp thông thường của lớp BodyContent
+Phương thức Mô tả
+clearBody(): Xóa nội dung.
+getEnclosingWriter(): Trả về đối tượng JspWriter cho nội dung.
+getString(): Trả về nội dung dưới dạng một đối tượng String.
+writeOut(Writer out): Ghi nội dung vào luồng out được chỉ định.
+
+Hình 10-10 hiển thị một số phương thức và trường của lớp BodyContent. Khi bạn mở rộng lớp BodyTagSupport,
+một phiên bản của lớp này có tên là bodyContent tự động có sẵn trong lớp thẻ của bạn và nó tự động lưu trữ
+nội dung của thẻ. Khi lớp thẻ đánh giá xong nội dung của thẻ, bạn có thể sử dụng các phương thức getEnclosingWriter
+và writeOut của lớp BodyContent để viết nội dung vào JSP.
+Đôi khi, bạn có thể cần sử dụng các phương thức khác của lớp BodyContent. Ví dụ, bạn có thể cần sử dụng phương thức
+getString để trả về văn bản của nội dung dưới dạng một đối tượng String. Hoặc bạn có thể cần sử dụng phương thức
+clearBody để xóa nội dung của đối tượng bodyContent sau khi nội dung được đánh giá. Để tìm hiểu thêm về những
+phương thức này và các phương thức khác của lớp BodyContent, bạn có thể tra cứu chúng trong tài liệu của Java EE API.
+

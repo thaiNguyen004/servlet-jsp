@@ -1,0 +1,33 @@
+Ứng dụng SQL Gateway
+
+Chủ đề này trình bày ứng dụng SQL Gateway, cho phép bạn sử dụng giao diện dựa 
+trên web để thực thi bất kỳ loại câu lệnh SQL nào. Một ứng dụng như thế này 
+giúp bạn dễ dàng xem và sửa đổi dữ liệu trong cơ sở dữ liệu. Ví dụ, bạn có thể 
+sao chép và dán các kịch bản SQL vào ứng dụng này và thực thi chúng. Ngoài ra, 
+nếu bạn nhập một câu lệnh SQL với cú pháp không chính xác, ứng dụng này sẽ 
+hiển thị một thông báo lỗi khi bạn cố gắng thực thi nó. Sau đó, bạn có thể 
+chỉnh sửa câu lệnh SQL và thử thực thi lại.
+
+Khi làm việc với cơ sở dữ liệu, bạn thường muốn sử dụng một ứng dụng như thế 
+này thay vì giao diện dòng lệnh. Nếu bạn đang làm việc với cơ sở dữ liệu được 
+lưu trữ bởi một nhà cung cấp dịch vụ internet (ISP), ISP thường bao gồm một 
+cách dựa trên web để làm việc với cơ sở dữ liệu. Nếu không, bạn có thể tải 
+lên ứng dụng này để làm việc với cơ sở dữ liệu. Tuy nhiên, trước khi làm điều đó, 
+bạn cần đảm bảo rằng ứng dụng này chỉ dành cho người dùng cụ thể của nó. 
+Nếu không, triển khai ứng dụng này lên ISP có thể tạo ra một lỗ hổng bảo mật 
+tiềm ẩn nguy hiểm.
+
+Giao diện người dùng
+
+Hình 12-7 hiển thị giao diện người dùng cho ứng dụng SQL Gateway. Để sử dụng 
+ứng dụng này, bạn nhập một câu lệnh SQL vào ô văn bản SQL Statement. 
+Sau đó, bạn nhấp vào nút Execute để chạy câu lệnh SQL. Khi bạn thực hiện hành động đó, 
+kết quả được hiển thị ở cuối trang.
+
+Nếu câu lệnh SQL là một câu SELECT chạy thành công, bộ kết quả được hiển thị 
+trong một bảng HTML như ở trang thứ hai trong hình. Đối với các loại câu lệnh khác, 
+kết quả là một thông báo chỉ ra số hàng bị ảnh hưởng bởi câu lệnh như trong 
+trang đầu tiên của hình.
+
+Ngoài ra, nếu câu lệnh SQL không thực thi thành công, kết quả là một thông báo 
+hiển thị thông tin về `SQLException` được ném ra.

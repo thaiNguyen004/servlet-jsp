@@ -1,0 +1,11 @@
+Phần 2 của hình vẽ này bắt đầu bằng cách hướng dẫn cách viết một phần tử thẻ cho một thẻ lặp lại nội dung của mình.
+Phần tử thẻ này tuân theo định dạng tương tự như phần tử thẻ được mô tả trong phần 2 của hình vẽ 10-2.
+
+<tag>
+    <name>ifWeekday</name>
+    <tagclass>murach.tags.IfWeekdayTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+</tag
+
+Tóm lại, phần tử bodycontent cho biết rằng thẻ này bao gồm một phần nội dung. Tuy nhiên, lưu ý rằng thẻ này không có
+bất kỳ thuộc tính nào.

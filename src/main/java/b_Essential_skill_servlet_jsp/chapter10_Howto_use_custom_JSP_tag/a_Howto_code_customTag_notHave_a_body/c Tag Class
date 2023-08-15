@@ -1,0 +1,48 @@
+Lớp thẻ (Tag class)
+
+package murach.tags;
+
+import javax.servlet.jsp.*;
+import javax.servlet.jsp.tagext.*;
+import java.io.*;
+import java.util.*;
+import java.text.DateFormat;
+
+public class CurrentDateTag extends TagSupport {
+    @Override
+    public int doStartTag() throws JspException {
+        Date currentDate = new Date();
+        DateFormat shortDate = DateFormat.getDateInstance(DateFormat.SHORT);
+        String currentDateFormatted = shortDate.format(currentDate);
+        try {
+            JspWriter out = pageContext.getOut();
+            out.print(currentDateFormatted);
+        } catch(IOException e) {
+            System.out.println(e);
+        }
+        return SKIP_BODY;
+    }
+
+}
+
+Phần 3 của hình vẽ này trình bày lớp thẻ cho thẻ currentDate được hiển thị trong phần 1. Lớp này hiển thị ngày hiện tại
+với định dạng MM/DD/YY.
+
+Để xác định một lớp thẻ cho một thẻ tùy chỉnh, bạn phải triển khai giao diện Tag. Tuy nhiên, vì bạn có thể không muốn
+xác định mọi phương thức trong giao diện Tag, nên dễ dàng hơn nếu bạn mở rộng lớp TagSupport thay vì. Lớp này là một
+lớp tiện ích triển khai giao diện Tag. Do đó, khi bạn mở rộng lớp này, bạn chỉ cần xác định các phương thức mà bạn
+muốn sử dụng.
+
+Để xác định các hành động của một thẻ tùy chỉnh, bạn có thể ghi đè phương thức doStartTag của lớp TagSupport.
+Phương thức này được gọi khi thẻ tùy chỉnh được đọc. Trong hình vẽ này, ví dụ, ba câu lệnh đầu tiên trong phương thức
+này sử dụng các lớp Date và DateFormat để lấy và định dạng ngày hiện tại. Sau đó, một câu lệnh try/catch sử dụng đối
+tượng pageContext tích hợp để trả về một đối tượng JspWriter được sử dụng để trả về ngày đã định dạng cho JSP.
+Cuối cùng, phương thức doStartTag trả về hằng SKIP_BODY được định nghĩa trong lớp TagSupport. Mỗi khi một thẻ không
+có phần thân (body), bạn trả về hằng SKIP_BODY sau khi sử dụng JspWriter để viết dữ liệu của thẻ vào JSP.
+
+Khi bạn viết mã các lớp thẻ, bạn có thể lưu chúng ở cùng vị trí như các lớp Java khác. Tuy nhiên, thông thường,
+bạn sẽ lưu các lớp thẻ trong một gói riêng biệt. Đó là lý do tại sao tất cả các lớp thẻ hiển thị trong chương này được lưu trong một gói có tên là "tags".
+
+Ở điểm này, bạn nên đã có một ý tưởng khá rõ về cách thẻ tùy chỉnh hoạt động. Khi động cơ JSP gặp phải một thẻ tùy chỉnh,
+nó sử dụng tiền tố thẻ để liên kết thẻ với chỉ thị "taglib," trỏ đến TLD cho thẻ. Sau đó, động cơ JSP sử dụng TLD
+để tìm lớp thẻ triển khai thẻ tùy chỉnh. Khi đã xong việc đó, động cơ JSP có thể dịch JSP thành một servlet gọi lớp thẻ.

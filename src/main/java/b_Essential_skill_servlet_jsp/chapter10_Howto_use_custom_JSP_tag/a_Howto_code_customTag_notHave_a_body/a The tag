@@ -1,0 +1,29 @@
+Chương này bắt đầu bằng cách hướng dẫn cách viết mã ba thành phần của một thẻ JSP tùy chỉnh không có
+phần thân (body). Đây là loại thẻ đơn giản nhất.
+
+A taglib directive that specifies a custom tag library
+<%@ taglib prefix="mma" uri="/WEB-INF/murach.tld" %>
+
+JSP code that uses the custom currentDate tag to display the date
+<p>The current date is <mma:currentDate/>.</p>
+
+Phần 1 của hình 10-1 cho thấy cách viết mã cho một thẻ tùy chỉnh chèn ngày hiện tại vào một trang JSP.
+Trước khi bạn có thể sử dụng một thẻ tùy chỉnh trong một trang JSP, bạn phải viết một chỉ thị "taglib" trong JSP.
+Trong chỉ thị này, thuộc tính "URI" phải xác định vị trí của Mô tả Thư viện Thẻ (TLD), điều này sẽ được tìm hiểu thêm
+trong phần tiếp theo của hình vẽ này. Ngoài ra, thuộc tính "prefix" phải chỉ định một tiền tố được sử dụng cho các thẻ
+tùy chỉnh được định nghĩa bởi TLD.
+
+Sau khi viết chỉ thị "taglib," bạn có thể sử dụng bất kỳ thẻ tùy chỉnh nào trong TLD. Để làm điều này, bạn viết một dấu
+ngoặc mở ("<"), tiền tố được chỉ định trong chỉ thị "taglib," một dấu hai chấm, tên của thẻ, và cuối cùng là một dấu
+gạch chéo tiến ("/>") để đóng thẻ.
+
+Trong ví dụ trong hình vẽ này, bạn có thể đạt được kết quả tương tự bằng cách sử dụng một "scriptlet" và biểu thức JSP.
+Tuy nhiên, việc sử dụng một thẻ tùy chỉnh có một số ưu điểm. Thứ nhất, thẻ tùy chỉnh giảm lượng mã Java cần thiết trong
+các trang JSP của bạn. Thứ hai, thẻ tùy chỉnh có thể giúp bạn tổ chức mã ứng dụng để giảm sự trùng lặp mã, điều này có
+thể làm cho mã ứng dụng của bạn dễ bảo trì hơn.
+
+Khi bạn tiến xa trong chương này, đừng quên rằng tất cả các ví dụ về thẻ tùy chỉnh đều giả định rằng một chỉ thị "taglib"
+như trong hình vẽ này đã được viết trước khi các thẻ tùy chỉnh được sử dụng. Đó là lý do tại sao tất cả các thẻ tùy chỉnh
+trong chương này đều sử dụng một tiền tố "mma" (viết tắt của Mike Murach & Associates). Và đó là lý do tại sao tất cả
+các thẻ tùy chỉnh trong chương này đều sử dụng một tệp TLD có tên "murach.tld" được lưu trữ trong thư mục
+"WEB-INF" của ứng dụng.

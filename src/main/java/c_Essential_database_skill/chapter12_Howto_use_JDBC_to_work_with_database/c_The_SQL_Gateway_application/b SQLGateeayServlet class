@@ -1,0 +1,126 @@
+Mã cho servlet
+
+package murach.controller;
+
+import java.io.IOException;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import murach.util.SQLUtil;
+
+/**
+ *
+ * @author nguye
+ */
+@WebServlet(name="SqlGatewayServlet", urlPatterns={"/SqlGatewayServlet"})
+public class SqlGatewayServlet extends HttpServlet {
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+                throws ServletException, IOException {
+        String sqlStatemet = request.getParameter("sqlStatement");
+        String sqlResult = "";
+        try {
+            // load the driver
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            // get a connection
+            String dbURL = "jdbc:mysql://localhost:3306/murach_test";
+            String username = "root";
+            String password = "123456";
+            Connection connection = 
+                    DriverManager.getConnection(dbURL, username, password);
+            
+            // create a statement
+            Statement statement = connection.createStatement();
+            // parse the SQL string 
+            sqlStatemet = sqlStatemet.trim();
+            if(sqlStatemet.length() >= 6) {
+                String sqlType = sqlStatemet.substring(0,  6);
+                if(sqlType.equalsIgnoreCase("select")) {
+                    // create the HTML for the resultset
+                    ResultSet resultSet = statement.executeQuery(sqlStatemet);
+                    sqlResult = SQLUtil.getHtmlTable(resultSet);
+                    resultSet.close();
+                } else {
+                    int i = statement.executeUpdate(sqlStatemet);
+                    if(i == 0) { // DDL statement
+                        sqlResult = 
+                                "<p> The statement executed succcessfully.</p>";
+                    } else { // an INSERT, UPDATE, or DELETE statement
+                        sqlResult = 
+                                "<p>The statement executed succcessfully. <br>"
+                                + i + " row(s) affected.</p>";
+                    }
+                }
+            }
+            statement.close();
+            connection.close();
+        } catch (ClassNotFoundException e) {
+            sqlResult = "<p> Error loading the database driver: <br>"
+                    + e.getMessage()
+                    +"</p>";
+        } catch (SQLException e) {
+            sqlResult = "<p>Error executing the SQL statement: <br>"
+                    + e.getMessage()
+                    +"</p>";
+        }
+        
+        HttpSession session = request.getSession();
+        session.setAttribute("sqlResult", sqlResult);
+        session.setAttribute("sqlStatement", sqlStatemet);
+        
+        String url = "/WEB-INF/index.jsp";
+        getServletContext().getRequestDispatcher(url).forward(request, response);
+    }
+
+}
+
+
+
+Hình 12-9 hiển thị mã cho SQLGatewayServlet. Để bắt đầu, servlet này import gói 
+java.sql để sử dụng các lớp JDBC.
+
+Trong phương thức `doPost` của servlet này, câu lệnh đầu tiên nhận câu lệnh 
+SQL mà người dùng nhập trong JSP, và câu lệnh thứ hai khai báo biến `sqlResult`.
+
+Trong khối `try`, câu lệnh đầu tiên tải rõ ràng trình điều khiển cơ sở dữ liệu 
+MySQL. Câu lệnh này không cần thiết trên tất cả các hệ thống, nhưng nó giải quyết 
+vấn đề "Không tìm thấy trình điều khiển thích hợp" xảy ra trên một số hệ thống. 
+Bốn câu lệnh tiếp theo tạo một đối tượng Connection cho cơ sở dữ liệu murach 
+đang chạy trên dịch vụ MySQL cục bộ. Các câu lệnh này kết nối dưới tên người 
+dùng có tên murach_user. Người dùng này chỉ có quyền thực thi một số loại câu 
+lệnh SQL nhất định trên cơ sở dữ liệu có tên murach. Kết quả là, nếu một người 
+dùng không được phép có thể truy cập vào ứng dụng này, ít nhất anh ta hoặc cô ta 
+sẽ không thể truy cập vào các cơ sở dữ liệu khác đang chạy trên máy chủ.
+
+Sau khi tạo đối tượng Connection, câu lệnh thứ năm sử dụng đối tượng Connection 
+để tạo một đối tượng Statement.
+
+Sau khi có được đối tượng Statement, một loạt câu lệnh if phân tích chuỗi SQL. 
+Để bắt đầu, câu lệnh đầu tiên sử dụng phương thức `trim` để loại bỏ bất kỳ dấu 
+cách ở đầu hoặc cuối chuỗi SQL. Sau đó, một câu lệnh if kiểm tra để đảm bảo rằng 
+chuỗi SQL chứa 6 ký tự trở lên, đây là số lượng ký tự tối thiểu cần thiết để ngăn 
+việc ném ra `NullPointerException` bởi phương thức `substring` tiếp theo. 
+Nếu chuỗi SQL chứa nhiều hơn 6 ký tự, phương thức `substring` trả về sáu chữ 
+cái đầu tiên của câu lệnh SQL.
+
+Nếu sáu chữ cái đầu tiên của câu lệnh SQL là "select", phương thức `executeQuery` 
+của đối tượng `Statement` trả về một đối tượng Result Set. Sau đó, đối tượng này 
+được truyền cho phương thức `getHtmlTable` của lớp `SQLUtil` được hiển thị trong 
+hình kế tiếp, và nó trả về bộ kết quả được định dạng với tất cả các thẻ HTML cần 
+thiết để hiển thị tất cả các hàng và cột của bộ kết quả trong một bảng HTML.
+
+Tuy nhiên, nếu sáu chữ cái đầu tiên của câu lệnh SQL không phải là "select", 
+phương thức `executeUpdate` của đối tượng `Statement` được gọi, trả về số hàng 
+bị ảnh hưởng. Nếu số hàng là 0, câu lệnh SQL là một câu lệnh DDL như DROP TABLE 
+hoặc CREATE TABLE. Nếu không, câu lệnh SQL là câu lệnh INSERT, UPDATE hoặc DELETE. 
+Dù cách nào đi nữa, mã đặt biến `sqlResult` thành một thông báo phù hợp.

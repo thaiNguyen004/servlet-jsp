@@ -1,0 +1,51 @@
+Làm cách nào để truy vấn (retrieve) một thực thể bằng khóa chính
+
+import javax.persistence.EntityManager;
+import murach.business.User;
+
+public class UserDB {
+    public static User getUserById(long userId) {
+        EntityManager em = DBUtil.getEmFactory().createEntityManagerFactory();
+        try {
+            User user = em.find(User.class, userId);
+            return user;
+        } finally {
+            em.close();
+        }
+    }
+}
+
+Hình 13-9 cho thấy cách truy vấn một thực thể bằng khóa chính. Đầu tiên, bạn cần 
+lấy một entity manager từ entity manager factory. Để làm điều này, bạn có thể 
+sử dụng lớp DBUtil được hiển thị trong hình trước để lấy một entity manager factory. 
+Sau đó, bạn có thể gọi phương thức createEntityManager của nhà máy để lấy một entity manager.
+
+Khi bạn có một entity manager, bạn có thể lấy một đối tượng bằng khóa chính của nó. 
+Để làm điều đó, bạn có thể gọi phương thức find của nó. Phương thức find có hai tham số. 
+Tham số đầu tiên xác định kiểu lớp của thực thể bạn muốn tìm. Điều này cho phép 
+entity manager biết nơi trong cơ sở dữ liệu để tìm thực thể, khóa chính của nó 
+là gì và kiểu đối tượng nó nên trả về. Tham số thứ hai xác định một giá trị cho khóa chính. 
+Tham số này có thể là bất kỳ kiểu đối tượng hợp lệ nào nhưng thường là kiểu long.
+Nếu phương thức find tìm thấy một thực thể với khóa chính đó, nó sẽ trả về thực thể 
+dưới dạng kiểu đã xác định. Nếu không, nó sẽ trả về null. Ở đây, JPA tự động chuyển 
+đổi tập kết quả thành kiểu đúng của đối tượng. Với JDBC, bạn sẽ phải viết mã để 
+làm điều đó.
+Khi bạn hoàn thành với entity manager, bạn cần đóng nó. Nếu không, bạn có thể gặp 
+phải rò rỉ tài nguyên. Đó là lý do tại sao đoạn mã này gọi phương thức close 
+của entity manager trong mệnh đề finally. Như vậy, đoạn mã này sẽ đóng entity manager, 
+ngay cả khi phương thức find ném ra một ngoại lệ.
+Quan trọng để nhớ rằng entity manager factory là luồng an toàn, nhưng entity manager 
+không phải luồng an toàn. Do đó, bạn không thể chia sẻ entity manager giữa các phương thức. 
+Nếu bạn làm điều này, nhiều luồng có thể cố gắng sử dụng entity manager cùng một lúc, 
+gây ra sự hỏng hóc dữ liệu.
+
+
+Two methods of the EntityManager class
+
+find(entityClass, primaryKey); 
+Trả về một đối tượng của lớp thực thể được chỉ định có khóa chính cụ thể. 
+Nếu khóa chính cụ thể không tồn tại, phương thức này trả về giá trị null.
+
+close();
+Đóng đối tượng quản lý thực thể và giải phóng tài nguyên của nó. Điều này 
+ngăn chặn việc rò rỉ tài nguyên.

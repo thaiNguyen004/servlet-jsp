@@ -1,0 +1,17 @@
+Bây giờ bạn đã biết cách tạo một thẻ tùy chỉnh không có phần thân (body), bạn đã sẵn sàng để tìm hiểu cách tạo một thẻ tùy chỉnh có phần thân.
+Thẻ
+
+JSP code that uses a custom tag with a body
+<mma:ifWeekday>
+    <p>Live support available at 1-800-555-2222</p>
+</mma:ifWeekday>
+
+Phần 1 của hình vẽ 10-2 cho thấy cách sử dụng một thẻ tùy chỉnh có phần thân trong một trang JSP. Tương tự như tất cả
+các thẻ tùy chỉnh khác, bạn phải viết một chỉ thị "taglib" trước khi bạn có thể sử dụng thẻ tùy chỉnh.
+Ví dụ trong hình vẽ này, bạn phải viết một chỉ thị "taglib" giống như chỉ thị được hiển thị trong phần 1 của hình vẽ 10-1
+trước khi bạn viết mã thẻ "ifWeekday". Sau đó, khi bạn sử dụng thẻ "ifWeekday," bạn viết mã thẻ mở,
+tiếp theo là phần thân của thẻ và sau đó là thẻ đóng.
+
+Trong hình vẽ này, thẻ tùy chỉnh xác định xem phần thân của thẻ có được hiển thị hay không. Trong phần 2 của hình vẽ này,
+bạn thấy rằng lớp cho thẻ này hiển thị phần thân của thẻ vào các ngày từ Thứ Hai đến Thứ Sáu,
+nhưng không hiển thị vào Thứ Bảy hoặc Chủ Nhật.
