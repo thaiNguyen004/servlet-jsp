@@ -49,15 +49,16 @@ https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.12/bin/apache-tomcat-10.1.12-win
 # Custom tag (Tag Library Descriptor)
 
 ### pattern
-A TLD file that contains two tag elements 
-    <?xml version="1.0" encoding="UTF-8" ?>
-    <taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
-            web-jsptaglibrary_2_0.xsd">
-    <tlib-version>1.0</tlib-version>
-    
-    </taglib>
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+                http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+  <tlib-version>1.0</tlib-version>
+  <short-name>newtag_library</short-name>
+  <uri>/WEB-INF/tlds/newtag_library</uri>
+  
+</taglib>
 
 ### example
 <short-name>murach</short-name>
