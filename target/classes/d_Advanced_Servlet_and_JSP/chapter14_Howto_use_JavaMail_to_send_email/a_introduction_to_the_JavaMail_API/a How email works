@@ -1,0 +1,67 @@
+Phần 5 trong cuốn sách này. 
+Phần mở đầu:
+Phần này bao gồm bảy chương trình trình bày các kỹ năng servlet và JSP khác mà 
+bạn có thể cần cho một số ứng dụng web của bạn. Ngoài ra, nó bao gồm một chương 
+giới thiệu về JSF. Do mỗi chương trong số này được viết như một mô-đun độc lập, 
+bạn có thể đọc chúng theo bất kỳ trình tự nào bạn thích. Ví dụ, nếu bạn muốn 
+tìm hiểu cách sử dụng listener để phản ứng với các sự kiện xảy ra trong suốt vòng 
+đời ứng dụng web, bạn có thể nhảy đến chương 19. 
+Hoặc, nếu bạn muốn tìm hiểu cách làm việc với kết nối bảo mật, bạn có thể nhảy 
+đến chương 15. Tuy nhiên, cuối cùng, bạn nên đọc tất cả các chương trong phần 
+này vì chúng cung cấp các khả năng hữu ích.
+
+Cách sử dụng JavaMail để gửi email
+Khi bạn tạo một ứng dụng web, đôi khi bạn cần gửi email đến người dùng của ứng dụng. 
+Ví dụ, khi một người dùng mua hàng từ một trang thương mại điện tử, ứng dụng web 
+thường gửi một email xác nhận chứa thông tin về đơn hàng. Trong chương này, 
+bạn sẽ tìm hiểu cách sử dụng JavaMail API để gửi email từ một servlet.
+
+Một sự giới thiệu về JavaMail API
+JavaMail API là một giao diện lập trình giúp nhà phát triển Java dễ dàng viết mã 
+để tự động gửi email. API này phụ thuộc vào một API khác được biết đến là 
+JavaBeans Activation Framework (JAF) API. 
+Hình ảnh trong hình 14-1 giới thiệu bạn với các API này và một số giao thức mà 
+các API này sử dụng.
+
+Bạn có thể quen thuộc với phần mềm trình duyệt email cho phép bạn gửi và nhận 
+tin nhắn. Ví dụ, ứng dụng email trên thiết bị di động của bạn, ứng dụng Microsoft 
+Outlook trên máy tính hoặc ứng dụng Gmail trên trình duyệt web của bạn. 
+Loại phần mềm này giao tiếp với phần mềm máy chủ email thực sự gửi và nhận email 
+của bạn. Rất có thể, phần mềm máy chủ email của bạn được cung cấp bởi nhà cung 
+cấp Dịch vụ Internet (ISP) hoặc thông qua công ty của bạn.
+Sơ đồ trong hình 14-1 cho thấy cách điều này hoạt động. Giao thức thường được 
+sử dụng để gửi email là SMTP. Khi bạn gửi một thư điện tử, thư điện tử được gửi 
+từ phần mềm máy chủ email trên máy tính của bạn đến máy chủ email của bạn bằng 
+cách sử dụng giao thức SMTP. Sau đó, máy chủ email của bạn sử dụng SMTP để gửi 
+thư đến máy chủ email của người nhận. Cuối cùng, máy trình duyệt email của người 
+nhận sử dụng giao thức POP hoặc giao thức IMAP để truy xuất thư từ máy chủ email 
+của người nhận.
+Giao thức thứ tư mà bạn nên biết là MIME. Không giống như các giao thức khác 
+được mô tả trong hình ảnh này, MIME không được sử dụng để chuyển thư điện tử. 
+Thay vào đó, nó xác định cách nội dung của một thư điện tử và các tệp đính kèm 
+của nó được định dạng. Trong chương này, bạn sẽ tìm hiểu cách gửi tin nhắn bao gồm 
+tin nhắn văn bản thuần túy cũng như tin nhắn sử dụng định dạng HTML.
+
+
+SMTP: Giao thức Truyền Thư Đơn Giản (Simple Mail Transfer Protocol - SMTP) được 
+sử dụng để gửi một tin nhắn từ một máy chủ thư điện tử tới máy chủ thư điện tử khác.
+
+POP: Giao thức Bưu Điện (Post Office Protocol - POP) được sử dụng để truy xuất 
+tin nhắn từ máy chủ thư điện tử. Giao thức này chuyển tất cả các tin nhắn từ máy 
+chủ thư điện tử đến máy trình duyệt thư. Hiện tại, POP đang ở phiên bản 3 và được 
+biết đến với tên gọi POP3.
+
+IMAP: Giao thức Truy cập Tin nhắn Internet (Internet Message Access Protocol - IMAP) 
+được sử dụng bởi các dịch vụ thư dựa trên web như Gmail và Yahoo. Giao thức này cho 
+phép một trình duyệt web đọc các tin nhắn được lưu trữ trên máy chủ thư. 
+Hiện tại, IMAP đang ở phiên bản 4 và được biết đến với tên gọi IMAP4.
+
+Another protocol that's used with email
+MIME: The Multipurpose Internet Mail Extension trình bày loại nội dung có thể 
+được gửi dưới dạng tin nhắn hoặc tệp đính kèm.
+
+The JAR files for the JavaMail API
+javax.mail.jar     Chứa các class Java của JavaMail API 
+activation.jar     Bao gồm các lớp Java cho JavaBean Activation Framework. 
+Những lớp này là cần thiết để JavaMail API hoạt động.
+

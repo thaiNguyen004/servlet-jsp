@@ -1,0 +1,92 @@
+Cách trả về một tập hợp kết quả và di chuyển con trỏ qua nó
+Sau khi bạn kết nối tới cơ sở dữ liệu, bạn đã sẵn sàng truy xuất dữ liệu từ đó 
+như được thể hiện trong hình 12-3. 
+
+How to create a result set that contains 1 row and 1 column 
+Statement statement = connection.createStatement(); 
+ResultSet userIDResult = statement.executeQuery(
+    ""
+    SELECT UserID FROM User
+    WHERE Email = 'jsmith@gmail.com
+    "");
+
+How to create a result set that contains multiple columns and rows 
+Statement statement = connection.createStatement(); 
+ResultSet products = statement.executeQuery("SELECT * FROM Product "); 
+
+How to move the cursor to the first row in the result set 
+boolean userIDExists = userIDResult.next(); 
+
+How to loop through a result set 
+while (products.next()) { 
+// statements that process each row
+}
+
+Ở đây, hai ví dụ đầu tiên cho thấy cách sử dụng đối tượng Statement để tạo một 
+bộ kết quả, hoặc bảng kết quả. 
+
+Tiếp theo, hai ví dụ tiếp theo cho thấy cách di chuyển con trỏ hàng, hoặc 
+con trỏ, qua bộ kết quả.
+
+Cả hai bộ kết quả trong hình này đều là bộ kết quả chỉ đọc và chỉ di chuyển 
+về phía trước. Điều này có nghĩa là bạn chỉ có thể di chuyển con trỏ về phía 
+trước qua bộ kết quả và bạn có thể đọc nhưng không thể viết các hàng trong bộ kết quả. 
+Mặc dù JDBC 4.0 hỗ trợ các loại bộ kết quả có khả năng cuộn và cập nhật khác, 
+nhưng các tính năng này yêu cầu một số chi phí phụ thuộc và chúng không cần 
+thiết đối với hầu hết các ứng dụng web.
+
+Trong ví dụ đầu tiên, phương thức createStatement được gọi từ một đối tượng 
+Connection để trả về một đối tượng Statement. Sau đó, phương thức executeQuery
+được gọi từ đối tượng Statement để thực thi một câu lệnh SQL SELECT được mã hóa 
+dưới dạng một chuỗi. Điều này trả về một đối tượng ResultSet chứa bộ kết quả cho 
+câu lệnh SELECT. Trong trường hợp này, câu lệnh SELECT chỉ truy xuất một cột từ 
+một hàng duy nhất (ID người dùng cho một địa chỉ email cụ thể), vì vậy đối tượng 
+ResultSet chứa thông tin đó. Đối tượng này có thể được kiểm tra để xem liệu 
+có một hàng tồn tại hay không.
+
+Ví dụ thứ hai hoạt động tương tự như ví dụ đầu tiên. Tuy nhiên, nó trả về tất cả 
+các hàng và cột cho bảng Sản phẩm và đặt bộ kết quả này vào một đối tượng ResultSet 
+có tên là products. Đối tượng này có thể được sử dụng để hiển thị tất cả các sản phẩm.
+
+Ví dụ thứ ba cho thấy cách sử dụng phương thức next của đối tượng ResultSet để 
+di chuyển con trỏ đến hàng đầu tiên của bộ kết quả được tạo ra bởi ví dụ đầu tiên. 
+Khi bạn tạo một bộ kết quả, con trỏ được đặt trước hàng đầu tiên trong bộ kết quả, 
+vì vậy việc sử dụng first của phương thức next sẽ cố gắng di chuyển con trỏ đến 
+hàng đầu tiên trong bộ kết quả. Nếu hàng tồn tại, con trỏ sẽ được di chuyển đến 
+hàng đó và phương thức next sẽ trả về giá trị true. Ngược lại, phương thức next 
+sẽ trả về giá trị false. Trong hình kế tiếp, bạn sẽ tìm hiểu cách truy xuất 
+giá trị từ hàng mà con trỏ đang trỏ tới.
+
+Ví dụ thứ tư cho thấy cách sử dụng phương thức next để lặp qua tất cả các hàng 
+trong bộ kết quả được tạo ra trong ví dụ thứ hai. Ở đây, vòng lặp while gọi 
+phương thức next. Sau đó, nếu hàng kế tiếp là một hàng hợp lệ, phương thức next 
+di chuyển con trỏ đến hàng và trả về giá trị true. Kết quả là, mã bên trong vòng 
+lặp while được thực thi. Ngược lại, phương thức next trả về giá trị false và mã bên 
+trong vòng lặp while không được thực thi.
+
+Vì tất cả các phương thức được mô tả trong hình này đều ném một SQLException, 
+bạn cần ném hoặc bắt ngoại lệ này khi làm việc với những phương thức này. 
+Các ứng dụng được trình bày sau trong chương này sẽ giải thích cách thực hiện 
+điều này. Mặc dù có nhiều phương thức ResultSet khác, phương thức mà bạn sẽ sử 
+dụng nhiều nhất với bộ kết quả chỉ đọc và chỉ di chuyển về phía trước là phương 
+thức next. Tuy nhiên, trong hình này, có ba phương thức khác được tóm tắt mà bạn 
+có thể đôi khi muốn sử dụng cho loại bộ kết quả này.
+
+next(): Phương thức này được sử dụng để di chuyển con trỏ của ResultSet tới hàng 
+tiếp theo trong bộ kết quả. Nếu có một hàng tiếp theo, phương thức này trả về true, 
+còn không thì trả về false. Điều này rất hữu ích trong việc lặp qua các hàng trong bộ kết quả.
+
+last(): Phương thức này được sử dụng để di chuyển con trỏ của ResultSet tới hàng 
+cuối cùng trong bộ kết quả. Nếu bộ kết quả trống, phương thức này trả về false. 
+Sử dụng last() có thể hữu ích khi bạn muốn di chuyển tới hàng cuối cùng để truy 
+xuất các thông tin trong bộ kết quả ngược từ cuối lên.
+
+close(): Phương thức này được sử dụng để đóng ResultSet, giải phóng tài nguyên và 
+giải phóng bộ nhớ. Việc đóng ResultSet sau khi sử dụng là quan trọng để tránh 
+lãng phí tài nguyên và giúp ứng dụng của bạn hoạt động hiệu quả hơn.
+
+getRow(): Phương thức này trả về số thứ tự của hàng mà con trỏ của ResultSet 
+đang trỏ tới. Nếu con trỏ không trỏ tới bất kỳ hàng nào hoặc nếu con trỏ trỏ 
+tới một hàng mà không có số thứ tự (ví dụ: khi sử dụng một ResultSet không thể cuộn), 
+thì phương thức này sẽ trả về 0
+

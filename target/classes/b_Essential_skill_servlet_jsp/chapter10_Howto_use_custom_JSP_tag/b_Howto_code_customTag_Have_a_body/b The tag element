@@ -1,0 +1,43 @@
+Phần tử thẻ
+
+The tag element in the TLD file
+<tag>
+    <name>ifWeekday</name>
+    <tagclass>murach.tags.IfWeekdayTag</tagclass>
+    <bodycontent>JSP</bodycontent>
+</tag>
+
+A tag class conditionally displays the body of the tag
+Một lớp của thẻ hiển thị phần thân có điều kiện
+package murach.tags;
+
+import javax.servlet.jsp.*;
+import javax.servlet.jsp.tagext.*;
+import java.util.*;
+
+public class IfWeekdayTag extends TagSupport {
+    @Override
+    public int doStartTag() throws JspException {
+        Calendar currentDate = new GregorianCalender();
+        int day = currentDate.get(Calendar.DAY_OF_WEEK);
+        if(day == Calendar.SATURDAY || day == Calendar.SUNDAY) {
+            return SKIP_BODY;
+        } else {
+            return EVAL_BODY_INCLUDE;
+        }
+    }
+}
+
+Phần 2 của hình vẽ này cho thấy cách viết phần tử thẻ cho một thẻ chứa phần thân. Nói chung, thẻ này tuân theo các
+quy tắc giống như một thẻ không có phần thân. Tuy nhiên, để thông báo cho động cơ JSP rằng thẻ có phần thân,
+bạn phải viết một phần tử bodycontent xác định giá trị là "JSP". Ngược lại, khi bạn viết một thẻ không có phần thân,
+bạn có thể bỏ qua phần tử bodycontent hoặc bạn có thể xác định giá trị là "empty".
+
+Lớp thẻ
+Phần 2 của hình vẽ này cũng cho thấy lớp thẻ cho thẻ "ifWeekday". Lớp này hiển thị phần thân của thẻ nếu ngày hiện tại
+là ngày trong tuần.
+
+Để bắt đầu, lớp này mở rộng lớp TagSupport và ghi đè phương thức doStartTag. Trong phương thức doStartTag, lớp này sử dụng
+một câu lệnh if để kiểm tra xem ngày hiện tại có phải là Thứ Bảy hoặc Chủ Nhật không. Nếu đúng, phương thức này trả về
+trường SKIP_BODY để bỏ qua phần thân của thẻ. Nếu không phải là vậy, phương thức này trả về trường EVAL_BODY_INCLUDE
+để thực hiện và hiển thị phần thân của thẻ.

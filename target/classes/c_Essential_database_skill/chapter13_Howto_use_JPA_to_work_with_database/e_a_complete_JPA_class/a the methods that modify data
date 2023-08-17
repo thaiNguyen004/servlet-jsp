@@ -1,0 +1,99 @@
+Một lớp JPA hoàn chỉnh
+Hình 13-14 trình bày mã cho một phiên bản lớp UserDB sử dụng JPA.
+
+package murach.data;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
+
+import murach.business.User;
+
+public class UserDB {
+    
+    public static void insert (User user) {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        trans.begin();
+        try {
+            em.persist(user);
+            trans.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            trans.rollback();
+        } finally {
+            em.close();
+        }
+    }
+
+    public static void update (User user) {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        trans.begin();
+        try {
+            em.merge(user);
+            trans.commit();
+        } catch (Exception e) {
+            System.out.println(e);
+            trans.rollback();
+        } finally {
+            em.close();
+        }
+    }
+
+    public static void delete (User user) {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        trans.begin();
+        try {
+            em.remove(em.merge(user));
+        } catch (Exception e) {
+            System.out.println(e);
+            trans.rollback();
+        } finally {
+            em.close();
+        }
+    }
+
+}
+
+The UserDB class
+public static User selectUser (String email) {
+    EntityManager em = DBUtil.getEmFactory().createEntityManager();
+    String qString = "SELECT u FROM User u " +
+                    "WHERE u.email = :email";
+    TypedQuery<User> q = em.createQuery(qString, User.class);
+    q.setParameter("email", email);
+    try {
+        User user = q.getSingleResult();
+    } catch (NoResultException e) {
+        return null ;
+    } finally {
+        em.close();
+    }
+
+    public static boolean emailExists(String email) {
+        User u = selectUser(email);
+        return u != null;
+    }
+} 
+
+Lớp này chứa các phương thức emailExists và insert được sử dụng bởi ứng dụng 
+EmailList được trình bày trong chương trước. Ngoài ra, lớp này còn bao gồm ba 
+phương thức khác (update, delete và selectUser) có thể được sử dụng để thay đổi 
+và truy vấn dữ liệu người dùng.
+
+Nếu bạn so sánh phiên bản JPA của lớp UserDB với phiên bản JDBC, bạn có thể thấy 
+rằng phiên bản JPA ngắn gọn và đơn giản hơn. Điều này bởi vì JPA tự động chuyển đổi 
+giữa đối tượng User và bảng User trong cơ sở dữ liệu.
+Trong phiên bản JPA của lớp UserDB, các phương thức bắt đầu bằng việc sử dụng lớp 
+DBUtil đã được hiển thị trong chương trước để nhận một đối tượng EntityManagerFactory. 
+Sau đó, mỗi phương thức sử dụng đối tượng factory đó để nhận một đối tượng EntityManager.
+
+Các phương thức thay đổi dữ liệu
+Các phương thức insert, update và delete nhận một đối tượng EntityTransaction 
+từ đối tượng EntityManager. Sau đó, chúng sử dụng đối tượng này bên trong một câu 
+lệnh try/catch để xác nhận hoặc quay lại giao dịch. Nếu thao tác với cơ sở dữ liệu 
+thành công, khối try xác nhận giao dịch. Ngược lại, nếu xảy ra một ngoại lệ, khối 
+catch in ra ngoại lệ ra luồng đầu ra tiêu chuẩn và quay lại giao dịch.

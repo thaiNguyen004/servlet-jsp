@@ -1,0 +1,66 @@
+Mã cho lớp utility
+
+package murach.sql;
+
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+
+public class SQLUtil {
+
+    public static String getHtmlTable(ResultSet resultSet) throws SQLException {
+        StringBuilder htmlTable = new StringBuilder();
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
+
+        htmlTable.append("<table>");
+
+        // add header row
+        htmlTable.append("<tr>");
+        for (int i = 1; i <= columnCount; i++) {
+            htmlTable.append("<th>");
+            htmlTable.append(metaData.getColumnName(i));
+            htmlTable.append("</th>");
+        }
+        htmlTable.append("</tr>");
+        
+        // add all other rows
+        while(resultSet.next()) {
+            htmlTable.append("<tr>");
+            for (int i = 1; i <= columnCount; i++) {
+                htmlTable.append("<td>");
+                htmlTable.append(resultSet.getString(i));
+                htmlTable.append("</td>");
+            }
+            htmlTable.append("</tr>");
+        }
+        htmlTable.append("</table>");
+        return htmlTable.toString();
+    }
+}
+
+
+
+Hình 12-10 hiển thị mã cho lớp tiện ích có tên SQLUtil. Lớp này chứa một 
+phương thức tĩnh có tên `getHtmlTable` được gọi bởi servlet trong hình trước. 
+Vì lớp tiện ích này làm việc với các câu lệnh SQL, nó được lưu trữ trong gói `murach.sql`.
+
+Phương thức `getHtmlTable` chấp nhận một đối tượng `ResultSet` và trả về một 
+đối tượng `String` chứa các thẻ HTML cần thiết để hiển thị các cột và hàng 
+trong bộ kết quả trong một bảng HTML. Để xây dựng thông tin cho đối tượng `String` 
+đó, phương thức `getHtmlTable` khai báo một đối tượng `StringBuilder` có 
+tên `htmlTable` và nối dữ liệu vào đó khi phương thức được thực thi. 
+Ở cuối phương thức, phương thức `toString` được sử dụng để chuyển đổi 
+đối tượng `StringBuilder` thành đối tượng `String` được trả về cho servlet.
+
+Để có được các tiêu đề cột được trả về, phương thức `getHtmlTable` sử dụng 
+phương thức `getMetaData` của đối tượng `ResultSet` để tạo một đối tượng `ResultSetMetaData`. 
+Loại đối tượng này chứa thông tin về bộ kết quả bao gồm số cột và tên của các cột. 
+Để lấy thông tin đó, phương thức `getHtmlTable` sử dụng phương thức 
+`getColumnCount` và `getColumnName` của đối tượng `ResultSetMetaData`.
+
+Để lấy dữ liệu từ bộ kết quả, phương thức `getHtmlTable` sử dụng một vòng lặp 
+`for` bên trong một vòng lặp `while` để lấy dữ liệu cho mỗi cột trong mỗi hàng. 
+Trong các vòng lặp này, mã sử dụng phương thức `getString` của bộ kết quả để lấy 
+dữ liệu cho mỗi cột. Điều này chuyển đổi dữ liệu thành một chuỗi bất kể loại 
+dữ liệu của cột.

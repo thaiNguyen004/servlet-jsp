@@ -1,0 +1,47 @@
+Bốn thuộc tính khác cho việc lặp
+Khi làm việc với các tập hợp, mã servlet thường tạo một tập hợp và chuyển nó đến trang JSP để tập hợp có thể được
+hiển thị cho người dùng. Sau đó, trang JSP sử dụng thẻ "forEach" để lặp qua tập hợp và hiển thị cho người dùng
+như được thể hiện trong hình các ví dụ trước.
+
+Tuy nhiên, có thể có những thời điểm khi trang JSP cần thực hiện thêm xử lý. Ví dụ, trang JSP có thể cần biết
+liệu mục đó có phải là mục đầu tiên hay mục cuối cùng, để có thể áp dụng định dạng đặc biệt cho mục đó.
+Hoặc, trang JSP có thể cần biết số thứ tự của mục, để có thể áp dụng tô màu xen kẽ cho các mục.
+Trong trường hợp đó, bạn có thể sử dụng các thuộc tính được mô tả trong hình 9-6.
+
+An example that uses all four attributes
+Servlet code
+int[] numbers = new int[30];
+for (int i= 0; i < 30; i++) {
+    numbers[i] = i+1;
+}
+session.setAttribute ("numbers", numbers);
+
+JSP code
+<p>Numbers</p>
+<ul>
+    <c:forEach var="number" items="${numbers}"
+        begin="O" end="9" step="1" varStatus="status" >
+        <li>${number} | First: ${status.first} | Last: ${status.last}
+            Index: ${status.index} | Count: ${status.count}
+        </li>
+    </c:forEach>
+</ul>
+
+Những thuộc tính này hoạt động tương tự cho các thẻ "forEach" và "forTokens".
+Ví dụ trong hình này cho thấy cách làm việc với các thuộc tính "begin", "end" và "step" có sẵn cho các thẻ
+"forEach" và "forTokens".
+Ở đây, thuộc tính "begin" xác định chỉ số bắt đầu cho vòng lặp;
+thuộc tính "end" xác định chỉ số cuối cùng cho vòng lặp;
+và thuộc tính "step" xác định số lượng để tăng chỉ số mỗi lần qua vòng lặp.
+Nếu bạn hiểu cách một vòng lặp "for" hoạt động trong Java, bạn không nên gặp nhiều khó khăn khi hiểu các
+thuộc tính này. Trong ví dụ này, các thuộc tính này được sử dụng để in ra 10 số đầu tiên được lưu trữ
+trong một mảng gồm 30 giá trị kiểu int.
+
+Ví dụ này cũng cho thấy cách sử dụng thuộc tính "varStatus".
+Thuộc tính này xác định tên của biến có thể được sử dụng để lấy thông tin về trạng thái của vòng lặp.
+Cụ thể, biến này cung cấp bốn thuộc tính tên là "first", "last", "index" và "count" mà bạn có thể sử dụng trong
+phần thân của vòng lặp. Ví dụ, bạn có thể sử dụng thuộc tính "first" và "last" để trả về một giá trị Boolean
+cho biết liệu mục đó có phải là mục đầu tiên hay mục cuối cùng trong tập hợp.
+Hoặc, bạn có thể sử dụng thuộc tính "index" và "count" để trả về một giá trị số nguyên cho mục đó. Tuy nhiên,
+lưu ý rằng thuộc tính "index" trả về một giá trị số nguyên mà nhỏ hơn một đơn vị so với giá trị của thuộc tính "count".
+Điều này là do thuộc tính "index" bắt đầu từ 0 trong khi thuộc tính "count" bắt đầu từ 1.

@@ -1,0 +1,76 @@
+Cách sử dụng JPA để làm việc với cơ sở dữ liệu
+JPA (Java Persistence API) là một cách tương đối mới để làm việc với cơ sở dữ liệu 
+trong Java, có nhiều ưu điểm hơn so với giao diện JDBC cũ được mô tả trong chương trước. 
+Như bạn sẽ thấy trong chương này, JPA làm cho việc làm việc với dữ liệu hướng 
+đối tượng và mối quan hệ giữa các đối tượng trở nên dễ dàng hơn. 
+Kết quả là, bạn có thể muốn sử dụng nó để phát triển ứng dụng mới. Mặc dù chương 
+này trình bày JPA trong bối cảnh của các ứng dụng web, bạn cũng có thể sử dụng JPA 
+trong các loại ứng dụng Java khác như các ứng dụng desktop.
+
+Giới thiệu về JPA 
+JPA (Java Persistence API) là một đặc tả ánh xạ object-relational được thiết kế 
+để dễ dàng chuyển đổi giữa các đối tượng business và dữ liệu cơ sở dữ liệu 
+của ứng dụng. Điều này còn được gọi là ánh xạ O/R hoặc ORM.
+JPA cung cấp một số tính năng giúp việc sử dụng nó trở nên dễ dàng hơn so với JDBC. 
+- Đầu tiên, JPA có thể tự động tạo bảng cơ sở dữ liệu dựa trên mối quan hệ giữa các 
+đối tượng business. 
+- Thứ hai, JPA có thể tự động chuyển đổi giữa các đối tượng và các hàng trong cơ sở 
+dữ liệu quan hệ.
+- Thứ ba, JPA có thể tự động thực hiện các phép nối để thỏa mãn các mối quan hệ 
+giữa các đối tượng.
+
+JPA chạy trên nền tảng của JDBC. Kết quả là, nó tương thích với bất kỳ cơ sở dữ 
+liệu nào có trình điều khiển JDBC.
+
+Tóm tắt về các phiên bản JPA
+Có một số phiên bản JPA khác nhau. Tất cả chúng đều tuân theo đặc tả JPA. 
+Kết quả là, bạn có thể sử dụng những kỹ năng trình bày trong chương này với 
+bất kỳ phiên bản nào trong số này.
+
+Hình 13-1 liệt kê ba phiên bản phổ biến nhất. Các máy chủ Java EE đầy đủ thường 
+cung cấp phiên bản JPA riêng của họ. Ví dụ, Glassfish sử dụng TopLink và 
+WildFly sử dụng Hibernate.
+Khi bạn sử dụng Tomcat, bạn có thể chọn phiên bản JPA. Chương này hướng dẫn cách 
+sử dụng EclipseLink. Nếu bạn muốn sử dụng một phiên bản khác, như Hibernate, bạn 
+cũng nên có thể làm điều đó. Tuy nhiên, một số chi tiết cấu hình có thể khác nhau. 
+Kết quả là, bạn có thể cần tìm hiểu tài liệu cho phiên bản JPA của bạn để cấu hình JPA.
+
+Entity và Entity manager
+Khi làm việc với JPA, các đối tượng business được gọi là entity và được quản lý 
+bởi một entity manager. Trong một máy chủ Java EE đầy đủ như Glassfish, máy chủ 
+cung cấp một quản lý entity tích hợp có các tính năng nâng cao như tự động 
+hoàn tác transaction. Tuy nhiên, chương này sẽ chỉ cho bạn cách sử dụng quản lý 
+entity bên ngoài máy chủ Java EE đầy đủ. Như vậy, bạn có thể sử dụng chúng 
+trong Tomcat hoặc trong một ứng dụng desktop.
+
+Để chuyển một lớp business bình thường thành một entity, bạn mã hóa các annotation 
+trong class. Những annotation này xác định cách lớp nên được lưu trữ trong cơ sở dữ liệu 
+và xác định cách một lớp liên quan đến lớp khác. Vì những lớp này chỉ là các 
+đối tượng Java thông thường với các annotation, bạn vẫn có thể sử dụng những lớp 
+này mà không cần JPA. Trong trường hợp đó, các chú thích sẽ được bỏ qua.
+
+
+JPA ... 
+• là một đặc tả ánh xạ đối tượng-quan hệ.
+• làm cho việc ánh xạ các đối tượng thành các hàng trong cơ sở dữ liệu quan hệ trở nên dễ dàng hơn.
+• bảo vệ nhà phát triển khỏi việc phải viết mã JDBC và SQL.
+• chạy trên nền tảng của JDBC.
+• tương thích với bất kỳ cơ sở dữ liệu nào có trình điều khiển JDBC.
+
+Ba phiên bản JPA phổ biến 
+• Hibernate
+• EclipseLink
+• TopLink
+
+Thực thể và quản lý entity 
+• Các lớp business được thiết kế để sử dụng với JPA được gọi là entity. 
+Bạn có thể chuyển đổi một lớp business thành một entity bằng cách thêm 
+các annotation JPA vào lớp.
+
+• Thực thể được quản lý bởi một entity manager.
+
+• Các máy chủ ứng dụng Java EE đầy đủ như Glassfish có một entity manager 
+tích hợp bao gồm các tính năng nâng cao như quản lý transaction automatic.
+
+• Nếu bạn muốn sử dụng JPA bên ngoài máy chủ ứng dụng Java EE đầy đủ, như trong 
+Tomcat hoặc một ứng dụng desktop, bạn có thể tạo ra các entity manager riêng của bạn.

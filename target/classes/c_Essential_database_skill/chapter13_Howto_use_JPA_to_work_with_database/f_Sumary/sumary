@@ -1,0 +1,75 @@
+Quan điểm
+Mục tiêu của chương này đã là hướng dẫn bạn cách sử dụng JPA để làm việc với 
+cơ sở dữ liệu trong Java một cách dễ dàng hơn so với việc sử dụng JDBC. 
+Mặc dù JPA có nhiều tính năng hơn so với những gì chúng tôi đã trình bày trong chương này, 
+những kỹ năng bạn đã học ở đây là những kỹ năng cần thiết bạn sẽ cần cho hầu hết 
+các ứng dụng web nhỏ đến trung bình.
+
+Đối với các trang web lớn, bạn có thể muốn tận dụng một số tính năng bổ sung 
+được cung cấp bởi máy chủ Java EE đầy đủ như việc tự động xác nhận và hoàn tác giao dịch, 
+và quản lý tự động của các trình quản lý thực thể. Bạn có thể tìm hiểu thêm về những 
+tính năng này từ nhiều nguồn, bao gồm hướng dẫn Java EE trực tuyến từ Oracle.
+
+JPA 2 đã giới thiệu một cách khác để thực hiện các truy vấn gọi là Criteria API. 
+Chúng tôi không bao gồm Criteria API trong cuốn sách này vì không có ứng dụng 
+nào được trình bày trong cuốn sách này cần sử dụng nó. API này được thiết kế để 
+làm cho các truy vấn động dễ dàng và an toàn hơn. Các truy vấn động có thể cho 
+phép hành vi tương tự công cụ tìm kiếm trên trang web của bạn. 
+Tuy nhiên, với JDBC và JPQL, việc viết các truy vấn động mà không bị lỗ hổng 
+tấn công SQL injection là khó khăn. 
+Criteria API làm cho việc này dễ dàng hơn. Do đó, nếu bạn cần viết các truy vấn 
+động, việc tìm hiểu về Criteria API đáng để xem xét.
+
+Tóm tắt
+- JPA (Java Persistence API) là một API tiêu chuẩn để làm việc với cơ sở dữ liệu 
+trong Java, giúp làm việc với dữ liệu hướng đối tượng trở nên dễ dàng và 
+tự nhiên hơn so với JDBC.
+
+- Có một số phiên bản JPA. Ba trong số những phiên bản phổ biến nhất là 
+Hibernate, EclipseLink và TopLink.
+
+- Một lớp kinh doanh được sử dụng với JPA được gọi là một thực thể (entity). 
+Các thực thể được quản lý bởi trình quản lý thực thể (entity manager).
+
+- Bạn có thể chuyển đổi một lớp kinh doanh thành một thực thể bằng cách thêm 
+các chú thích JPA vào lớp.
+
+- Để sử dụng JPA trong một ứng dụng, bạn cần thêm một thư viện cho một phiên bản 
+JPA và cấu hình một persistance unit.
+
+- Để sử dụng JPA bên ngoài một máy chủ Java EE đầy đủ, bạn sử dụng một đối tượng 
+EntityManagerFactory để nhận các đối tượng EntityManager.
+
+- Bạn sử dụng chú thích @Entity để xác định rằng một lớp kinh doanh là một thực thể.
+
+- Bạn sử dụng chú thích @Id để xác định trường nào trong lớp của bạn là khóa chính, 
+và bạn có thể sử dụng chú thích @GeneratedValue để xác định cách tạo giá trị này.
+
+- Các chú thích trường không sử dụng các phương thức get và set của lớp để lấy và 
+đặt giá trị của các trường. Thay vào đó, chúng truy cập trực tiếp vào các trường.
+
+- Các chú thích Getter sử dụng các phương thức get và set của lớp để lấy và đặt 
+giá trị của các trường.
+
+- Bạn có thể sử dụng các chú thích @OneToMany, @ManyToOne và @OneToOne để xác định 
+mối quan hệ giữa các lớp kinh doanh của bạn.
+
+- Bạn có thể sử dụng chú thích @Temporal để xác định kiểu SQL cho các loại
+java.util.Date và java.util.Calendar.
+
+- JPQL (Java Persistence Query Language) là một ngôn ngữ truy vấn hướng đối tượng 
+được định nghĩa như một phần của chuẩn JPA. Nó hoạt động tương tự như SQL, 
+nhưng nó không phải là SQL.
+
+- JPQL sử dụng biểu thức đường dẫn để tham chiếu đến các trường của một thực thể.
+
+- Để xác định một tham số có tên trong một chuỗi truy vấn JPQL, bạn mã hóa dấu 
+hai chấm (:) theo sau là tên của tham số.
+
+- Bạn có thể sử dụng các phương thức persist, merge và remove của trình quản lý 
+thực thể để chèn, cập nhật và xóa dữ liệu.
+
+- Khi sửa đổi dữ liệu, bạn có thể duy trì tính toàn vẹn dữ liệu bằng cách mã hóa 
+các hoạt động cơ sở dữ liệu trong một giao dịch. Sau đó, nếu giao dịch thành công, 
+bạn có thể xác nhận các thay đổi vào cơ sở dữ liệu. Ngược lại, nếu giao dịch 
+không thành công, bạn có thể hoàn tác bất kỳ thay đổi nào.

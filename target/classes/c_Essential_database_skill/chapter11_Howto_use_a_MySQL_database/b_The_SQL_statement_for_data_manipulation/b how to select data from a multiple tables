@@ -1,0 +1,59 @@
+Cách Select dữ liệu từ nhiều bảng
+
+Hình 11-12 cho thấy cách sử dụng câu lệnh SELECT để truy xuất dữ liệu từ hai bảng. 
+Điều này thường được gọi là một phép nối (join). Kết quả của bất kỳ phép join 
+nào là một bảng kết quả duy nhất.
+
+Phép INNER JOIN là loại phép join phổ biến nhất. Khi bạn sử dụng phép này, 
+dữ liệu từ các hàng trong hai bảng được bao gồm trong bộ kết quả chỉ khi các 
+cột liên quan của chúng phù hợp. Trong hình này, câu lệnh SELECT nối dữ liệu 
+từ các hàng trong bảng User và Download chỉ khi giá trị của cột UserID trong bảng 
+User bằng với cột UserID trong bảng Download. 
+Nói cách khác, nếu không có dữ liệu nào trong bảng Download cho một người dùng, 
+người đó sẽ không được thêm vào bộ kết quả.
+
+Một loại phép join khác là phép outer join. Với loại phép nối này, tất cả các 
+bản ghi trong một trong các bảng được bao gồm trong bộ kết quả dù có hay không có 
+bản ghi phù hợp trong bảng khác. 
+Trong phép left outer join, tất cả các bản ghi trong bảng đầu tiên (bảng bên trái) 
+được bao gồm trong bộ kết quả. 
+Trong phép right outer join, tất cả các bản ghi trong bảng thứ hai được bao gồm. 
+Để minh họa, giả sử câu lệnh SELECT trong hình này đã sử dụng một phép left outer join. 
+Trong trường hợp đó, tất cả các bản ghi trong bảng User sẽ được bao gồm trong bộ kết quả... 
+ngay cả khi không có bản ghi phù hợp nào được tìm thấy trong bảng Download.
+
+Để viết một phép nối, bạn sử dụng mệnh đề JOIN để chỉ định bảng thứ hai và mệnh đề 
+ON để chỉ định các cột sẽ được sử dụng cho phép nối. Nếu một cột trong một bảng 
+có cùng tên với một cột trong bảng khác, bạn viết tên bảng, một dấu chấm và 
+tên cột để chỉ định cột mà bạn muốn sử dụng. Bạn có thể thấy điều này trong 
+mệnh đề ON của ví dụ trong hình này.
+
+The syntax for a SELECT statement that joins two tables 
+SELECT column-1 [,column-2] ••• 
+FROM table-1 
+    {INNER | LEFT OUTER | RIGHT OUTER} JOIN table-2 
+    ON table-1.column-1 {= | < | > | <= | >= | <>} table-2.column-2 
+[WHERE selection-criteria] 
+[ORDER BY column-1 [ASC | DESC] [,column-2 [ASC | DESC] ••• ]] 
+
+A statement that gets data from related(có liên quan) User and Download tables 
+SELECT Email, DownloadFilename, DownloadDate 
+FROM User 
+    INNER JOIN Download 
+    ON User.UserID = Download.UserID 
+WHERE DownloadDate > '2014-01-01' 
+ORDER BY Email ASC
+
+Mặc dù hình này chỉ cho thấy cách nối dữ liệu từ hai bảng, bạn có thể mở rộng 
+cú pháp này để nối dữ liệu từ các bảng khác nhau. Ví dụ, nếu bạn muốn tạo một 
+bộ kết quả bao gồm dữ liệu từ ba bảng có tên User, Download và Product, 
+bạn có thể viết mệnh đề FROM của câu lệnh SELECT như sau:
+
+FROM User 
+    INNER JOIN Download 
+        ON User.UserID = Download.UserID 
+    INNER JOIN Product 
+        ON Download.ProductCode = Product.ProductCode 
+
+Sau đó, bạn có thể bao gồm bất kỳ cột nào từ ba bảng trong danh sách cột của 
+câu lệnh SELECT.

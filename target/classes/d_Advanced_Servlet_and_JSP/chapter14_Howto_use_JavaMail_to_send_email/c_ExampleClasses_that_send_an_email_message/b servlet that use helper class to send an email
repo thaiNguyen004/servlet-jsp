@@ -1,0 +1,86 @@
+Một servlet sử dụng lớp trợ giúp để gửi một tin nhắn email
+
+A servlet that sends an email
+import ...;
+
+public class EmailListServlet extends HttpServlet {
+    
+    @Override 
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+         // get current action
+         String action = req.getParameter("action");
+         if(action == null) {
+            action = "join";    // default action
+         }
+         
+         // perform action and set URL to appropriate page
+         String url = "/index.jsp";
+         if(action.equals("join")) {
+            url = "/index.jsp";
+         } else if (action.equals("add")) {
+            // get parameters from the request
+            String firstName = req.getParameter("firstName");
+            String lastName = req.getParameter("lastName");
+            String email = req.getParameter("email");
+            
+            // store data in User object
+            User user = new User(firstName, lastName, email);
+            UserDB.insert(user);
+            request.setAttribute("user", user);
+
+            // send email to user
+            String to = email;
+            String from = "email_list@murach.com";
+            String subject = "Welcom to our email list";
+            String body = "Dear " + firstName + ", \n\n"
+                    + "Thanks for joining our email list. We'll make sure to send"
+                    + "you announcements about new products and promotions.\n"
+                    + "Have a great day and thanks again!\n\n"
+                    + "Kelly Slivkoff\n"
+                    + "Mike Murach & Associates";
+            boolean isBodyHTML = false;
+
+            try {
+                MailUtilLocal.sendMail(to, from, subject, body, isBodyHTML);
+            } catch (MessagingException e) {
+                String errorMessage = 
+                        "ERROR: Unable to send email. "
+                        + "Check Tomcat logs for details."
+                        + "NOTE: You may need to configure your system "
+                        + "as described in chapter 14.<br>"
+                        + "ERROR MESSAGE: " + e.getMessage();
+                        
+                this.log("Unable to send email. \n"
+                            + "Here is the mail you tried to send: "
+                            + "===================================="
+                            + "TO: " + email + "\n"
+                            + "FROM: " + from + "\n"
+                            + "SUBJECT: " + subject + "\n"
+                            + "\n"
+                            + body + "\n\n");
+            }
+
+            url = "/thanks.jsp";
+        }
+        getServletContext()
+                    .getRequestDispatcher(url)
+                    .forward(req, resp);
+    }        
+}
+
+
+Hình 14-9 trình bày mã cho lớp EmailListServlet. Vì bạn đã thấy các biến thể 
+của lớp này trong suốt cuốn sách này, bạn không nên gặp bất kỳ vấn đề gì khi 
+hiểu cách nó hoạt động. Lần này, tuy nhiên, servlet sử dụng lớp MailUtilLocal 
+được trình bày trong hình trước để gửi một tin nhắn email tới địa chỉ email 
+mà người dùng nhập vào.
+Sau khi servlet ghi đối tượng User vào cơ sở dữ liệu, servlet tạo ra bốn chuỗi 
+chứa thông tin cho tin nhắn email. Đầu tiên, nó đặt địa chỉ To là địa chỉ email 
+được truyền qua yêu cầu. Sau đó, nó đặt địa chỉ From, dòng tiêu đề và văn bản 
+cho phần thân của tin nhắn.
+Ngoài ra, servlet này tạo một biến Boolean xác định xem phần thân của email có 
+chứa định dạng HTML hay không. Trong trường hợp này, biến này được đặt thành false. 
+Kết quả là email sử dụng định dạng văn bản thuần.
+
+

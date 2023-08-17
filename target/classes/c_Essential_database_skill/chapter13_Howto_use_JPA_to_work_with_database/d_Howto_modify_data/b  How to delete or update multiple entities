@@ -1,0 +1,49 @@
+Làm cách nào để cập nhật hoặc xóa nhiều thực thể
+
+How to modify multiple entities
+To update multiple entities
+EntityTransaction trans = em.getTransaction();
+String qString = "UPDATE Invoice i SET i.isProcessed = 'y' " +
+            "WHERE i.id < :id";
+Query q = em.createQuery(qString);
+q.setParameter(id, 200);
+int count = 0;
+try {
+    trans.begin();
+    count = q.executeUpdate();
+    trans.commit();
+} catch (Exception e) {
+    trans.rollback();
+} finally {
+    em.close();
+}
+
+To delete multiple entities
+EntityTransaction trans = em.getTransaction();
+String qString = "DELETE FROM Invoice i WHERE i.id < :id";
+Query q = em.createQuery(qString);
+q.setParameter(id, 200);
+int count = 0;
+try {
+    trans.begin();
+    count = q.executeUpdate();
+    trans.commit();
+} catch (Exception e) {
+    trans.rollback();
+} finally {
+    em.close();
+}
+
+
+Hình 13-13 mô tả cách bạn có thể cập nhật hoặc xóa nhiều thực thể. 
+Ví dụ đầu tiên đặt trường isProcessed cho tất cả các thực thể thành 'y' 
+miễn là ID hóa đơn nằm dưới 200. Để thực hiện cập nhật này, mã này sử 
+dụng một câu lệnh try/catch. Trong khối try, mã bắt đầu một giao dịch, 
+gọi phương thức executeUpdate trên truy vấn và commit giao dịch. 
+Ở đây, phương thức executeUpdate trả về số lượng hàng được cập nhật bởi 
+truy vấn.
+Ví dụ thứ hai xóa các bản ghi tương tự thay vì cập nhật chúng.
+Ở đây, câu lệnh duy nhất khác biệt là câu lệnh thứ hai xác định chuỗi truy vấn.
+Tương tự như các truy vấn khác trong JPA, những truy vấn này có thể gây ra các 
+cập nhật và xóa tự động bổ sung. Ví dụ, việc xóa hóa đơn như được hiển thị trong 
+ví dụ thứ hai sẽ tự động xóa bất kỳ mục hàng nào thuộc về những hóa đơn đó.

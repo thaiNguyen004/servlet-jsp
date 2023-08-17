@@ -1,0 +1,139 @@
+Lớp thẻ
+Hình vẽ này cũng trình bày một lớp thẻ lấy từng mục hàng trong giỏ hàng của người dùng và hiển thị dữ liệu cho mỗi
+đối tượng LineItem trong phần thân của thẻ JSP tùy chỉnh. Nói cách khác, lớp này lặp qua một tập hợp các đối tượng
+LineItem và trả lại phần thân của thẻ với các thuộc tính khác nhau cho mỗi đối tượng LineItem.
+
+The tag element for the TLD
+<tag>
+    <name>cart</name>
+    <tag-class>murach.tags.CartTag</tag-class>
+    <body-content>JSP</body-content>
+</tag>
+
+Để viết một lớp thẻ tương tác với phần thân của thẻ, lớp thẻ phải triển khai interface BodyTag thay vì giao diện Tag.
+Để làm điều đó, lớp thẻ thường mở rộng lớp BodyTagSupport. Vì lớp tiện ích này triển khai tất cả các phương thức
+của giao diện BodyTag, bạn chỉ cần ghi đè các phương thức mà bạn muốn sử dụng. Tương tự, vì lớp BodyTagSupport
+mở rộng lớp TagSupport, tất cả các phương thức và trường mà bạn đã sử dụng cho đến nay đều có sẵn cho bất kỳ lớp thẻ
+nào mở rộng lớp BodyTagSupport.
+
+Lớp thẻ trong hình vẽ này chứa ba biến thể. Biến thể đầu tiên là một đối tượng ArrayList lưu trữ các đối tượng LineItem.
+Biến thể thứ hai là một đối tượng Iterator được sử dụng để lặp qua các đối tượng LineItem lưu trữ trong đối tượng ArrayList.
+Và biến thể thứ ba là đối tượng LineItem được sử dụng để hiển thị dữ liệu trong thẻ.
+
+Để xác định liệu nội dung của thẻ có nên được bỏ qua hay được evaluated (đánh giá), phương thức doStartTag
+lấy danh sách các đối tượng LineItem từ phiên và kiểm tra xem nó có trống hay không. Để làm điều đó, phương thức này
+gọi phương thức findAttribute của đối tượng pageContext. Phương thức này trả về bất kỳ thuộc tính nào được lưu trữ
+trong phạm vi trang, yêu cầu, phiên hoặc ứng dụng.
+
+Nếu danh sách mảng các mục hàng trống rỗng, phương thức doStartTag trả về hằng số SKIP_BODY. Kết quả là, phần thân
+của thẻ không được hiển thị và phần còn lại của lớp bị bỏ qua. Ngược lại, phương thức doStartTag trả về hằng số
+EVAL_BODY_BUFFERED được định nghĩa trong lớp BodyTagSupport. Kết quả là, lớp thẻ đánh giá phần thân của thẻ bằng cách
+gọi các phương thức doInitBody và doAfterBody.
+
+Phương thức doInitBody khởi tạo phần thân bằng cách chuẩn bị hàng đầu tiên của thẻ. Để làm điều đó, phương thức
+này lấy một đối tượng Iterator cho tập hợp các đối tượng LineItem. Sau đó, nó sử dụng phương thức next của đối tượng Iterator
+để lấy đối tượng LineItem đầu tiên trong tập hợp và di chuyển con trỏ đến đối tượng LineItem thứ hai trong đối tượng ArrayList.
+Sau khi lấy đối tượng LineItem đầu tiên, phương thức này gọi phương thức setItemAttributes trên trang tiếp theo,
+đó là một phương thức trợ giúp sử dụng phương thức setAttribute của đối tượng pageContext để đặt năm thuộc tính của
+đối tượng LineItem.
+
+The tag element for the TLD
+<tag>
+    <name>cart</name>
+    <tag-class>murach.tags.CartTag</tag-class>
+    <body-content>JSP</body-content>
+</tag>
+
+A tag class that repeat the body of the tag
+package murach.tags;
+
+import javax.servlet.jsp.*;
+import javax.servlet.jsp.tagext.*;
+import java.util.*;
+import java.io.IOException;
+
+import murach.business.*;
+
+public class CartTag extends BodyTagSupport {
+    private ArrayList<LineItem> lineItems;
+    private Iterator iterator;
+    private LineItem item;
+
+    @Override
+    public int doStartTag() {
+        Cart cart = (Cart) pageContext.findAttribute("cart");
+        lineItems = cart.getItems();
+        if(lineItems.size() <= 0) {
+            return SKIP_BODY;
+        } else {
+            return EVAL_BODY_BUFFERED;
+        }
+    }
+
+    @Override
+    public void doInitBody() throws JspException {
+        iterator = lineItems.iterator();
+        if(iterator.hasNext()) {
+            item = (LineItem) iterator.next();
+            this.setItemAttributes(item);
+        }
+    }
+
+    private void setItemAttributes (LineItem item) {
+        Product p = item.getProduct();
+        pageContext.setAttribute("productCode", p.getCode());
+        pageContext.setAttribute("productDescription", p.getDescription());
+        pageContext.setAttribute("productPrice", p.getPriceCurrencyFormat());
+        pageContext.setAttribute("quantity", new Integer(item.getQuantity()));
+        pageContext.setAttribute("total", item.getTotalCurrencyFormat());
+    }
+
+    @Override
+    public int doAfterBody() throws JspException {
+        try {
+            if(iterator.hasNext()) {
+                item = (LineItem) iterator.next();
+                this.setItemAttributes(item);
+                return EVAL_BODY_AGAIN;
+            } else {
+                JspWriter out = bodyContext.getEnclosingWriter();
+                bodyContext.writeOut(out);
+                return SKIP_BODY;
+            }
+        } catch(IOException e){
+            System.out.println(e);
+            return SKIP_BODY;
+        }
+    }
+}
+
+Để truy cập một thẻ có phần thân, lớp thẻ phải thực hiện giao diện BodyTag. Cách đơn giản nhất để làm điều này là
+mở rộng lớp BodyTagSupport. Vì lớp BodyTagSupport mở rộng lớp TagSupport, điều này cung cấp quyền truy cập vào
+tất cả các phương thức và trường của lớp TagSupport.
+
+- Nếu phương thức doStartTag trả về hằng số EVAL_BODY_BUFFERED, phần thân của thẻ được đánh giá bằng cách gọi
+phương thức doInitBody và phương thức doAfterBody.
+- Phương thức doInitBody đặt các giá trị ban đầu cho hàng đầu tiên trong phần thân.
+
+
+Trong ví dụ này, thẻ tùy chỉnh "cart" không sử dụng thuộc tính "productCode".
+Tuy nhiên, phương thức "setItemAttributes" của lớp CartTag đặt giá trị thuộc tính "productCode" cùng với bốn thuộc tính khác.
+Kết quả là, nếu bạn cần truy cập thuộc tính "productCode" từ bên trong thẻ tùy chỉnh "cart", bạn có thể làm điều đó.
+
+Sau khi phương thức "doInitBody" hoàn thành việc thực thi, phần thân được lưu trữ trong đối tượng "bodyContent"
+được cung cấp bởi lớp BodyTagSupport. Tuy nhiên, phần thân chưa được hiển thị. Để hiển thị phần thân, bạn phải viết
+phần thân vào JSP như được thể hiện trong phương thức "doAfterBody".
+
+Phương thức "doAfterBody" bắt đầu bằng việc kiểm tra xem có phần tử khác tồn tại trong danh sách các mặt hàng của dãy.
+Nếu có, phương thức này lấy đối tượng "LineItem" và đặt thuộc tính của "pageContext" thành các giá trị tương ứng cho mặt hàng đó.
+Sau đó, nó trả về hằng số EVAL_BODY_AGAIN. Điều này thêm phần thân vào đối tượng "bodyContent" hiện có và gọi lại phương
+thức "doAfterBody" để đánh giá lại phần thân. Tuy nhiên, phần thân vẫn chưa được hiển thị.
+
+Cuối cùng, phương thức "doAfterBody" kết thúc việc lặp qua tất cả các mặt hàng trong danh sách dãy. Sau đó, nó hiển thị phần thân.
+Để làm điều đó, phương thức này gọi phương thức "getEnclosingWriter" của đối tượng "bodyContent" để thu được đối tượng
+"JspWriter". Sau đó, nó gọi phương thức "writeOut" của đối tượng "bodyContent" và cung cấp đối tượng "JspWriter"
+như một đối số. Điều này viết phần thân vào JSP. Cuối cùng, phương thức này trả về hằng số SKIP_BODY để chỉ ra rằng thẻ đã hoàn thành.
+
+Vì phương thức "writeOut" có thể ném ra ngoại lệ IOException, bạn cần bắt ngoại lệ này. Đó là lý do tại sao toàn bộ mã
+cho phương thức "doAfterBody" được bao quanh bởi câu lệnh try/catch.
+

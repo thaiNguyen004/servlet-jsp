@@ -1,0 +1,41 @@
+Cách sử dụng connection pool
+
+A class that defines a connection pool
+
+public Connection getConnection() { 
+    try { 
+        return dataSource.getConnection(); 
+    } catch (SQLException e) { 
+        System.out.println(e); 
+        return null; 
+    }
+}
+    
+public void freeConnection (Connection c) { 
+    try { 
+        c.close();
+    } catch (SQLException e) { 
+        System.out.println(e); 
+    } 
+}
+
+
+Code that uses the connection pool 
+
+ConnectionPool pool = ConnectionPool.getinstance{); 
+Connection connection = pool.getConnection(); 
+// code that uses the connection to work with the database 
+pool.freeConnection(connection); 
+
+Hình 12-12 cũng hiển thị mã mà bạn có thể sử dụng để lấy một đối tượng Connection 
+từ một đối tượng ConnectionPool. Điều này nên giúp bạn 
+có ý rõ hơn về cách bạn có thể sử dụng đối tượng ConnectionPool này trong mã của bạn.
+
+Để bắt đầu, bạn có thể gọi phương thức tĩnh getinstance của lớp ConnectionPool 
+để trả về một đối tượng ConnectionPool. Sau đó, bạn có thể gọi phương thức getConnection 
+của đối tượng ConnectionPool để trả về một đối tượng Connection có thể được sử dụng để 
+truy cập cơ sở dữ liệu. Cuối cùng, sau khi tất cả mã sử dụng đối tượng Connection 
+đã được thực thi, bạn có thể gọi phương thức freeConnection của connection pool để trả 
+đối tượng Connection về bể. Vì một thao tác cơ sở dữ liệu điển hình chỉ mất một 
+phần nhỏ của một giây, một số lượng đối tượng Connection tương đối thấp có thể xử lý 
+một lượng lớn yêu cầu từ người dùng.

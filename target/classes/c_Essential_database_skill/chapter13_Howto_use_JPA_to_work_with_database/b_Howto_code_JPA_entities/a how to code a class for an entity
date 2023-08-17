@@ -1,0 +1,72 @@
+Cách viết mã cho các entity JPA
+Một entity JPA là một lớp business có các annotation được thêm vào. 
+JPA sử dụng các annotation này để xác định cách sử dụng dữ liệu trong lớp trong ứng dụng.
+
+Cách viết mã cho lớp của một entity
+Hình 13-4 trình bày lớp cho một entity JPA đơn giản phù hợp để sử dụng với ứng dụng 
+EmailList. Trên thực tế, nó tương tự như lớp User cho ứng dụng EmailList từ các 
+chương trước. Sự khác biệt chính là lớp này bao gồm các annotation. Để chuyển đổi 
+một lớp business thành một entity, bạn chỉ cần thêm một số annotation.
+
+Trước hết, bạn thêm annotation @Entity ngay trước khai báo lớp chính nó. 
+Chú thích này cho JPA biết rằng lớp này xác định một entity cần được lưu trữ trong 
+cơ sở dữ liệu.
+
+Tiếp theo, bạn thêm annotation @Id. Chú thích này cho JPA biết rằng trường tiếp theo 
+là khóa chính cho entity.
+
+Thứ ba, nếu bạn muốn JPA tự động tạo giá trị cho khóa chính, bạn thêm annotation 
+@GeneratedValue như được hiển thị trong hình này. Chú thích này bao gồm một thuộc tính 
+strategy cho JPA biết cách tạo khóa chính. Trong hình này, ví dụ sử dụng chiến lược AUTO, 
+cho phép việc thực hiện JPA xác định chiến lược nào sẽ được sử dụng. 
+EclipseLink sử dụng một bảng sequence để thực hiện điều này. Chiến lược AUTO là 
+một chiến lược an toàn để sử dụng vì nó nên hoạt động với bất kỳ cơ sở dữ liệu nào.
+
+
+A simple JPA entity 
+import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistencce.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
+public class User implements Serializable {
+    
+    @Id
+    @GeneratedValue(Straegy = GenerationType.AUTO)
+    private Long userId;
+    private String firstName;
+    private String lastName;
+    private String email;
+    
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId (Long userId) {
+        this.userId = userId;
+    }
+
+    // the get and set methods for the fields
+}
+
+Chú thích @Entity chỉ định rằng lớp này là một bean được quản lý và là một phần 
+của một persistence unit.
+• Chú thích @Id chỉ định rằng trường nào trong lớp là khóa chính.
+• Chú thích @GeneratedValue chỉ định cách khóa chính nên được tạo ra. Chiến lược 
+AUTO cho phép JPA quyết định cách tạo khóa chính. Vì nó không phụ thuộc vào 
+cơ sở dữ liệu có phương pháp tích hợp để tự động tạo khóa chính, nó hoạt động với 
+bất kỳ cơ sở dữ liệu nào.
+• Theo mặc định, JPA sử dụng cùng tên cho bảng trong cơ sở dữ liệu như tên của lớp.
+• Để ghi đè lên tên bảng mặc định, bạn có thể viết chú thích @Table ngay sau 
+chú thích @Entity. Ví dụ, để ánh xạ thực thể trong hình này vào một bảng có tên là 
+Customer, bạn có thể bao gồm chú thích sau:
+@Table(name = "Customer")
+• Theo mặc định, JPA sử dụng cùng tên cho các cột trong cơ sở dữ liệu như tên của 
+các trường trong lớp.
+• Nếu bạn muốn ghi đè lên tên cột mặc định, bạn có thể viết chú thích @Column ngay 
+trên trường. Ví dụ, nếu bạn muốn ánh xạ trường lastName vào một cột có tên là LAST_NAME, 
+bạn có thể thêm chú thích sau:
+@Column(name = "LAST_NAME")
+

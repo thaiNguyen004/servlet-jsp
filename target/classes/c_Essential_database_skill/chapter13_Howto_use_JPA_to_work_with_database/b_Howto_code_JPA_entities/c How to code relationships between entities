@@ -1,0 +1,83 @@
+Cách viết mã cho các mối quan hệ giữa thực thể
+How to code relationships between entities
+Khi bạn xác định một thực thể, nó có thể có mối quan hệ với các thực thể khác. 
+Ví dụ, thực thể cho một hóa đơn có thể chứa một hoặc nhiều thực thể HDCT phụ thuộc 
+vào thực thể hóa đơn.
+Khi bạn viết một truy vấn trong JPA, nó tự động thực hiện bất kỳ phép nối nào 
+cần thiết để thỏa mãn các mối quan hệ giữa các thực thể. Ngoài ra, khi bạn lưu 
+một thực thể, JPA tự động lưu các thực thể phụ thuộc. Để làm cho các mối quan hệ 
+tự động này hoạt động, bạn viết chú thích trong các lớp thực thể của bạn để 
+xác định các mối quan hệ. 
+
+A JPA entity with relationships 
+import ...
+
+@Entity 
+public class Invoice implements Serializable { 
+
+    @ManyToOne 
+    private User user; 
+    
+    @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL) 
+    private List<Lineitem> lineitems; 
+    
+    @Temporal(javax.persistence.TemporalType.DATE) 
+    private Date invoiceDate; 
+    
+    @Id 
+    @GeneratedValue(strategy = GenerationType.AUTO) 
+    private Long invoiceNumber; 
+    
+    private boolean isProcessed; 
+    // getters and setters for fields 
+
+Hình 13-6 trình bày cách viết chú thích cho một lớp hóa đơn.
+Một khách hàng có thể có nhiều hóa đơn. Tuy nhiên, mỗi hóa đơn chỉ có thể thuộc 
+về một khách hàng. Để hiển thị mối quan hệ này trong JPA, bạn viết một chú thích 
+@ManyToOne ngay trước trường User hoặc trước phương thức getUser tùy thuộc vào 
+việc bạn sử dụng chú thích trường hay getter.
+Tương tự, một hóa đơn có thể có nhiều mục hàng. Tuy nhiên, mỗi mục hàng chỉ có thể 
+thuộc về một hóa đơn. Để hiển thị mối quan hệ này, bạn viết một chú thích 
+@OneToMany trên trường mục hàng hoặc trên phương thức getLineitems.
+Chú thích @OneToMany thường bao gồm một số phần tử bổ sung. Phần tử fetch 
+xác định khi nào JPA tải các mục hàng cho hóa đơn. Theo mặc định, JPA sử dụng 
+lazy loading. Điều này có nghĩa rằng khi JPA lấy hóa đơn lần đầu tiên từ cơ sở 
+dữ liệu, các mục hàng của nó trống. Sau đó, JPA tải các mục này lần đầu tiên bạn 
+cố gắng truy cập các mục hàng trong hóa đơn này.
+Nếu bạn không muốn sử dụng lazy loading, bạn có thể đặt phần tử fetch thành 
+giá trị FetchType.EAGER. Điều này cho biết JPA nên tải tất cả các mục hàng của 
+hóa đơn khi nó tải hóa đơn. Đối với một hóa đơn, đó thường là điều bạn muốn.
+Nếu bạn muốn sử dụng lazy loading, bạn có thể đặt thuộc tính fetch thành giá trị 
+FetchType.LAZY. Tuy nhiên, điều này chỉ là một yêu cầu đối với JPA, không phải 
+là một đảm bảo. Nếu JPA xác định rằng nó có thể sử dụng eager loading mà không 
+gây ảnh hưởng đáng kể đến hiệu suất, nó có thể chọn sử dụng eager loading thay thế.
+Vậy làm thế nào để quyết định sử dụng lazy hay eager loading? 
+Như một quy tắc chung, lazy loading có được thực thể ban đầu nhanh hơn, 
+nhưng có thể chạy chậm hơn sau này. Ngược lại, eager loading có thể mất thời gian 
+hơn để lấy thực thể ban đầu, nhưng sau đó nên chạy nhanh. Nếu danh sách chứa bởi 
+thực thể có khả năng nhỏ, hoặc thực thể không hữu ích nếu không có danh sách, 
+bạn nên sử dụng eager fetching. Tuy nhiên, nếu danh sách không có khả năng được 
+truy cập thường xuyên, hoặc nếu nó có thể chứa một số lượng lớn các mục, bạn nên 
+sử dụng lazy fetching.
+Phần tử cascade của chú thích @OneToMany cho biết JPA cách xử lý các mục hàng 
+khi nó cập nhật một hóa đơn. Trong hình này, phần tử cascade đã được đặt thành 
+giá trị CascadeType.ALL. Điều này cho biết JPA áp dụng bất kỳ cập nhật nào cho 
+hóa đơn lên các mục hàng. Ví dụ, khi JPA chèn hóa đơn, nó cũng nên chèn các mục hàng 
+của nó. Khi JPA cập nhật hóa đơn, nó cũng nên cập nhật các mục hàng của nó. 
+Và khi JPA xóa một hóa đơn, nó cũng nên xóa các mục hàng của nó.
+
+fetch : 
+Giá trị FetchType.EAGER xác định rằng tất cả các mục hàng của hóa đơn sẽ 
+được tải khi hóa đơn được tải từ cơ sở dữ liệu.
+Giá trị FetchType.LAZY yêu cầu, nhưng không đảm bảo, rằng các mục hàng cho 
+hóa đơn chỉ được tải khi ứng dụng thực sự truy cập chúng.
+
+cascade: 
+Giá trị CascadeType.ALL xác định rằng tất cả các hoạt động thay đổi hóa đơn 
+cũng sẽ cập nhật tất cả các mục hàng.
+Giá trị CascadeType.PERSIST xác định rằng mỗi khi một hóa đơn mới được chèn vào 
+cơ sở dữ liệu, bất kỳ mục hàng nào mà nó có cũng nên được chèn.
+Giá trị CascadeType.MERGE xác định rằng mỗi khi một hóa đơn được cập nhật, 
+bất kỳ thay đổi nào đối với các mục hàng của nó cũng nên được cập nhật.
+Giá trị CascadeType.REMOVE xác định rằng mỗi khi một hóa đơn bị xóa khỏi cơ sở 
+dữ liệu, tất cả các mục hàng của nó cũng nên bị xóa.

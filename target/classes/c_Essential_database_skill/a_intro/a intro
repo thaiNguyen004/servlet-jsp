@@ -1,0 +1,21 @@
+Đối với hầu hết các ứng dụng web, dữ liệu quan trọng được lưu trữ trong cơ sở dữ liệu. 
+Đó là lý do tại sao ba chương trong phần này trình bày những kỹ năng cơ bản 
+về cơ sở dữ liệu mà bạn cần cho việc phát triển ứng dụng web.
+
+Trong chương 11, bạn sẽ tìm hiểu cách sử dụng MySQL như hệ thống quản lý 
+cơ sở dữ liệu cho cơ sở dữ liệu của bạn, vì MySQL là một trong những hệ thống 
+phổ biến nhất cho các ứng dụng web Java. Nó cũng miễn phí. Điều đó làm cho nó 
+trở thành một sản phẩm tuyệt vời để học cách phát triển ứng dụng web sử dụng 
+cơ sở dữ liệu.
+
+Trong chương 12, bạn sẽ tìm hiểu cách sử dụng JDBC để làm việc với cơ sở dữ liệu. 
+JDBC là một phương pháp mà nhiều nhà phát triển đã sử dụng trong những ngày đầu 
+của lập trình web. Do đó, bạn có thể cần sử dụng JDBC để làm việc với các ứng dụng web cũ.
+
+Trong chương 13, bạn sẽ tìm hiểu cách sử dụng JPA để làm việc với cơ sở dữ liệu. JPA là một phương pháp mới hơn giúp việc viết lớp cơ sở dữ liệu cho ứng dụng web hướng đối tượng trở nên dễ dàng hơn. Kết quả là, nếu bạn đang phát triển một ứng dụng web mới, bạn có thể muốn sử dụng JPA.
+
+Cả JDBC và JPA đều hoạt động cho bất kỳ cơ sở dữ liệu nào có một trình điều khiển JDBC. 
+Vì có trình điều khiển JDBC cho hầu hết các cơ sở dữ liệu, những kỹ năng được 
+trình bày trong chương 12 và 13 nên áp dụng cho hầu hết các cơ sở dữ liệu, 
+bao gồm MySQL, Oracle, SQL Server và DB2.
+

@@ -1,0 +1,32 @@
+Trước khi bạn có thể làm việc với JPA, bạn cần phải cấu hình môi trường phát 
+triển tích hợp (IDE) của bạn. Cụ thể, bạn cần thêm trình điều khiển JDBC 
+cho cơ sở dữ liệu, thư viện JPA mà bạn muốn sử dụng và persistance unit. 
+Hình 13-2 cho thấy cách thêm các thành phần này vào NetBeans.
+
+Để thêm trình điều khiển JDBC cho MySQL, bạn có thể sử dụng những kỹ năng được 
+trình bày trong chương trước. Để làm điều này, bạn có thể nhấp chuột phải 
+vào thư mục Thư viện của dự án, chọn lệnh Add Library và chọn thư viện cho 
+trình điều khiển hoặc sử dụng dependence trong maven. 
+Trong hình này, dự án bao gồm thư viện Trình điều khiển JDBC của MySQL.
+
+Để thêm một thư viện JPA vào dự án, bạn có thể nhấp chuột phải vào thư mục 
+Thư viện của dự án, chọn lệnh Thêm Thư viện và chọn thư viện. NetBeans bao gồm 
+các thư viện cho cả EclipseLink và Hibernate. Trong hình này, dự án bao gồm 
+thư viện cho EclipseLink. Tuy nhiên, bạn có thể sử dụng những kỹ năng tương tự 
+để thêm thư viện Hibernate vào dự án.
+
+Trước khi bạn có thể sử dụng JPA, bạn cần phải cấu hình một đơn vị bền vững (persistance unit)
+để chỉ cho JPA cách kết nối với cơ sở dữ liệu. Nếu bạn sử dụng thư viện EclipseLink,
+bạn sử dụng một tệp mang tên persistence.xml để cấu hình đơn vị bền vững.
+
+Để thêm một tệp persistence.xml vào dự án, bạn có thể chọn lệnh File > New File 
+từ các menu. Sau đó, bạn có thể chọn loại tệp Persistance từ danh mục, và sử dụng 
+hộp thoại kết quả để cấu hình đơn vị bền vững.
+
+Để chỉnh sửa đơn vị bền vững, bạn có thể mở tệp persistence.xml của nó và chỉnh sửa nó. 
+Để làm điều đó, bạn có thể mở rộng thư mục Configure của dự án và nhấp đúp chuột 
+vào tệp persistence.xml. Thường thì điều này mở tệp trong chế độ Thiết kế, cung cấp 
+giao diện đồ họa để chỉnh sửa tệp này. Tuy nhiên, việc theo dõi chương này dễ dàng 
+hơn nếu bạn nhấp vào nút Nguồn để xem mã nguồn của tệp này như được hiển thị 
+trong hình này.
+

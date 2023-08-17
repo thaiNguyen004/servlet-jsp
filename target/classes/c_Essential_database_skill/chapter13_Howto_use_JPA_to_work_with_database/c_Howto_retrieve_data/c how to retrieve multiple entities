@@ -1,0 +1,89 @@
+Làm cách nào để truy vấn nhiều thực thể
+Để truy vấn nhiều thực thể, bạn cần viết một câu lệnh 
+JPQL (Java Persistence Query Language) như được thể hiện trong hình 13-10. 
+
+Unprocessed: chưa qua xử lý
+
+import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import music.business.Invoice;
+
+public class InvoceDB {
+    
+    public static List<Invoice> selectUnprocessedInvoices() {
+        EntityManager em = DBUtil.getEmFactory().createEntityManagerFactory();
+        String qString = "SELECT i from Invoice i WHERE i.isProcessed = 'n'";
+        TypedQuere<Invoice> q = em.createQuery(qString, Invoice.class);
+
+        List<Invoice> invoices;
+        try {
+            invoices = q.getResultList();
+            if(invoices == null || invoices.isEmpty()) {
+                invoices = null;
+            }
+        } finally {
+            em.close();
+        }
+        return invoices;
+    }
+
+}
+
+Ngoài ra, bạn cần sử dụng JPQL để truy vấn các thực thể dựa trên một cột khác 
+khóa chính. Mặc dù JPQL có vẻ giống SQL, nhưng thực tế nó là một ngôn ngữ truy 
+vấn hướng đối tượng được định nghĩa như một phần của quy định JPA.
+Phương thức được hiển thị trong hình này truy vấn tất cả các hóa đơn chưa được xử lý. 
+Để làm điều đó, câu lệnh JPQL được định nghĩa trong phương thức này. Ở đây, biến 
+có tên là i tham chiếu đến đối tượng Invoice, chứ không phải bảng Invoice trong 
+cơ sở dữ liệu. Tương tự, i.isProcessed tham chiếu đến trường isProcessed của 
+đối tượng Invoice. Đây được gọi là biểu thức đường dẫn (path expression).
+
+Để tạo một đối tượng truy vấn JPQL từ chuỗi truy vấn, bạn gọi phương thức createQuery 
+của entity manager. Phương thức này trả về một đối tượng Query hoặc một đối tượng 
+TypedQuery, tùy thuộc vào các đối số mà bạn cung cấp. Nếu bạn cung cấp một chuỗi 
+truy vấn và một lớp kết quả, phương thức này sẽ trả về một đối tượng TypedQuery 
+được kiểm tra kiểu. Nói chung, các truy vấn kiểu là ổn định hơn so với các truy vấn 
+không kiểu. Do đó, bạn nên sử dụng các truy vấn kiểu khi có thể.
+
+Để lấy danh sách các hóa đơn, bạn gọi phương thức getResultList của truy vấn. 
+Phương thức này trả về một đối tượng List chứa các đối tượng Invoice. Do đó, bạn có 
+thể sử dụng bất kỳ phương thức nào của lớp List để làm việc với các đối tượng Invoice này. 
+Lưu ý rằng JPA tự động chuyển đổi tập kết quả thành đối tượng List này. Với JDBC, 
+bạn phải viết mã để thực hiện việc convert. Đó là lý do tại sao thường dễ dàng hơn 
+để sử dụng JPA hơn là JDBC.
+Rất tiếc, quy định JPA không xác định liệu một truy vấn có nên trả về giá trị null 
+hay một danh sách rỗng nếu không có kết quả. Vì vậy, một số cài đặt của JPA trả về 
+null và một số khác trả về danh sách rỗng. Để đảm bảo phương pháp của bạn hoạt động 
+nhất quán, bạn có thể sử dụng mệnh đề if để kiểm tra cả hai điều kiện. Khi bạn làm 
+điều đó, bạn có thể tránh NullPointerException bằng cách kiểm tra giá trị null 
+trước khi kiểm tra danh sách rỗng. Sau đó, nếu bất kỳ điều kiện nào đúng, bạn có 
+thể trả về giá trị null.
+
+Khi bạn sử dụng JPA, bạn không cần viết bất kỳ kết nối nào trong truy vấn JPQL 
+của bạn để có được các mục của hóa đơn. Điều này bởi vì JPA biết cách các mục 
+liên quan đến hóa đơn dựa trên các chú thích trong các lớp business của bạn. 
+Điều này cho phép JPA thực hiện các kết nối cần thiết để tự động lấy các mục. 
+Với JDBC, bạn phải viết mã SQL để thực hiện kết nối và mã Java để lấy các mục. 
+Một lần nữa, điều này làm cho việc sử dụng JPA dễ dàng hơn so với JDBC. 
+
+Hình này cũng cho thấy một ví dụ về cách bạn có thể sử dụng biểu thức đường dẫn 
+trong JPQL để chọn chỉ một phần của một thực thể thay vì toàn bộ thực thể. 
+Biểu thức này chỉ chọn ngày của hóa đơn. Khi bạn sử dụng biểu thức đường dẫn 
+như thế này, truy vấn sẽ trả về danh sách của loại cụ thể. Trong trường hợp này, 
+nó trả về một đối tượng List chứa nhiều đối tượng Date, vì trường invoiceDate 
+được khai báo với kiểu Date trong lớp Invoice.
+
+A JPQL statement that selects only one field of an entity 
+SELECT i.invoiceDate FROM Invoice i WHERE i.isProcessed = 'n' 
+
+
+createQuery(queryString) :  Trả về một đối tượng Query chứa kết quả dưới dạng 
+đối tượng hoặc danh sách các loại đối tượng Object. Phiên bản này không an toàn 
+về kiểu dữ liệu.
+
+createQuery(queryString, resultClass) : Trả về một đối tượng TypedQuery chứa 
+kết quả dưới dạng đối tượng của resultClass được chỉ định hoặc danh sách các 
+đối tượng của resultClass được chỉ định.
+

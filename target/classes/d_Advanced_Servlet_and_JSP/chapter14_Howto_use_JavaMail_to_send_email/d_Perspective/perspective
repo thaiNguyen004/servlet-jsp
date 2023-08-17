@@ -1,0 +1,18 @@
+Quan điểm
+Trong chương này, bạn đã tìm hiểu cách sử dụng JavaMail API để gửi email từ các 
+servlet của bạn. Tuy nhiên, hãy nhớ rằng bạn có thể sử dụng JavaMail API để làm 
+nhiều việc hơn thế. 
+
+Ví dụ, bạn có thể sử dụng API đó để gửi các tin nhắn có đính kèm và lấy các tin nhắn. 
+Nếu bạn cần thực hiện các nhiệm vụ như vậy, bạn nên có thể sử dụng tài liệu cho
+JavaMail API để phát triển các kỹ năng bạn đã học trong chương này.
+Tóm tắt
+• Khi một tin nhắn email được gửi, nó đi từ phần mềm client email đến phần mềm máy 
+chủ email của người gửi, sau đó đến máy chủ email của người nhận và sau cùng đến 
+phần mềm client email của người nhận.
+• Để gửi các tin nhắn email từ máy chủ này đến máy chủ khác, giao thức 
+(SMTP) thường được sử dụng. Sau đó, để lấy các tin nhắn từ máy chủ, Giao Thức(POP) 
+và Giao Thức (IMAP) thường được sử dụng.
+• Để gửi các tin nhắn email từ các chương trình Java của bạn, bạn sử dụng các lớp 
+của JavaMail API. Đặc biệt, bạn tạo một đối tượng Session chứa thông tin về phiên 
+làm việc với thư điện tử bao gồm địa chỉ cho máy chủ SMTP.

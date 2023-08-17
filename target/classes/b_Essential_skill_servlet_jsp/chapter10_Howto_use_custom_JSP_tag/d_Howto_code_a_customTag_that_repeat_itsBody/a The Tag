@@ -1,0 +1,31 @@
+Cách viết một thẻ tùy chỉnh mà lặp lại nội dung của nó
+Trong chủ đề này, bạn sẽ học cách viết một lớp thẻ có khả năng lặp lại nhiều lần nội dung của thẻ.
+
+Thẻ - Tag
+
+Servlet code that sets the cart attribute
+Cart cart = (Cart) session.getAttribute("cart");
+//code that adds or removes LineItem objects
+session.setAttribute("cart", cart);
+
+JSP code that displays all items in the cart (using EL)
+<mma:cart>
+    <tr>
+        <td>${quantity}</td>
+        <td>${productDescription}</td>
+        <td>${productPrice}</td>
+        <td>${total}</td>
+    </tr>
+</mma: cart>
+
+Phần 1 của hình vẽ 10-4 trình bày một JSP sử dụng một thẻ tùy chỉnh để hiển thị tất cả các mặt hàng
+trong giỏ hàng của người dùng. Ở đây, mã servlet bắt đầu bằng cách lấy một đối tượng Cart được lưu trữ như
+một thuộc tính của đối tượng session. Sau đó, mã servlet này có thể thêm một đối tượng LineItem vào giỏ hàng
+hoặc loại bỏ một đối tượng LineItem khỏi giỏ hàng. Cuối cùng, mã servlet này lưu trữ giỏ hàng như một thuộc tính
+của session. Như vậy, lớp thẻ có thể truy cập vào đối tượng Cart.
+
+Sau khi mã servlet đã đặt đối tượng Cart làm thuộc tính của session, thẻ cart có thể hiển thị một hàng của bảng cho mỗi
+đối tượng LineItem trong đối tượng Cart. Để làm điều đó, phần thân của thẻ cart chứa một số thẻ HTML và một số biểu thức
+JSP hoặc EL. Điều này trả về số lượng, mô tả sản phẩm, giá sản phẩm và tổng số tiền cho mỗi mục hàng bằng cách gọi
+phương thức getAttribute của đối tượng pageContext. Mặc dù bạn chỉ cần viết hàng này một lần, bạn sẽ thấy rằng bộ xử lý
+thẻ lặp lại nó một lần cho mỗi mục hàng trong giỏ hàng.

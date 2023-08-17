@@ -1,0 +1,57 @@
+Cách truy vấn một thực thể duy nhất
+
+How to retrieve a single entity
+import ...
+
+public class UserDB {
+    public static User selectUser(String email) {
+        EntityManager em = DBUtil.getEmFactory().createEntityManager();
+        String qString = "SELECT u FROM User u " +
+                         "WHERE u.email = :email";
+        TypedQuery<User> q = em.createQuery(qString, User.class);
+        q.setParameter("email", email);
+
+        User user = null;
+        try {
+            user  = q.getSingleResult();
+        } catch(NoResultException e) {
+            System.out.println(e);
+        } finally {
+            em.close();
+        }
+        return user;
+    }
+
+}
+
+Hình 13-11 mô tả cách truy vấn một thực thể duy nhất. Mã này tương tự như mã để 
+truy vấn nhiều thực thể. Tuy nhiên, để lấy một thực thể duy nhất, bạn gọi 
+phương thức getSingleResult từ truy vấn thay vì phương thức getResultList.
+Phương thức getSingleResult trả về một đối tượng kiểu Object nếu bạn gọi nó 
+từ một đối tượng Query. Nếu bạn gọi nó từ một đối tượng TypedQuery, nó sẽ trả về 
+kiểu đối tượng được chỉ định bởi tham số thứ hai của phương thức createQuery.
+
+Khác với phương thức getResultList, phương thức getSingleResult có thể ném ra 
+hai ngoại lệ. 
+Thứ nhất, nó có thể ném ra ngoại lệ NoResultException. Như tên của nó, ngoại lệ 
+này được ném ra nếu truy vấn không trả về kết quả nào. Thứ hai, phương thức này 
+có thể ném ra ngoại lệ NonUniqueResultException. Ngoại lệ này được ném ra nếu 
+truy vấn trả về nhiều hơn một kết quả.
+
+Ví dụ này cũng giới thiệu truy vấn có tham số, hoạt động tương tự như câu lệnh 
+prepared statement trong JDBC. Để tạo một truy vấn có tham số, bạn viết một 
+giá trị thay thế bắt đầu bằng dấu hai chấm (:), như sau:
+
+:email
+
+Sau đó, bạn gọi phương thức setParameter trên truy vấn. Trong phương thức này, 
+đối số đầu tiên xác định tên của tham số và đối số thứ hai xác định giá trị của tham số.
+Có thể xây dựng một chuỗi truy vấn bao gồm các tham số trực tiếp trong chuỗi. 
+Ví dụ, bạn có thể xây dựng chuỗi truy vấn như được hiển thị trong hình này như sau:
+"SELECT u FROM User u " +
+"WHERE u.email = " + email;
+Tuy nhiên, mã này có thể bị tấn công bằng cách chèn mã SQL (SQL injection), 
+đây là một lỗ hổng bảo mật phổ biến trong ứng dụng web. Do đó, thường được coi 
+là thực hành tốt để sử dụng truy vấn có tham số như được hiển thị trong hình này, 
+đặc biệt khi làm việc với dữ liệu được cung cấp bởi người dùng. Vì truy vấn có 
+tham số đã được biên dịch trước, chúng không bị tấn công SQL injection.

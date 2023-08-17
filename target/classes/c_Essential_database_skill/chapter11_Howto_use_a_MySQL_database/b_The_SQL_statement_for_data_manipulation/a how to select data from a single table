@@ -1,0 +1,56 @@
+Trừ câu lệnh INSERT, các câu lệnh SQL mà bạn đã thấy cho đến nay đã là một phần 
+của Ngôn ngữ Định nghĩa Dữ liệu SQL (DDL). Những câu lệnh này cho phép bạn tạo 
+cơ sở dữ liệu, tạo bảng, xóa bảng, và vân vân, nhưng chúng không làm việc với 
+dữ liệu trong các bảng. 
+Ngược lại, những câu lệnh mà bạn sẽ tìm hiểu tiếp theo tạo thành Ngôn ngữ 
+Điều khiển Dữ liệu SQL (DML). Những câu lệnh này làm việc với dữ liệu trong 
+cơ sở dữ liệu, và chúng bao gồm các câu lệnh SELECT, INSERT, UPDATE và DELETE. 
+Do đó, đây là những câu lệnh mà bạn thường sử dụng trong ứng dụng Java của mình.
+
+Cách SELECT dữ liệu từ một bảng đơn
+
+Câu lệnh SELECT là câu lệnh SQL được sử dụng phổ biến nhất. Nó có thể được sử dụng 
+để truy xuất dữ liệu từ một hoặc nhiều bảng trong cơ sở dữ liệu. Khi bạn thực thi 
+một câu lệnh SELECT, thường được gọi là một truy vấn 
+(tuy nhiên, việc thực thi bất kỳ câu lệnh SQL nào cũng có thể được gọi là truy vấn). 
+Kết quả của truy vấn này luôn là một bảng được gọi là bộ kết quả, hoặc một bảng kết quả.
+
+SELECT *
+FROM table-1 
+[WHERE selection-criteria] 
+[ORDER BY column-1 [ASC | DESC] [, column-2 [ASC | DESC] •••]]
+
+Example 
+SELECT * FROM User
+
+The syntax for a SELECT statement that gets selected columns 
+SELECT column-1 [,column-2] ••• 
+FROM table-1 
+[WHERE selection-criteria] 
+[ORDER BY column-1 [ASC | DESC] [,column-2 [ASC | DESC] ••• ]] 
+
+SELECT FirstName, LastName 
+FROM User 
+WHERE UserID < 3 
+ORDER BY LastName ASC
+
+Trong hình 11-11, ví dụ đầu tiên cho thấy cách sử dụng câu lệnh này để truy xuất 
+tất cả các hàng và cột từ bảng User. Ở đây, mệnh đề SELECT sử dụng dấu sao đại 
+diện cho tất cả các cột trong bảng cần được truy xuất. Sau đó, mệnh đề FROM 
+xác định bảng User. Trong bảng kết quả, ba hàng và bốn cột được trả về bởi truy vấn này.
+
+Ví dụ thứ hai cho thấy cách sử dụng câu lệnh này để truy xuất hai cột và hai hàng 
+từ bảng User. Ở đây, mệnh đề SELECT xác định hai cột và mệnh đề FROM xác định bảng. 
+Sau đó, mệnh đề WHERE giới hạn số hàng được truy xuất bằng cách chỉ định rằng 
+câu lệnh chỉ nên truy xuất các hàng có giá trị trong cột UserID nhỏ hơn 3. 
+Cuối cùng, mệnh đề ORDER BY cho biết rằng các hàng được truy xuất nên được sắp xếp 
+theo thứ tự tăng dần (từ A đến Z) theo cột LastName.
+
+Bộ kết quả là một bảng logic được tạo tạm thời trong cơ sở dữ liệu. Sau đó, 
+con trỏ hàng hiện tại, hoặc con trỏ, theo dõi hàng hiện tại. Bạn có thể sử dụng 
+con trỏ này từ các ứng dụng web của mình.
+
+Như bạn có thể đoán, các truy vấn có thể ảnh hưởng đáng kể đến hiệu suất của 
+ứng dụng cơ sở dữ liệu. Nói chung, càng nhiều cột và hàng mà một truy vấn trả về, 
+mạng sẽ phải chịu nhiều lưu lượng hơn. Kết quả là, khi bạn thiết kế các truy vấn, 
+bạn nên cố gắng giữ số lượng cột và hàng ở mức tối thiểu.

@@ -1,0 +1,21 @@
+Cách làm việc với Connection Pooling
+Mở một kết nối tới cơ sở dữ liệu là một quy trình tốn thời gian có thể làm 
+suy giảm hiệu suất của ứng dụng. Do đó, thường thực hành lập trình phổ biến 
+là tạo một bộ sưu tập các đối tượng Kết nối (Connection) và lưu chúng trong 
+một đối tượng khác thường được gọi là connection pool cơ sở dữ liệu 
+(Database Connection Pool - DBCP). Sau đó, các đối tượng Kết nối trong bể này 
+được chia sẻ bởi tất cả người dùng của ứng dụng web. Điều này giới hạn số lần 
+mở connection cũng như tổng số đối tượng Connection.
+
+Cách làm việc của việc gom nhóm connection (Connection Pooling)
+Hình 12-11 mô tả cách gom nhóm connection hoạt động. Ban đầu, khi connection pool được 
+tạo lần đầu, một đối tượng ConnectionPool chứa nhiều đối tượng Connection được tạo ra. 
+Sau đó, khi một người dùng truy cập một servlet, servlet sẽ tạo một luồng (thread). 
+Luồng này nhận một đối tượng Connection từ đối tượng ConnectionPool, 
+sử dụng đối tượng Connection đó để truy cập cơ sở dữ liệu và trả lại đối tượng 
+Connection vào connection pool.
+
+Thường thì, bạn tạo một connection pool duy nhất cho một ứng dụng web. Sau đó, 
+tất cả các servlet trong ứng dụng sử dụng cùng một connection pool để truy cập 
+cơ sở dữ liệu. Trong hai hình ảnh tiếp theo, bạn sẽ tìm hiểu cách cài đặt, 
+tùy chỉnh và chia sẻ một connection pool giữa tất cả các servlet trong ứng dụng.

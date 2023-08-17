@@ -1,0 +1,31 @@
+Cách khởi động và dừng máy chủ MySQL
+Nếu bạn đã cài đặt MySQL trên máy tính của bạn theo hướng dẫn trong 
+phụ lục A (PC) hoặc B (Mac), máy chủ cơ sở dữ liệu sẽ khởi động tự động khi 
+bạn bật máy tính của bạn. Phần mềm này đôi khi được gọi là dịch vụ cơ sở dữ liệu 
+hoặc hệ thống cơ sở dữ liệu. Nó nhận các câu lệnh SQL được truyền vào, xử lý 
+chúng và trả kết quả lại.
+
+Trước khi bạn có thể làm việc với cơ sở dữ liệu MySQL, máy chủ cơ sở dữ liệu 
+phải được khởi động. Để kiểm tra xem máy chủ cơ sở dữ liệu MySQL có đang chạy 
+trên máy tính của bạn không, bạn có thể sử dụng tùy chọn Startup/Shutdown 
+của MySQL Workbench như được hiển thị trong hình 11-5. Sau đó, nếu máy chủ 
+chưa chạy, bạn có thể khởi động nó bằng cách nhấp vào nút Start Server. 
+Khi bạn làm điều đó, MySQL Workbench sẽ hiển thị một thông báo cho biết trạng thái 
+của máy chủ MySQL và hiển thị nút Stop Server.
+
+Đôi khi bạn cũng có thể muốn dừng máy chủ cơ sở dữ liệu. Ví dụ, bạn có thể dừng máy 
+chủ nếu bạn không sử dụng nó và muốn giải phóng tài nguyên trên máy tính của bạn. 
+Hoặc bạn có thể dừng máy chủ nếu cổng đang được sử dụng bởi máy chủ cơ sở dữ liệu 
+MySQL xung đột với một chương trình khác. Sau đó, khi bạn muốn làm việc với 
+máy chủ cơ sở dữ liệu lại, bạn có thể khởi động nó.
+
+Cách dừng máy chủ cơ sở dữ liệu dễ nhất là sử dụng nút Dừng máy chủ có sẵn 
+từ tùy chọn Startup/Shutdown của cửa sổ Navigator trong MySQL Workbench 
+như được mô tả trong hình này. Khi bạn nhấp vào nút này, MySQL Workbench sẽ hiển thị 
+thông báo khi máy chủ MySQL đã dừng thành công và hiển thị nút Khởi động máy chủ.
+
+Khi bạn đang chạy máy chủ cơ sở dữ liệu MySQL trên máy tính cá nhân của mình 
+cho mục đích đào tạo, bạn có thể dừng máy chủ cơ sở dữ liệu bất cứ khi nào bạn muốn. 
+Tuy nhiên, nếu máy chủ cơ sở dữ liệu đang chạy trong môi trường sản xuất, bạn nên 
+đảm bảo rằng tất cả người dùng đã đăng xuất và không có ứng dụng nào sử dụng máy 
+chủ cơ sở dữ liệu trước khi bạn dừng nó.

@@ -1,0 +1,81 @@
+Cách kết nối tới một cơ sở dữ liệu
+
+Database URL syntax 
+jdbc:subprotocolName:databaseURL 
+
+How to connect to a MySQL database with automatic driver loading (tải driver tự động)
+try { 
+    String dbURL = "jdbc:mysql://localhost:3306/murach"; 
+    String username = "root"; 
+    String password = "sesame"; 
+    Connection connection = DriverManager.getConnection( 
+        dbURL, username, password); 
+} catch(SQLException e) { 
+    for (Throwable t : e) 
+        t.printStackTrace();
+} 
+
+How to connect to an Oracle database with automatic driver loading (tải driver tự động) 
+Connection connection = DriverManager.getConnection{ 
+    "jdbc:oracle:thin@localhost/murach","scott","tiger"); 
+
+How to load a MySQL database driver prior to JDBC 4.0 
+try { 
+    Class.forName("com.mysql.jdbc.Driver"); 
+} catch{ClassNotFoundException e) { 
+    e.printStackTrace{); 
+}
+
+Trước khi bạn có thể truy cập hoặc thay đổi dữ liệu trong cơ sở dữ liệu, 
+bạn phải kết nối tới cơ sở dữ liệu như được hiển thị trong hình 12-2. 
+Để bắt đầu, hình này cho thấy cú pháp cho một URL cơ sở dữ liệu. Bạn có thể 
+sử dụng cú pháp này trong mã code để lấy kết nối. Ví dụ đầu tiên cho thấy cách 
+sử dụng một driver MySQL loại 4 để lấy kết nối tới cơ sở dữ liệu. 
+
+Để bắt đầu, bạn sử dụng phương thức getConnection của lớp DriverManager để trả 
+về một đối tượng Connection. Phương thức này yêu cầu ba đối số: 
+URL cho cơ sở dữ liệu, tên người dùng và mật khẩu. Trong ví dụ đầu tiên, 
+URL bao gồm API (jdbc), cấu tạo phụ cho các driver MySQL (mysql), 
+máy chủ host (localhost), cổng dịch vụ cơ sở dữ liệu (3306) và tên của 
+cơ sở dữ liệu (murach).
+
+Vì mã này cung cấp tên người dùng là root, kết nối này có tất cả các đặc quyền 
+cho tất cả cơ sở dữ liệu trên máy chủ. Vì lý do bảo mật, nên thực hiện quy tắc 
+tốt nhất chỉ cấp quyền đặc biệt mà kết nối cần. Đó là lý do tại sao đoạn mã 
+tạo cơ sở dữ liệu murach tạo một người dùng có tên murach_user chỉ có các quyền 
+hạn hẹp để làm việc với cơ sở dữ liệu murach. 
+Kết quả là người dùng có tên murach_user phù hợp với hầu hết các ứng dụng mẫu 
+được trình bày trong chương này.
+
+Ví dụ thứ hai cho thấy cách kết nối tới một cơ sở dữ liệu Oracle. Ở đây, bạn 
+cung cấp URL cho cơ sở dữ liệu, tên người dùng và mật khẩu. Điều này đúng cho 
+bất kỳ loại cơ sở dữ liệu nào bạn sử dụng với JDBC. 
+Trong thực tế, việc kết nối tới cơ sở dữ liệu thường gây khó khăn vì khó khăn 
+trong việc xác định URL, tên người dùng và mật khẩu cần phải là gì. 
+Vì vậy, nếu đồng nghiệp của bạn đã thiết lập kết nối tới cơ sở dữ liệu mà bạn cần 
+sử dụng, bạn có thể bắt đầu bằng cách yêu cầu họ cung cấp thông tin này. 
+
+Vì phương thức getConnection của lớp DriverManager ném ra một SQLException, 
+bạn cần xử lý ngoại lệ này mỗi khi kết nối tới cơ sở dữ liệu. 
+Với JDBC 4.0 (Java SE 6) và phiên bản sau, bạn có thể sử dụng một câu lệnh for 
+cải tiến để lặp qua bất kỳ ngoại lệ nào được lồng vào đối tượng SQLException. 
+Trong hình này, khối catch trong ví dụ đầu tiên lặp qua tất cả các ngoại lệ 
+được lồng trong đối tượng SQLException. 
+
+Để làm điều đó, vòng lặp này truy xuất một đối tượng Throwable có tên là t cho 
+mỗi ngoại lệ lồng. Sau đó, nó in ra dấu vết ngăn xếp cho ngoại lệ này. Điều này 
+hoạt động vì lớp Throwable là lớp cha cho tất cả các ngoại lệ, và một đối tượng 
+Throwable được trả về bởi trình vòng lặp cho lớp SQLException. 
+
+Hai ví dụ đầu tiên trình bày một tính năng mới của JDBC 4.0 được gọi là 
+tải driver tự động. Tính năng này sẽ tự động tải driver cơ sở dữ liệu dựa trên 
+URL cho cơ sở dữ liệu. 
+Tuy nhiên, nếu bạn đang làm việc với phiên bản Java cũ hơn, bạn cần sử dụng phương 
+thức forName của lớp Class để tải driver một cách rõ ràng trước khi bạn gọi phương 
+thức getConnection như được thể hiện trong ví dụ thứ ba. Vì phương thức này có 
+thể ném ra một ClassNotFoundException, bạn cũng phải xử lý ngoại lệ này. 
+Ngay cả với JDBC 4.0, đôi khi bạn có thể nhận được thông báo "Không tìm thấy driver phù hợp." 
+Trong trường hợp đó, bạn có thể sử dụng phương thức forName của lớp Class để tải 
+driver một cách rõ ràng. Tuy nhiên, nếu tải driver tự động hoạt động, thường nên 
+loại bỏ cuộc gọi phương thức này khỏi mã code của bạn. Điều này sẽ kết nối với 
+cơ sở dữ liệu với ít mã hơn và bạn không cần phải mã cứng tên của ổ đĩa cơ sở dữ liệu

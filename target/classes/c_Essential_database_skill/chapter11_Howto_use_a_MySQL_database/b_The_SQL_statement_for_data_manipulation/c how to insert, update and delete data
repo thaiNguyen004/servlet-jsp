@@ -1,0 +1,38 @@
+Cách chèn, cập nhật và xóa dữ liệu
+
+The syntax for the INSERT statement 
+INSERT INTO table-name [{column-list)] 
+VALUES {value-list) 
+
+A statement that adds one row to the Download table 
+INSERT INTO Download (UserID, DownloadDate, DownloadFilename, ProductCode) 
+VALUES (1, '2014-05-01', 'jr01_so_long.mp3', 'jr01'); 
+
+A statement that uses the MySQL Now function to get the current date 
+INSERT INTO Download (UserID, DownloadDate, DownloadFilename, ProductCode) 
+VALUES (1, NOW(), 'jr01_filter.mp3', 'jr01')
+
+The syntax for the UPDATE statement 
+UPDATE table-name 
+SET expression-1 [, expression-2] ••• 
+WHERE selection-criteria 
+
+A statement that updates the FirstName column in one row 
+UPDATE User 
+SET FirstName = 'Nguyen' 
+WHERE Email = 'jsmith@gmail.com' 
+
+A statement that updates the ProductPrice column in selected rows 
+UPDATE Product 
+SET ProductPrice = 36.95 
+WHERE ProductPrice = 36.50 
+
+The syntax for the DELETE statement 
+DELETE FROM table-name 
+WHERE selection-criteria 
+
+A statement that deletes one row from the User table 
+DELETE FROM User WHERE Email = 1jsmith@gmail.com1
+
+A statement that deletes selected rows from the Downloads table 
+DELETE FROM Download WHERE DownloadDate < '2014-06-01'

@@ -1,0 +1,73 @@
+Cách sử dụng JPA để chèn, sửa đổi và xóa các thực thể từ cơ sở dữ liệu được 
+trình bày trong chủ đề này. Một lần nữa, nhờ vào việc JPA hiểu rõ các mối quan hệ 
+giữa các thực thể của bạn, những thao tác này dễ dàng hơn để thực hiện trong 
+JPA so với JDBC.
+
+Cách chèn, cập nhật hoặc xóa một thực thể duy nhất
+
+Cách để bao gói một hoạt động trong một giao dịch:
+How to wrap an operation in a transaction
+EntityTransaction trans = em.getTransaction();
+try {
+    trans.begin();
+    em.persist(user);
+    trans.comit();
+} catch (Exception e) {
+    trans.rollback();
+} finally {
+    em.close();
+}
+
+How to insert a single entity
+em.persist(user);
+How to update a single entity
+em.merge(user);
+How to delete a single entity
+em.remove(em.merge(user));
+
+plush();  Ép buộc mọi thay đổi chưa lưu để đồng bộ lên cơ sở dữ liệu.
+
+Hình 13-12 mô tả cách sử dụng JPA để chèn, sửa đổi và xóa một thực thể duy nhất 
+từ cơ sở dữ liệu. Khi bạn làm điều đó, bạn cần sử dụng giao dịch (transaction) 
+để thực hiện tất cả các thao tác lên cơ sở dữ liệu. Hoặc nếu có bất kỳ thao tác 
+nào thất bại, bạn có thể sử dụng transaction để quay lại bất kỳ thay đổi nào. 
+Điều này đảm bảo tính toàn vẹn dữ liệu. Nó đảm bảo rằng dữ liệu của bạn không bị 
+để lại ở trạng thái không nhất quán.
+
+Ví dụ đầu tiên cho thấy cách bọc một thao tác trong giao dịch. Để bắt đầu, 
+bạn có thể gọi phương thức getTransaction từ quản lý thực thể (entity manager). 
+Điều này trả về một đối tượng EntityTransaction. Sau đó, bạn viết một khối try. 
+Trong khối try đó, bạn có thể bắt đầu giao dịch bằng cách gọi phương thức begin 
+từ đối tượng giao dịch. Sau đó, bạn thực hiện bất kỳ thao tác cơ sở dữ liệu nào 
+bạn muốn bao gồm trong giao dịch này.
+
+Khi bạn hoàn thành các thao tác cơ sở dữ liệu, bạn có thể gọi phương thức commit 
+của giao dịch để lưu các thay đổi vào cơ sở dữ liệu. Hoặc, nếu xảy ra ngoại lệ, 
+bạn có thể gọi phương thức rollback của đối tượng giao dịch để quay lại các thay đổi.
+
+Ba ví dụ tiếp theo cho thấy cách chèn, cập nhật hoặc xóa dữ liệu trong cơ sở dữ liệu. 
+Cụ thể, ví dụ thứ hai cho thấy cách sử dụng phương thức persist để chèn một thực thể, 
+ví dụ thứ ba cho thấy cách sử dụng phương thức merge để cập nhật một thực thể 
+và ví dụ thứ tư cho thấy cách sử dụng các phương thức merge và remove để xóa một 
+thực thể.
+
+Ví dụ thứ tư giả định rằng mã đang chạy bên ngoài một máy chủ Java EE đầy đủ. 
+Kết quả là thực thể người dùng (user entity) bị tách rời và bạn không thể sử dụng 
+phương thức remove trực tiếp trên nó. Để giải quyết vấn đề này, mã này gọi phương 
+thức merge để cập nhật thực thể người dùng và gắn nó vào cơ sở dữ liệu. 
+Sau đó, nó sử dụng phương thức remove để xóa thực thể đó.
+
+Cần lưu ý rằng các thay đổi cũng được lưu khi bạn gọi phương thức flush hoặc khi 
+JPA tự động chọn để flush. JPA có thể lưu các thay đổi vào cơ sở dữ liệu bất kỳ 
+lúc nào, ngay cả trước khi một giao dịch đã hoàn thành. Tuy nhiên, mã của bạn có 
+thể quay lại các thay đổi này. Vì vậy, nếu giao dịch thất bại, bạn cần đảm bảo 
+quay lại nó. Nếu không, bạn có thể kết thúc với dữ liệu không nhất quán.
+
+Cũng cần lưu ý rằng cho đến khi bạn gọi phương thức commit trên giao dịch, 
+không có đảm bảo rằng dữ liệu của bạn đã được lưu vào cơ sở dữ liệu. 
+Phương thức commit lưu tất cả các thay đổi từ đầu giao dịch đến cơ sở dữ liệu.
+
+Một lần nữa, bởi vì JPA hiểu các mối quan hệ giữa các thực thể của bạn, bạn chỉ 
+cần lưu thực thể chính trong giao dịch của bạn. Khi bạn làm điều đó, JPA tự động 
+lưu các thực thể phụ thuộc. Ví dụ, khi bạn gọi phương thức persist cho một đối 
+tượng Invoice, JPA cũng chèn bất kỳ đối tượng Lineitem phụ thuộc nào.

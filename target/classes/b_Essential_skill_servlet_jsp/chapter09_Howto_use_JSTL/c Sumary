@@ -1,0 +1,20 @@
+Góc nhìn
+
+Mục tiêu của chương này là hướng dẫn bạn cách sử dụng JSTL với EL để loại bỏ hoặc giảm bớt việc viết mã script
+trong các trang JSP của bạn. Tuy nhiên, không phải lúc nào việc loại bỏ tất cả mã script trong ứng dụng của bạn
+cũng khả thi bằng cách sử dụng JSTL. Trong trường hợp đó, bạn có thể mong muốn sử dụng mã script đôi khi.
+Một lựa chọn khác, tuy nhiên, là tạo và sử dụng các thẻ tùy chỉnh được lưu trữ trong một thư viện thẻ tùy chỉnh,
+như được mô tả trong chương tiếp theo.
+
+Tóm tắt
+• Thư viện Thẻ tiêu chuẩn ISP (JSTL) cung cấp các thẻ cho các nhiệm vụ thông thường cần thực hiện trong các trang JSP.
+• Trước khi bạn có thể sử dụng các thẻ JSTL, bạn phải làm cho các tệp jstl-impl.jar và jstl-api.jar có sẵn cho ứng dụng.
+• Trước khi bạn có thể sử dụng các thẻ JSTL trong một JSP, bạn phải viết một chỉ thị taglib cho thư viện bạn muốn sử dụng.
+• Bạn có thể sử dụng trình duyệt web để xem tài liệu cho JSTL.
+• Thông thường, việc sử dụng thẻ "out" để tránh đầu ra cho các giá trị đưa ra trình duyệt được coi là một thực hành tốt.
+Điều này ngăn chặn hầu hết các loại tấn công cross-site scripting (XSS), trong đó kẻ tấn công cố gắng chèn mã JavaScript
+vào các trang HTML của bạn.
+• Bạn có thể sử dụng thẻ "forEach" để lặp qua hầu hết các loại bộ sưu tập, bao gồm cả các mảng thông thường.
+• Bạn có thể sử dụng thẻ "forTokens" để lặp qua các mục trong một chuỗi được phân tách.
+• Bạn có thể sử dụng thẻ "if" để viết tương đương của một câu lệnh if trong Java.
+• Bạn có thể sử dụng thẻ "choose" để viết tương đương của một câu lệnh if/else trong Java.

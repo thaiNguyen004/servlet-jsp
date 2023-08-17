@@ -1,0 +1,14 @@
+Chương này hướng dẫn cách sử dụng API JDBC để làm việc với cơ sở dữ liệu. 
+API này đòi hỏi nhà phát triển phải viết một lượng đáng kể mã truy cập dữ 
+liệu cấp thấp. Nhiều ứng dụng cổ điển sử dụng JDBC. Do đó, bạn có thể cần 
+sử dụng nó khi làm việc trên các ứng dụng cũ.
+
+Đối với việc phát triển mới, bạn có thể ưa thích sử dụng JPA, mà không 
+yêu cầu nhà phát triển viết nhiều mã như vậy. Trong trường hợp đó, bạn có 
+thể bỏ qua chương này và chuyển đến chương tiếp theo. Tuy nhiên, vì JPA sử 
+dụng một trình điều khiển JDBC, bạn nên đọc hai hình đầu tiên trong chương này 
+để tìm hiểu cách sử dụng trình điều khiển JDBC để kết nối với cơ sở dữ liệu.
+
+Những kỹ năng cơ bản để sử dụng JDBC là giống nhau cho các ứng dụng web cũng 
+như các loại ứng dụng khác. Kết quả là, nếu bạn đã sử dụng JDBC trước đây, 
+bạn có thể đã quen thuộc với hầu hết các kỹ năng được trình bày trong chương này.

@@ -1,0 +1,35 @@
+Mã cho lớp cơ sở dữ liệu
+Hình 12-15 hiển thị mã cho lớp UserDB. Lớp này chứa các phương thức emailExists 
+và insert được sử dụng bởi servlet trong hình trước đó. Ngoài ra, lớp này còn 
+chứa ba phương thức khác (update, delete và select User) có thể được sử dụng để 
+sửa đổi và truy vấn dữ liệu người dùng.
+
+Các phương thức trong lớp này ánh xạ đối tượng User thành bảng User trong cơ sở 
+dữ liệu murach. Đặc biệt, phương thức insert lưu trữ một đối tượng User vào một 
+hàng mới trong bảng User. Ngược lại, phương thức selectUser tạo ra một đối tượng 
+User từ dữ liệu được lưu trữ trong một hàng trong bảng User. Điều này được gọi 
+là ánh xạ đối tượng-quan hệ, ánh xạ 0/R hoặc ORM.
+Mặc dù việc sử dụng JDBC để viết toàn bộ ánh xạ đối tượng-quan hệ cho một ứng dụng 
+mang lại sự kiểm soát cấp thấp về cách nó hoạt động, nhưng điều này cũng có thể 
+là công việc mất thời gian và đầy phiền phức. Kết quả là, bạn có thể muốn thử 
+sử dụng một API cấp cao hơn như JPA như được mô tả trong chương tiếp theo.
+
+Trong lớp UserDB, các phương thức bắt đầu bằng việc lấy đối tượng Connection từ 
+đối tượng ConnectionPool cho phép họ kết nối với cơ sở dữ liệu. Sau đó, các phương thức 
+này khai báo đối tượng PreparedStatement, đối tượng ResultSet (nếu cần) và một 
+chuỗi chứa câu lệnh SQL. Trong khối try của các phương thức này, các câu lệnh 
+tạo ra đối tượng PreparedStatement, đặt các tham số cho nó, thực thi câu lệnh 
+PreparedStatement và trả về một giá trị thích hợp. Nếu xảy ra một ngoại lệ, 
+khối catch in ngoại lệ ra luồng đầu ra tiêu chuẩn và trả về một giá trị thích hợp. 
+Dù sao đi nữa, khối finally đóng bất kỳ đối tượng PreparedStatement, ResultSet 
+hoặc Connection nào đã được mở. Để làm điều đó, nó sử dụng lớp DBUtil mô tả 
+trong hình tiếp theo.
+
+Phương thức insert thêm một hàng mới vào bảng User. Để làm điều đó, nó thực thi 
+một câu lệnh INSERT chứa dữ liệu từ đối tượng User đã được truyền vào phương thức. 
+Nếu phương thức này thực thi thành công, nó trả về một giá trị số nguyên là 1 
+cho phương thức gọi. Ngược lại, nó in ra ngoại lệ và trả về một giá trị số nguyên 
+là 0 để chỉ ra rằng hàng không được chèn vào.
+Phương thức update hoạt động giống như phương thức insert, nhưng nó sử dụng một 
+câu lệnh UPDATE thay vì câu lệnh INSERT. Trong câu lệnh UPDATE, mệnh đề WHERE 
+sử dụng địa chỉ email để tìm hàng cần được cập nhật.

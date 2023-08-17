@@ -1,0 +1,48 @@
+Cách gửi một tin nhắn
+Sau khi bạn đã tạo và địa chỉ hóa một đối tượng MimeMessage như được hiển thị 
+trong hai hình cuối cùng, bạn có thể gửi tin nhắn như được hiển thị trong hình 14-7. 
+Đối với một máy chủ SMTP không yêu cầu xác thực, bạn có thể gọi phương thức tĩnh 
+send của lớp Transport với đối tượng MimeMessage làm đối số.
+
+Tuy nhiên, nếu máy chủ SMTP yêu cầu xác thực, bạn sử dụng phương thức getTransport 
+của đối tượng Session để trả về một đối tượng Transport. Sau đó, bạn có thể sử dụng 
+phương thức connect để xác định tên người dùng và mật khẩu có thể được sử dụng để 
+kết nối tới máy chủ. Trong hình này, ví dụ, phương thức connect chỉ định tên người 
+dùng là "johnsmith@gmail.com" và mật khẩu là "sesame".
+
+Sau khi bạn đã kết nối tới máy chủ SMTP, bạn có thể sử dụng phương thức sendMessage 
+để gửi tin nhắn. Khi bạn sử dụng phương thức này, bạn có thể xác định đối tượng 
+MimeMessage làm đối số đầu tiên, và bạn có thể xác định đối số thứ hai bằng cách 
+gọi phương thức getAllRecipients của đối tượng MimeMessage.
+Cuối cùng, bạn có thể sử dụng phương thức close để đóng kết nối.
+Nếu tin nhắn không thể gửi được, phương thức send hoặc sendMessage ném một ngoại 
+lệ kiểu SendFailedException. Ngoại lệ này chứa danh sách (1) địa chỉ không hợp lệ 
+mà tin nhắn không thể gửi được, (2) địa chỉ hợp lệ mà tin nhắn không được gửi 
+và (3) địa chỉ hợp lệ mà tin nhắn đã được gửi. Nếu cần, bạn có thể sử dụng ngoại 
+lệ này để thực hiện một số xử lý như viết các địa chỉ này vào tệp nhật ký.
+
+How to send a message when no authentication is required 
+Transport.send(message); 
+
+How to send a message when authentication is required 
+Transport transport = session.getTransport(); 
+transport.connect("johnsmith@gmail.com", "sesame"); 
+transport.sendMessage(message, message.getAllRecipients()); 
+transport.close();
+
+
+Mô tả
+• Nếu máy chủ SMTP không yêu cầu xác thực, bạn có thể sử dụng phương thức tĩnh 
+send của lớp Transport để gửi một tin nhắn tới máy chủ SMTP được chỉ định.
+• Nếu máy chủ SMTP yêu cầu xác thực, bạn có thể sử dụng phương thức getTransport 
+của đối tượng phiên để trả về một đối tượng Transport. Sau đó, bạn có thể sử dụng 
+phương thức connect để xác định tên người dùng và mật khẩu có thể được sử dụng 
+để kết nối tới máy chủ; phương thức sendMessage để gửi tin nhắn; và phương thức 
+close để đóng kết nối.
+• Nếu máy chủ SMTP không đúng trong đối tượng phiên, phương thức send ném một đối 
+tượng SendFailedException.
+• Phương thức send cũng ném một đối tượng SendFailedException khi một tin nhắn 
+không thể gửi được. Bạn có thể sử dụng đối tượng này để trả về các địa chỉ 
+không hợp lệ, các địa chỉ hợp lệ đã được gửi và các địa chỉ hợp lệ chưa được gửi.
+• Vì lớp SendFailedException kế thừa lớp MessagingException, bạn có thể bắt cả hai 
+loại ngoại lệ bằng cách bắt lớp MessagingException.

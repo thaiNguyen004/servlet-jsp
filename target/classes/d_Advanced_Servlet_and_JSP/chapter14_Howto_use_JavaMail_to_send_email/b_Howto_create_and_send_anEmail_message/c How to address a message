@@ -1,0 +1,73 @@
+Cách địa chỉ hóa một đối tượng MimeMessage như trong hình 14-6. Điều này cho 
+phép bạn chỉ định địa chỉ Gửi(From) cũng như địa chỉ Đến (To), CC (carbon copy), 
+và BCC (sao chép ẩn(blind carbon copy)). Khi bạn gửi một bản sao, các địa chỉ 
+CC xuất hiện trong tin nhắn, nhưng khi bạn gửi một bản sao ẩn, các địa chỉ BCC 
+không xuất hiện trong tin nhắn.
+
+How to set the From address 
+Address fromAddress = new InternetAddress("cds@murach.com"); 
+message.setFrom(fromAddress); 
+
+How to set the To address 
+Address toAddress = new InternetAddress("andi@yahoo.com"); 
+message.setRecipient(Message.RecipientType.TO, toAddress); 
+
+How to set the CC address 
+Address ccAddress = new InternetAddress("ted@yahoo.com"); 
+message.setRecipient(Message.RecipientType.CC, ccAddress); 
+
+How to set the BCC address 
+Address bccAddress = new InternetAddress ("jsmith@gmail.com"); 
+message.setRecipient(Message.RecipientType.BCC, bccAddress); 
+
+How to include an email address and a name 
+Address toAddress = new InternetAddress("andi@yahoo.com ", "Andrea Steelman"); 
+
+How to send a message to multiple recipients 
+Address[] mailList = (
+            new InternetAddress("andi@hotmail.com "), 
+            new InternetAddress("joelmurach@yahoo.com"), 
+            new InternetAddress("jsmith@gmail.com")}; 
+message.setRecipients(Message.RecipientType.TO, mailList); 
+
+How to add recipients to a message 
+Address toAddress = new InternetAddress("joelmurach@yahoo.com"); 
+message.addRecipient(Message.RecipientType.TO, toAddress);
+
+
+Trước khi bạn có thể đặt một địa chỉ trong một đối tượng MimeMessage, 
+bạn phải tạo một đối tượng Address xác định ít nhất là một địa chỉ email. 
+Để làm điều đó, bạn tạo một đối tượng từ lớp con InternetAddress của lớp Address. 
+Khi bạn tạo đối tượng này, đối số đầu tiên chỉ định địa chỉ email. Nếu bạn muốn 
+liên kết một tên với địa chỉ email, bạn có thể bao gồm một đối số thứ hai. 
+Sau đó, tên sẽ hiển thị bên cạnh địa chỉ email như sau: 
+andi@yahoo.com (Andrea Steelman). Tuy nhiên, hàm tạo này ném một ngoại lệ 
+của kiểu java.io.UnsupportedEncodingException. Do đó, bạn phải xử lý ngoại lệ 
+này nếu bạn liên kết một tên với địa chỉ email.
+
+Để đặt địa chỉ Gửi (From), bạn có thể sử dụng phương thức setFrom của đối tượng 
+MimeMessage. Khi bạn sử dụng phương thức này, bạn phải cung cấp một đối tượng 
+Address xác định địa chỉ email bạn muốn hiển thị trong thuộc tính Gửi (From) 
+của tin nhắn email.
+
+Để đặt địa chỉ Nhận (To), CC và BCC, bạn có thể sử dụng phương thức setRecipient 
+của đối tượng MimeMessage. Với phương thức này, đối số đầu tiên chỉ định loại 
+người nhận cho địa chỉ. Sau đó, đối số thứ hai chỉ định một đối tượng Address. 
+Để xác định loại người nhận, bạn sử dụng một trong các trường được định nghĩa 
+trong lớp Message.RecipientType.
+
+Nếu bạn muốn gửi tin nhắn của bạn tới nhiều người nhận, bạn có thể sử dụng phương 
+thức setRecipients của lớp MimeMessage. Phương thức này cho phép bạn gửi một 
+tin nhắn tới một mảng các đối tượng Address. Khi bạn sử dụng phương thức này, 
+nó sẽ thay thế bất kỳ người nhận nào đã được đặt trước đó trong tin nhắn. 
+Tuy nhiên, nếu bạn muốn thêm người nhận vào một tin nhắn hiện có, bạn có thể 
+sử dụng các phương thức addRecipient hoặc addRecipients. Các phương thức này 
+hoạt động giống như các phương thức setRecipient và setRecipients, nhưng chúng 
+thêm người nhận vào danh sách hiện có.
+
+Vì các phương thức của lớp MimeMessage ném một MessagingException, bạn phải xử lý 
+ngoại lệ này trong bất kỳ mã nào sử dụng các phương thức này. Ngoài ra, hàm tạo 
+InternetAddress ném một AddressException khi gặp địa chỉ được định dạng sai. 
+Tuy nhiên, vì lớp AddressException mở rộng lớp MessagingException, bạn có thể bắt 
+cả hai ngoại lệ bằng cách bắt lớp MessagingException.
+

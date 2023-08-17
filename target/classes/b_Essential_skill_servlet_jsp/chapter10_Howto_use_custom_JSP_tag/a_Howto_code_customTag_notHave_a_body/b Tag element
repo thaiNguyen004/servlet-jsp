@@ -1,0 +1,61 @@
+Thẻ phần tử
+
+A TLD file that contains two tag elements 
+    <?xml version="1.0" encoding="UTF-8" ?>
+    <taglib version="2.0" xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+            web-jsptaglibrary_2_0.xsd">
+
+    <tlib-version>1.0</tlib-version>
+    <short-name>murach</short-name>
+    <uri>/WEB-INF/murach.tld</uri>
+    <info>A custom tag library developed by
+        Mike Murach and Associates</info>
+    <tag>
+        <name>currentDate</name>
+        <tag-class>murach.tags.CurrentDateTag</tag-class>
+        <info>Returns the current date with the SHORT date format</info>
+    </tag>
+    <tag>
+        <name>currentTime</name>
+        <tagclass>murach.tags.CurrentTimeTag</tagclass>
+    </tag>
+    </taglib>
+
+Trước khi bạn có thể sử dụng một thẻ tùy chỉnh trong một trang JSP, bạn phải tạo 
+một tệp Mô tả Thư viện Thẻ (TLD) mô tả về thẻ. Để minh họa, phần 2 của hình vẽ 
+này hiển thị một TLD chứa hai thẻ tùy chỉnh. Khi bạn tiến xa trong chương này, 
+bạn sẽ tìm hiểu cách thêm các loại thẻ khác vào TLD này. Mặc dù bạn có thể viết 
+mã nhiều TLD như bạn muốn cho một ứng dụng, thường thì bạn sẽ viết mã một TLD 
+duy nhất chứa tất cả các thẻ tùy chỉnh cho một ứng dụng.
+
+Bởi vì TLDs là các tài liệu XML, bạn phải bắt đầu một TLD với thông tin tiêu đề 
+chuẩn của XML. Vì bạn không cần hiểu thông tin tiêu đề này, bạn có thể sao 
+chép thông tin tiêu đề từ một TLD cũ  vào đầu một TLD mới. Sau thông tin tiêu đề,
+phần còn lại của các thẻ là các thẻ XML xác định các phần tử của TLD. Vì các thẻ 
+này tương tự các thẻ HTML, bạn không nên gặp bất kỳ vấn đề gì khi viết mã chúng. 
+Tuy nhiên, khác với các thẻ HTML, các thẻ XML phân biệt chữ hoa chữ thường.
+Kết quả là, khi làm việc với các thẻ XML trong một TLD, bạn phải sử dụng viết 
+hoa/viết thường chính xác như được hiển thị trong các hình vẽ này.
+
+Sau thông tin tiêu đề, phần tử taglib xác định thư viện thẻ. Trong phần tử này, 
+bạn có thể viết mã phiên bản thư viện thẻ, một tên ngắn cho thư viện và một URI 
+cho thư viện. Sau đó, nếu bạn muốn bao gồm một mô tả ngắn về thư viện thẻ, bạn có
+thể viết mã phần tử info. Đối với Tomcat 7.0, phiên bản thư viện thẻ là duy nhất 
+trong số các thẻ này cần phải có. Tuy nhiên, điều này có thể thay đổi tùy theo động cơ JSP.
+
+Sau những phần tử này, bạn viết mã một phần tử tag cho mỗi thẻ tùy chỉnh trong 
+thư viện thẻ. Khi bạn tạo một phần tử tag, bạn cần viết mã một phần tử name xác định 
+tên của thẻ cũng như một phần tử tagclass xác định lớp thực hiện các hành động của thẻ.
+Lớp này đôi khi được gọi là lớp thẻ hoặc lớp xử lý thẻ, và bạn sẽ tìm hiểu thêm 
+về nó trong phần 3 của hình vẽ này.
+
+Sau phần tử tagclass, bạn có thể viết mã một phần tử info cung cấp một mô tả 
+về thẻ tùy chỉnh. Thông tin này nên mô tả chức năng của thẻ để các lập trình viên 
+và thiết kế web khác có thể quyết định liệu họ muốn sử dụng nó hay không.
+
+Khi bạn tạo một tệp TLD, bạn phải lưu tệp với phần mở rộng TLD. Bạn cũng phải 
+lưu nó trong thư mục WEB-INF hoặc một trong các thư mục con của nó. 
+Ví dụ, trong các ứng dụng đi kèm với cuốn sách này, tệp TLD được lưu trong 
+tệp murach.tld của thư mục WEB-INF.

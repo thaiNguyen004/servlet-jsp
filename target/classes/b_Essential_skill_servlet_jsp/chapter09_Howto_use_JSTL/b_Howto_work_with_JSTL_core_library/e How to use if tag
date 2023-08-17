@@ -1,0 +1,18 @@
+Cách sử dụng thẻ if
+Khi lập trình một trang JSP, bạn có thể cần thực hiện xử lý có điều kiện để thay đổi diện mạo của trang dựa trên
+các giá trị của các thuộc tính có sẵn cho trang. Để làm điều đó, bạn có thể sử dụng thẻ if như được thể hiện trong hình 9-7.
+
+<c:if test= ${cart.count == 1}">
+    <p>You have 1 item in your cart.</p>
+</c:if> 
+<c:if test=" ${cart.count > 1}">
+    <p>You have ${cart.count} items in your cart.</p>
+</c:if>
+
+Nếu cần, bạn có thể sử dụng các thuộc tính var và scope để biểu diễn điều kiện Boolean trong thuộc tính test như
+một biến với phạm vi được chỉ định. Sau đó, bạn có thể tái sử dụng điều kiện Boolean trong các câu lệnh if khác.
+Việc này hoạt động tương tự như thẻ set được mô tả ngắn gọn sau trong chương này. Tuy nhiên, vì bạn hiếm khi cần
+sử dụng các thuộc tính này, chúng không được minh họa trong hình này.
+Tương tự như các thẻ forEach và forTokens, bạn có thể lồng một thẻ if trong thẻ if khác. Hoặc, bạn có thể lồng một
+thẻ if trong một thẻ forEach hoặc forTokens. Nói tóm lại, như bạn có thể mong đợi đến bây giờ, bạn thường có thể
+lồng các thẻ JSTL vào trong nhau bất cứ khi nào cần thiết.

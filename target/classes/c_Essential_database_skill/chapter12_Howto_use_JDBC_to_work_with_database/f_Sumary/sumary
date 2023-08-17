@@ -1,0 +1,47 @@
+Góc nhìn
+Mục tiêu của chương này đã là hướng dẫn bạn cách sử dụng JDBC và connection pooling 
+trong bối cảnh của một ứng dụng web. Mặc dù có nhiều khía cạnh khác của lập trình 
+cơ sở dữ liệu hơn thế, nhưng điều này đã giúp bạn khởi đầu tốt. 
+Trên thực tế, những kỹ năng trong chương này đủ cho hầu hết các trang web từ nhỏ 
+đến trung bình.
+
+Tuy nhiên, đối với các trang web lớn, những kỹ năng được trình bày trong chương này 
+có thể không đủ. Trong trường hợp đó, bạn có thể muốn sử dụng các công cụ bên thứ ba 
+khác để thiết kế và tạo cơ sở dữ liệu, ánh xạ đối tượng vào cơ sở dữ liệu và quản lý 
+connection pool. Ví dụ, bạn có thể muốn sử dụng JPA (Java Persistence API) để ánh xạ 
+các đối tượng của bạn vào cơ sở dữ liệu quan hệ như được mô tả trong chương tiếp theo. 
+Hoặc, bạn có thể cần sử dụng EJBs (Enterprise JavaBeans). Để tìm hiểu thêm về EJBs, 
+bạn có thể bắt đầu bằng cách đọc thêm về chúng trên Internet.
+
+Tóm tắt
+• Để viết mã Java làm việc với cơ sở dữ liệu, bạn sử dụng Java Database Connectivity (JDBC). 
+Để làm điều đó, bạn sử dụng các lớp trong API JDBC.
+
+• Trước khi bạn có thể truy cập cơ sở dữ liệu, bạn phải cài đặt một trình điều khiển 
+cơ sở dữ liệu trên máy chủ cơ sở dữ liệu. Sau đó, trước khi bạn có thể làm việc với 
+cơ sở dữ liệu, bạn phải tải trình điều khiển và tạo một đối tượng Connection 
+kết nối đến cơ sở dữ liệu.
+
+• Với JDBC 4.0, trình điều khiển cơ sở dữ liệu được tải tự động. Tính năng mới này 
+được gọi là tải trình điều khiển tự động.
+
+• Bạn sử dụng phương thức createStatement của đối tượng Connection để tạo một đối 
+tượng Statement chứa câu lệnh SQL mà bạn muốn thực thi. Sau đó, bạn sử dụng phương 
+thức executeQuery hoặc executeUpdate để thực thi câu lệnh SQL.
+
+• Khi bạn thực thi một câu lệnh SELECT, nó trả về một tập kết quả cho chương trình của bạn. 
+Sau đó, bạn có thể sử dụng các phương thức của đối tượng ResultSet để di chuyển con trỏ 
+qua các hàng của tập kết quả và lấy dữ liệu từ các hàng.
+
+• Cuộc tấn công SQL injection cho phép hacker thực thi các câu lệnh SQL vào cơ sở dữ liệu 
+của bạn để đọc dữ liệu nhạy cảm, sửa đổi dữ liệu hoặc xóa dữ liệu.
+
+• Các câu lệnh chuẩn bị (prepared statements) có thể cải thiện hiệu suất các hoạt động 
+cơ sở dữ liệu và ngăn chặn hầu hết các loại cuộc tấn công SQL injection. Để sử dụng chúng, 
+bạn có thể sử dụng đối tượng PreparedStatement thay vì đối tượng Statement để thực thi câu lệnh SQL.
+
+• Đối tượng ResultSetMetaData chứa thông tin về tập kết quả như số cột trong bảng và tên của các cột.
+
+• Connection pooling cơ sở dữ liệu (DBCP) có thể cải thiện hiệu suất của ứng dụng web 
+bằng cách chia sẻ các kết nối đến cơ sở dữ liệu giữa tất cả người dùng của ứng dụng.
+

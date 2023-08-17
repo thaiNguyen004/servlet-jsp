@@ -1,0 +1,59 @@
+Lớp thẻ
+Phần 3 của hình vẽ này hướng dẫn cách viết một lớp thẻ hoạt động với các thuộc tính.
+Để bắt đầu, lớp phải xác định mỗi thuộc tính như một biến thể riêng tư (private instance variable)
+và cung cấp một phương thức set cho mỗi thuộc tính.
+
+Khi bạn viết phương thức set, bạn phải tuân theo quy tắc đặt tên chuẩn trong Java. Ví dụ, nếu bạn có
+một thuộc tính có tên là "field", bạn phải viết một phương thức set có tên là "setField".
+Tương tự, nếu bạn có một thuộc tính có tên là "height", bạn phải viết một phương thức set có tên là "setHeight".
+
+Khi lớp thẻ này được thực thi, nó bắt đầu bằng cách khai báo các biến thể instance có tên "field" và "color",
+và nó đặt giá trị mặc định của biến "color" thành "red". Sau đó, lớp này gọi phương thức "setField" để thiết lập
+biến instance "field". Vì thuộc tính này là bắt buộc, phương thức này luôn được gọi. Điều này đặt giá trị
+của biến instance "field" bằng giá trị của thuộc tính "Field" trong thẻ JSP tùy chỉnh.
+
+Nếu một thuộc tính màu (color) được viết trong thẻ JSP tùy chỉnh, lớp này cũng gọi phương thức "setColor"
+để thiết lập thuộc tính màu (color). Nếu không, biến màu (color) sẽ bằng giá trị mặc định của nó là "red".
+
+Khi các biến thể instance đã được thiết lập, phương thức "doStartTag" được gọi. Trong phương thức này,
+mã kiểm tra giá trị của biến "field". Nếu "field" là một chuỗi trống, thẻ này gửi một dấu sao với màu đã xác định tới JSP.
+Nếu không, thẻ này không gửi bất kỳ đầu ra nào tới JSP.
+
+package murach.tags;
+
+import javax.servlet.jsp.*;
+import javax.servlet.jsp.tagext.*;
+import java.io.*;
+
+public class IfEmptyMarkTag extends TagSupport {
+    private String field;
+    private String color = "red";
+
+    public void setField(String field) {
+        this.field = field;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    @Override
+    public int doStartTag() throws JspException {
+        try {
+            JspWriter out = pageContext.getOut();
+            if(field == null || field.length() == 0) {
+                out.print("<font color=" + color + "> * </font>");
+            }
+        } catch(IOException e) {
+            System.out.println(e);
+        }
+        return SKIP_BODY;
+    }
+}
+
+Cách viết một bộ xử lý thẻ sử dụng các thuộc tính
+• Khai báo một biến thể riêng tư (private instance variable) cho mỗi thuộc tính.
+• Xác định một phương thức set cho mỗi thuộc tính theo quy tắc đặt tên tiêu chuẩn.
+Mô tả
+• Lớp thẻ này làm cho thẻ JSP tùy chỉnh hiển thị một dấu sao nếu thuộc tính "field" là một chuỗi trống.
+• Nếu thẻ tùy chỉnh bao gồm thuộc tính "color", dấu sao được hiển thị sẽ có màu theo giá trị đã xác định. Nếu không, dấu sao sẽ có màu đỏ.

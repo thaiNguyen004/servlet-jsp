@@ -1,0 +1,63 @@
+Lớp TEI cho bốn biến kịch bản
+
+The constructor of the VariableInfo class
+VariableInfo(String varName, String dataType, boolean declare, int scope)
+
+package tags;
+import javax.servlet.jsp.tagext.*;
+
+public class CartTEI extends TagExtraInfo {
+    public VariableInfo[] getVariableInfo (TagData data) {
+        return new VariableInfo[]
+        {
+            new VariableInfo(
+                    "productDescription", "String", true, VariableInfo.NESTED),
+                    new VariableInfo(
+                     "productPrice", "String", true, VariableInfo.NESTED),
+                    new VariableInfo(
+                     "quantity", "Integer", true, VariableInfo.NESTED),
+                     new VariableInfo(
+                     "total", "String", true, VariableInfo.NESTED)
+        }
+    }
+ }
+
+Hình 10-6 mô tả cách viết một lớp TEI (lớp thông tin thêm về thẻ) xác định các biến kịch bản cho một bộ xử lý thẻ.
+Để viết một lớp TEI, bạn kế thừa lớp TagExtraInfo và ghi đè phương thức getVariableInfo của nó. Khi bạn ghi đè
+phương thức đó, bạn phải trả về một mảng các đối tượng VariableInfo. Các đối tượng này xác định các biến kịch bản.
+
+Đối với mỗi biến kịch bản, bạn tạo một đối tượng VariableInfo bằng cách sử dụng hàm tạo được thể hiện trong hình này.
+Khi bạn viết mã cho hàm tạo này, bạn phải cung cấp một chuỗi chỉ định tên của biến và bạn phải xác định kiểu dữ liệu của biến.
+Đối với kiểu dữ liệu, bạn có thể chỉ định một đối tượng String, một kiểu dữ liệu nguyên thủy hoặc một lớp bao
+cho một kiểu dữ liệu nguyên thủy.
+
+Sau khi đã viết mã cho kiểu dữ liệu, bạn phải viết mã cho một giá trị boolean xác định xem biến có phải là một biến kịch
+bản mới hay không. Nếu biến chưa được khai báo ở bất kỳ đâu khác, điều này thường là trường hợp, bạn viết mã cho giá trị true.
+Nếu không, bạn viết mã cho giá trị false.
+
+Cuối cùng, bạn phải xác định phạm vi của biến kịch bản. Hầu hết thời gian, bạn sẽ muốn sử dụng trường NESTED.
+Như vậy, các biến kịch bản có sẵn giữa các thẻ mở và đóng.
+
+Các hằng số VariableInfo xác định phạm vi của một biến kịch bản
+Hằng số Phạm vi
+AT BEGIN  Từ đầu thẻ đến cuối trang JSP.
+AT END  Từ cuối thẻ đến cuối trang JSP.
+NESTED Từ đầu thẻ đến cuối thẻ.
+
+Description:
+
+Để xác định các biến kịch bản cho một lớp thẻ, bạn tạo một lớp thông tin thêm về thẻ (TEI).
+Bạn có thể lưu trữ lớp này ở cùng nơi với các lớp thẻ.
+
+• Để viết mã cho một lớp TEI, bạn mở rộng lớp TagExtraInfo trong gói javax.servlet.jsp.tagext.
+Sau đó, bạn ghi đè phương thức getVariableInfo để trả về một mảng các đối tượng VariableInfo
+xác định các biến kịch bản.
+
+• Đối với mỗi biến kịch bản, bạn tạo một đối tượng VariableInfo cung cấp dữ liệu sau:
+  - Tên và kiểu dữ liệu của biến.
+  - Giá trị true/false cho biết liệu biến cần phải được khai báo hay không.
+  - Phạm vi của biến.
+• Đối với kiểu dữ liệu của biến kịch bản, bạn có thể chỉ định một đối tượng String, bất kỳ kiểu dữ liệu
+nguyên thủy nào hoặc bất kỳ lớp bao nào cho một kiểu nguyên thủy.
+• Để xác định liệu biến kịch bản có cần phải được khai báo hay không, bạn thường có thể chỉ định giá trị true
+để chỉ ra rằng biến là mới và cần phải được khai báo.

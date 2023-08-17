@@ -1,0 +1,58 @@
+Các thẻ khác trong thư viện lõi của JSTL
+
+A set tag that sets a value in an attribute
+<c:set var=" message" scope=" session" value="Test message" />
+
+A set tag that sets a value in a JavaBean
+<c:set target="${user}" property="firstName" value="John" />
+
+A remove tag that removes an attribute
+<c:remove var="message" scope="session" />
+
+A catch tag that catches an exception
+<c:catch var="e">
+    <% // this scriptlet statement throws an exception
+    int i = 1/0;
+    %>
+    <p>Result: <c:out value="${i}" /></p>
+</c:catch>
+<c:if test="${e != null}">
+    <p>An exception occurred. Message: ${e.message}</p>
+<lc:if>
+
+A redirect tag that redirects to another page
+<c:if test="${e != null}">
+    <c: redirect url= "/error_java.jsp"/>
+</c:if>
+
+
+Hình 9-10 thể hiện năm thẻ khác trong thư viện lõi của JSTL. Tuy nhiên, nếu bạn sử dụng mô hình MVC, có lẽ bạn sẽ
+không cần phải sử dụng những thẻ này. Kết quả, tôi chỉ cung cấp các ví dụ ngắn để giúp bạn hiểu cách thức hoạt động
+của các thẻ này. Tuy nhiên, nếu bạn cần phải sử dụng chúng, bạn có thể tra cứu tài liệu của thư viện lõi JSTL
+theo mô tả trong hình 9-2.
+
+Nếu bạn cần thiết lập giá trị của một thuộc tính trong phạm vi, bạn có thể sử dụng thẻ set.
+Ví dụ, ví dụ đầu tiên trong hình này thể hiện cách thiết lập một thuộc tính có tên là "message" với giá trị
+"Test message" trong phạm vi phiên (session scope).
+
+Bạn cũng có thể sử dụng thẻ set nếu bạn cần thiết lập giá trị của một thuộc tính của một đối tượng trong một
+phạm vi cụ thể. Tuy nhiên, thay vì sử dụng thuộc tính "var" để chỉ định tên của thuộc tính, bạn sử dụng thuộc tính
+"target" để chỉ định thuộc tính chứa thuộc tính con. Để làm điều đó, bạn sử dụng biểu thức EL trong thuộc tính
+"target" để chỉ định một tham chiếu đến thuộc tính. Điều này được minh họa trong ví dụ thứ hai.
+
+Ví dụ thứ ba thể hiện cách sử dụng thẻ remove để loại bỏ một thuộc tính khỏi phạm vi. Khi sử dụng thẻ này,
+bạn sử dụng thuộc tính "var" để chỉ định tên của thuộc tính bạn muốn xóa, và bạn sử dụng thuộc tính "scope" để
+chỉ định phạm vi chứa thuộc tính.
+
+Nếu trang JSP của bạn bao gồm mã có thể gây ra ngoại lệ (exception) được ném ra, bạn có thể sử dụng thẻ catch
+để bắt các ngoại lệ. Điều này được minh họa trong ví dụ thứ tư. Ở đây, thẻ mở và đóng catch được đặt xung quanh
+một đoạn mã Java scriptlet gây ra ngoại lệ ArithmeticException do chia cho 0. Khi ngoại lệ được ném ra, thực thi
+nhảy qua biểu thức Java hiển thị kết quả của phép tính. Tuy nhiên, thẻ catch cũng tiết lộ ngoại lệ dưới dạng một
+biến có tên là "e". Kết quả, thẻ if theo sau thẻ catch có thể hiển thị thông báo lỗi thích hợp.
+
+Tất nhiên, nếu bạn chỉnh sửa đoạn mã Java trong thẻ catch để thực hiện một phép tính hợp lệ, ngoại lệ sẽ không
+được ném ra. Trong trường hợp đó, kết quả của phép tính sẽ được hiển thị và thông báo lỗi sẽ không được hiển thị.
+
+Ví dụ thứ năm thể hiện cách sử dụng thẻ redirect để chuyển hướng khách hàng đến một URL mới. Trong trường hợp này,
+thẻ redirect được đặt trong một thẻ if để khách hàng chỉ được chuyển hướng khi điều kiện trong câu lệnh if là đúng.
+
