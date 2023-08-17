@@ -71,14 +71,14 @@ A TLD file that contains two tag elements
 </tag
 
 ### properties of <tag>
-1. tag/name                       The name of the tag \n
-2. tag/tagclass                   Path of the Tag class
-3. tag/bodycontent                Determine whether tag is a body-containing [value: JSP] tag or a self-closing tag [value: empty or no need to write]
-4. tag/attribute                  Only for tags with attributes
-5. tag/attribute/name             The name of the attribute
-6. tag/attribute/required         validate
-7. tag/attribute/rtexprvalue      Specifies whether value of attribute is determined from runtime expression. If so, the type element can be any datatype, otherwise the type is a string
-8. tag/attribute/type             Only need to write if rtexprvalue is true
+1. **tag/name**                       The name of the tag
+2. **tag/tagclass**                   Path of the Tag class
+3. **tag/bodycontent**                Determine whether tag is a body-containing [value: JSP] tag or a self-closing tag [value: empty or no need to write]
+4. **tag/attribute**                  Only for tags with attributes
+5. **tag/attribute/name**             The name of the attribute
+6. **tag/attribute/required**         validate
+7. **tag/attribute/rtexprvalue**      Specifies whether value of attribute is determined from runtime expression. If so, the type element can be any datatype, otherwise the type is a string
+8. **tag/attribute/type**             Only need to write if rtexprvalue is true
 
 
 ### url 
