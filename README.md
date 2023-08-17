@@ -89,7 +89,14 @@ https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.12/bin/apache-tomcat-10.1.12-win
 <%@ taglib prefix="ex" uri="/WEB-INF/tld_name.tld" %>
 
 
+# JavaEmail
 
+### maven
+<dependency>
+    <groupId>jakarta.mail</groupId>
+    <artifactId>jakarta.mail-api</artifactId>
+    <version>2.1.1</version>
+</dependency>
 
 
 
