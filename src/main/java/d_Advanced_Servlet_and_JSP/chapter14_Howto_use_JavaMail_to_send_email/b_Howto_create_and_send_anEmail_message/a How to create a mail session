@@ -1,0 +1,99 @@
+Bây giờ bạn đã có một ý tưởng chung về cách sử dụng JavaMail API để tạo và gửi 
+một tin nhắn email, bạn sẽ tìm hiểu chi tiết về việc viết mã.
+
+Cách tạo một phiên thư điện tử (mail session)
+Hình 14-4 cho thấy cách tạo một mail session để bạn có thể tạo và 
+gửi một tin nhắn email. Trước khi bạn tạo một mail session, bạn cần tạo một đối 
+tượng Properties chứa bất kỳ thuộc tính nào mà phiên cần để gửi hoặc nhận thư. 
+Một đối tượng Properties lưu trữ danh sách các thuộc tính trong đó mỗi thuộc tính 
+có một tên, thường được gọi là một khóa, và một giá trị. Để chỉ định các thuộc tính 
+cho một mail session, bạn có thể sử dụng phương thức put của lớp Properties để 
+định nghĩa bất kỳ thuộc tính tiêu chuẩn nào có sẵn từ JavaMail API.
+
+How to get a mail session for a local SMTP server 
+Properties props = new Properties(); 
+props.put("mail.smtp.host", "localhost"); 
+Session session = Session.getDefaultinstance(props);
+
+Để tạo một mail session, bạn có thể gọi phương thức tĩnh getDefaultInstance của 
+lớp Session để nhận một đối tượng Session có tất cả các thiết lập mặc định cho 
+một mail session. Tuy nhiên, trước khi bạn thực hiện việc đó, bạn cần ít nhất 
+sử dụng lớp Properties để chỉ định thuộc tính cho máy chủ SMTP như được hiển thị 
+trong ví dụ đầu tiên. Ở đây, từ khóa localhost được sử dụng để chỉ định rằng 
+máy chủ SMTP đang chạy trên cùng một máy tính với ứng dụng web. Điều này thường 
+xảy ra khi bạn triển khai một ứng dụng web lên máy chủ sản xuất.
+
+
+Another way to get a mail session for a local SMTP server 
+Properties props = new Properties(); 
+props.put("mail.transport.protocol", "smtp"); 
+props.put("mail.smtp.host", "localhost"); 
+props.put("mail.smtp.port", 25); 
+Session session = Session.getDefaultinstance(props); 
+session.setDebug(true);
+
+Giống như ví dụ đầu tiên, ví dụ thứ hai cũng sử dụng từ khóa localhost để chỉ định 
+rằng máy chủ SMTP đang chạy trên cùng một máy chủ với ứng dụng web. 
+Tuy nhiên, ví dụ này một cách rõ ràng thiết lập hai thuộc tính khác. 
+Đầu tiên, nó đặt giao thức thành SMTP. Sau đó, nó đặt cổng thành 25. 
+Vì đây là các giá trị mặc định, điều này không cần thiết, nhưng nó chỉ ra cách 
+đặt giao thức và cổng cho một máy chủ. Sau khi tạo đối tượng phiên, 
+ví dụ thứ hai sử dụng phương thức setDebug của đối tượng Session để bật chế độ 
+gỡ lỗi cho phiên. 
+Kết quả là, đối tượng Session in thông tin gỡ lỗi ra màn hình console của Tomcat. 
+Điều này có thể hữu ích khi bạn đang sửa lỗi kết nối với máy chủ SMTP mới.
+
+Ví dụ thứ ba cho thấy cách sử dụng máy chủ SMTP đang chạy trên một máy chủ từ xa. 
+Cụ thể, nó cho thấy cách sử dụng máy chủ SMTP đang chạy trên máy chủ Gmail. 
+Giống như nhiều máy chủ SMTP từ xa, máy chủ này sử dụng giao thức SMTPS. 
+Khác với SMTP, SMTPS luôn sử dụng một kết nối bảo mật và cho phép xác thực. 
+Để biết thêm thông tin về kết nối bảo mật và xác thực, xem các chương 15 và 16.
+
+
+How to get a mail session for a remote SMTP server 
+Properties props = new Properties(); 
+props.put("mail.transport.protocol", "smtps"); 
+props.put("mail.smtps.host","smtp.gmail.com"); 
+props.put("mail.smtps.port", 465); 
+props.put("mail.smtps.auth", "true"); 
+props.put("mail.smtps.quitwait", "false"); 
+Session session = Session.getDefaultinstance(props); 
+session.setDebug(true);
+
+Ví dụ thứ ba này bắt đầu bằng cách đặt giao thức thành SMTPS. Sau đó, nó đặt 
+các thuộc tính host, port, auth và quitwait cho giao thức SMTPS. 
+Ở đây, thuộc tính auth chỉ ra rằng người dùng phải xác thực trước khi phiên có 
+thể kết nối tới máy chủ SMTP, và thuộc tính quitwait ngăn một SSLException mà 
+đôi khi xảy ra khi bạn sử dụng máy chủ SMTP của Gmail.
+
+Nếu bạn đang chạy Tomcat trên máy tính của bạn, việc tìm cài đặt đúng để kiểm thử 
+JavaMail API có thể khá khó khăn. Một tùy chọn là cài đặt một máy chủ SMTP trên 
+máy tính của bạn. Sau đó, bạn có thể sử dụng từ khóa localhost để kết nối tới.
+
+Một tùy chọn khác là làm việc với quản trị mạng hoặc nhà cung cấp Dịch vụ Internet 
+(ISP) của bạn để lấy thông tin cần thiết để kết nối tới máy chủ SMTP từ xa. 
+Khi bạn làm việc với một session mail, hãy nhớ rằng có rất nhiều thuộc tính 
+session mail khác không được hiển thị trong hình này. Nếu cần, bạn có thể đặt 
+các thuộc tính này bằng cách sử dụng các kỹ thuật bạn vừa học.
+
+Tuy nhiên, khi bạn thay đổi các thuộc tính được lưu trữ trong đối tượng Session, 
+bạn cần khởi động lại Tomcat để áp dụng thay đổi. Điều này bởi vì phương thức tĩnh 
+getDefaultInstance của đối tượng Session trả về đối tượng Session hiện có nếu đã 
+tồn tại. Vì vậy, nếu bạn muốn tạo một đối tượng Session mới sử dụng các thuộc tính 
+mới, bạn phải loại bỏ đối tượng Session cũ. Cách dễ nhất để làm điều đó là 
+khởi động lại Tomcat.
+
+Mô tả:
+- Một đối tượng Session chứa thông tin về session maill như giao thức(protocol), 
+máy chủ(server), cổng(port) và các thông tin khác. (Điều này không giống với 
+đối tượng HttpSession.)
+- Để đặt các thuộc tính của đối tượng Properties, bạn có thể sử dụng phương thức 
+put để chỉ định tên thuộc tính và giá trị cho mỗi thuộc tính.
+- Phương thức tĩnh getDefaultInstance của lớp Session trả về đối tượng Session 
+mặc định cho ứng dụng.
+- Phương thức setDebug của đối tượng Session có thể được sử dụng để in thông tin 
+gỡ lỗi về Session vào một tệp nhật ký.
+- Nếu bạn thay đổi các thuộc tính cho đối tượng Session, bạn phải khởi động lại 
+Tomcat trước khi những thay đổi có hiệu lực.
+- Nếu ứng dụng Java đang chạy trên cùng một máy tính với máy chủ SMTP, bạn thường 
+có thể sử dụng từ khóa localhost để chỉ định máy chủ SMTP.

@@ -1,0 +1,61 @@
+Bây giờ bạn đã biết chi tiết mã lập trình để tạo và gửi một tin nhắn email, 
+dưới đây là ba lớp sử dụng mã đó. Lớp đầu tiên là một class helper (trợ giúp)(helper) 
+có thể được sử dụng để gửi tin nhắn tới một máy chủ SMTP cục bộ. 
+Lớp thứ hai là một servlet sử dụng class helper (trợ giúp)(helper) để gửi tin nhắn. 
+Lớp thứ ba là một class helper (trợ giúp) có thể được sử dụng để gửi tin nhắn tới một máy 
+chủ SMTP từ xa.
+
+import java.util.Properties;
+import javax.mail.*;
+import javax.mail.internet.*;
+
+public class MailUtilLocal {
+    public static void sendMail(String to, String from, String subject, 
+                String body, boolean bodyIsHTML)
+                throws MessagingException {
+        // 1 - get a mail session
+        Properties props = new Properties();
+        props.put("mail.transport.protocol", "smtp");
+        props.put("mail.smtp.host", "localhost");
+        props.put("mail.smtp.port", 25);
+        Session session = Session.getDefaultInstance(props);
+        session.setDebug(true);
+
+        // 2 - create a message
+        Message message = new MimeMessage(session);
+        message.setSubject(subject);
+        if(bodyIsHTML) {
+            message.setContent(boby, "text/html");
+        } else {
+            message.setText(body);
+        }
+
+        // 3 - address the message
+        Address fromAddress = new InternetAddress(from);
+        Address toAddress = new InternetAddress(to);
+        message.setFrom(fromAddress);
+        message.setRecipient(Message.RecipientType.TO, toAddress);
+        
+        // 4 - send the message
+        Transport.send(message);
+                    
+    }
+}
+
+
+Lớp trợ giúp(helper) để gửi email với máy chủ SMTP cục bộ
+Hình 14-8 hiển thị một class helper (trợ giúp) có tên MailUtilLocal mà bạn có thể 
+sử dụng để gửi email. Lớp này chứa một phương thức tĩnh có tên sendMail tạo và 
+gửi một tin nhắn từ một địa chỉ email duy nhất tới một địa chỉ email duy nhất. 
+Vì phương thức này ném một ngoại lệ kiểu MessagingException, bất kỳ lớp nào gọi 
+phương thức này cũng phải bắt ngoại lệ này.
+Tham số thứ năm của phương thức sendMail là một giá trị Boolean xác định xem phần 
+thân của tin nhắn có chứa định dạng HTML hay không. Kết quả là, nếu tham số này 
+được đặt thành true, phương thức này sử dụng phương thức setContent để đặt nội 
+dung của tin nhắn và chỉ định rằng phần thân chứa định dạng HTML. Ngược lại, 
+phương thức này sử dụng phương thức setText để đặt phần thân của tin nhắn dưới 
+dạng văn bản thuần.
+Mặc dù lớp MailUtilLocal này đơn giản, nó rất hữu ích. Để tăng cường tính năng, 
+bạn có thể thêm các phương thức sendMail cung cấp cho địa chỉ CC và BCC. 
+Hoặc, bạn có thể thêm các phương thức sendMail cho phép cho nhiều địa chỉ TO, 
+CC và BCC.

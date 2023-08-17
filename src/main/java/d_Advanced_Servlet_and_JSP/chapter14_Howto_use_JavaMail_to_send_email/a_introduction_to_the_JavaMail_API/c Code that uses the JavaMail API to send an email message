@@ -1,0 +1,43 @@
+Mã sử dụng JavaMail API để gửi một tin nhắn email
+Hình 14-3 cho thấy các gói bạn cần phải nhập để có thể gửi một email và nó hiển thị 
+một đoạn mã Java tạo và gửi một tin nhắn email chứa văn bản thuần túy. Mặc dù bạn 
+có thể không hiểu mọi dòng trong ví dụ này, bạn có thể thấy cách API Java giúp 
+dễ dàng tạo và gửi email. Trong bốn hình tiếp theo, bạn sẽ tìm hiểu chi tiết để 
+viết mã như ví dụ này.
+
+Three packages for sending email
+java.util
+Chứa lớp Properties được sử dụng để thiết lập các thuộc tính cho email session.
+
+javax.mail
+Bao gồm các lớp Session, Message, Address, Transport và MessagingException 
+cần thiết để gửi một tin nhắn.
+
+javax.mail.internet
+Bao gồm các lớp MimeMessage và InternetAddress cần thiết để gửi một tin nhắn 
+email qua Internet.
+
+Code that uses the JavaMail API to send an email
+try {
+    // 1 - get a mail session
+    Properties props = new Properties();
+    props.put("mail.smtp.host", "localhost");
+    Session session = Session.getDefaultInstance(props);
+    
+    // 2 - create a message
+    Message message = new MimeMessage(session);
+    message.setSubject(subject);
+    message.setText(body);
+
+    // 3 - address the message
+    Address fromAddress = new InternetAddress(from);
+    Address toAddress = new InternetAddress(to);
+    message.setFrom(fromAddress);
+    message.setRecipient(Message.RecipientType.TO, toAddress);
+
+    // 4 - send the message
+    Transport.send(message);
+
+} catch (MessagingException e) {
+    log(e.toString);
+}

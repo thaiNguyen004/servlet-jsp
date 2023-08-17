@@ -1,0 +1,23 @@
+Trước khi bạn có thể biên dịch các chương trình sử dụng JavaMail API, cả JavaMail 
+API và JavaBeans Activation Framework (JAF) API đều phải được cài đặt trên hệ thống 
+của bạn. Để cài đặt chúng, bạn có thể sử dụng các thủ tục được hiển thị trong hình 14-2.
+
+Nếu bạn đang sử dụng Java SE 6 hoặc phiên bản mới hơn, JavaBeans Activation 
+Framework API đã được cài đặt kèm với nó. Do đó, bạn chỉ cần cài đặt JavaMail API. 
+Tuy nhiên, nếu bạn đang sử dụng phiên bản cũ hơn của Java SE, bạn cần cài đặt cả 
+JavaMail và JavaBeans Activation Framework APIs.
+Cách dễ nhất để cài đặt JavaMail API là tìm trang tải xuống cho JavaMail API, 
+và tải tệp javax.mail.jar về. Sau đó, bạn có thể sao chép tệp javax.mail.jar 
+vào thư mục WEB-INF\lib của ứng dụng và thêm tệp javax.mail.jar vào classpath 
+cho ứng dụng của bạn. 
+
+Trong NetBeans, bạn có thể làm điều đó bằng cách nhấp chuột phải vào thư mục Libraries, 
+chọn lệnh Add Jar/Folder và sử dụng hộp thoại kết quả để chọn tệp JAR. Như vậy, 
+các lớp cần thiết bởi JavaMail API sẽ có sẵn cho hệ thống của bạn.
+Để xem tài liệu cho JavaMail API, bạn có thể tìm kiếm trên Internet với từ khóa 
+"javax.mail documentation". Sau đó, bạn có thể theo các liên kết để xem tài liệu 
+cho JavaMail API. Tài liệu này hoạt động tương tự như tài liệu cho Java SE API.
+Để cài đặt JavaBeans Activation Framework API, bạn tải xuống một tệp ZIP 
+chứa tệp JAR cho thư viện cùng với tài liệu cho thư viện. Do đó, bạn có thể xem 
+tài liệu cho JAF API bằng cách điều hướng đến thư mục docs của thư mục jaf-1.1 
+được tạo ra trên hệ thống của bạn khi bạn giải nén các tệp từ tệp ZIP.

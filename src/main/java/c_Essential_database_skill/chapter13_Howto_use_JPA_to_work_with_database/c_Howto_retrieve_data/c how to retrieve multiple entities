@@ -86,3 +86,4 @@ về kiểu dữ liệu.
 createQuery(queryString, resultClass) : Trả về một đối tượng TypedQuery chứa 
 kết quả dưới dạng đối tượng của resultClass được chỉ định hoặc danh sách các 
 đối tượng của resultClass được chỉ định.
+

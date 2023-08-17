@@ -1,0 +1,28 @@
+Cách tạo một tin nhắn
+Sau khi bạn đã tạo đối tượng Session, bạn có thể tạo một đối tượng xác định một 
+tin nhắn email như được hiển thị trong hình 14-5. Để làm điều đó, bạn truyền 
+đối tượng Session vào hàm tạo của lớp MimeMessage để tạo một đối tượng MimeMessage. 
+Sau đó, bạn có thể đặt chủ đề, nội dung và địa chỉ cho tin nhắn. Để đặt chủ đề, 
+bạn sử dụng phương thức setSubject. Để đặt nội dung tin nhắn dưới dạng văn bản 
+thuần túy, bạn sử dụng phương thức setText. Sau đó, bạn sử dụng các phương thức 
+được hiển thị trong hình tiếp theo để đặt địa chỉ cho tin nhắn.
+
+Khi bạn sử dụng phương thức setText để đặt nội dung tin nhắn, loại MIME cho 
+tin nhắn sẽ tự động được đặt thành text/plain. Đối với nhiều tin nhắn văn bản, 
+điều này là đủ. Tuy nhiên, vì hầu hết các ứng dụng thư hiện đại có thể hiển 
+thị văn bản được định dạng bằng các thẻ HTML, thường cũng phổ biến để sử dụng 
+phương thức setContent để thay đổi loại MIME của một tin nhắn thành text/html. 
+Sau đó, nội dung tin nhắn có thể bao gồm các thẻ HTML định dạng văn bản, 
+hiển thị hình ảnh và tạo liên kết tới tài nguyên web.
+
+How to create a message 
+Message message = new MimeMessage(session);
+ 
+How to set the subject line of a message 
+message.setSubject("Order Confirmation"); 
+
+How to set the body of a plain text message 
+message.setText("Thanks for your order!"); 
+
+How to set the body of an HTML message 
+message.setContent("<hl>Thanks for your order!</hl>", "text/html");
