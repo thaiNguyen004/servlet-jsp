@@ -16,3 +16,15 @@ và Giao Thức (IMAP) thường được sử dụng.
 • Để gửi các tin nhắn email từ các chương trình Java của bạn, bạn sử dụng các lớp 
 của JavaMail API. Đặc biệt, bạn tạo một đối tượng Session chứa thông tin về phiên 
 làm việc với thư điện tử bao gồm địa chỉ cho máy chủ SMTP.
+
+
+Quan trọng: 
+ - Lời khuyên không nên thực hành với Gmail nếu chưa có kinh nghiệm nhiều
+ - Đối với Maven sử dụng dependence 
+ - 
+
+<dependency>
+    <groupId>jakarta.mail</groupId>
+    <artifactId>jakarta.mail-api</artifactId>
+    <version>2.1.1</version>
+</dependency>

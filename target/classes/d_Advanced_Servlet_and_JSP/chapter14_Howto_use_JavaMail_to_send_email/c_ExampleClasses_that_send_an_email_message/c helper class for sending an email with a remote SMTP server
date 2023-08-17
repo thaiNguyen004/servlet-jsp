@@ -1,49 +1,47 @@
 Lớp trợ giúp để gửi email với máy chủ SMTP từ xa 
 
-public class MailUtilGmail {
-    public static void sendMail(String to, String from, String subject, 
-            String body, boolean bodyIsHTML) throws MessagingException {
-         
-         // 1 - get a mail session
-         Properties props = new Properties();
-         props.put("mail.transport.protocol", "smtps");
-         props.put("mail.smtps.host", "smtp.gmail.com");
-         props.put("mail.smtps.port", 456);
-         props.put("mail.smtps.auth", "true");
-         props.put("mail.smtps.quitwait", "false");
-         Session session = Session.getDefaultInstance(props);
-         session.setDebug(true);
+public class MailUtilGmail{
+    public static void sendMail (String to, String from, String subject,
+                String body, boolean bodyIsHTML) throws MessagingException {
 
-         // 2 - create a message
-         Message message = new MineMessage(session);
-         message.setSubject(subject);
-         if(bodyIsHTML) {
+        // 1 - get a mail session
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.office365.com");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.port", 587);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.quitwait", "false");
+        Session session = Session.getInstance(props, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("****@outlook.com",
+                        "****");
+            }
+        });
+        session.setDebug(true);
+
+        // 2 - create a message
+        Message message = new MimeMessage(session);
+        message.setSubject(subject);
+        if(bodyIsHTML) {
             message.setContent(body, "text/html");
-         } else {
+        } else {
             message.setText(body);
-         }
+        }
 
-         // 3 - address the message
-         Address fromAddress = new InternetAddress(from);
-         Address toAddress = new InternetAddress(to);
-         message.setFrom(fromAddress);
-         message.setRecipient(Message.RecipientType.TO, toAddress);
-         
-         // 4 - send the message
-         Transport transport = session.getTransport();
-         transport.connect("johnsmith@gmail.com", "sesame");
-         transport.sendMessage(message, message.getAllRecipients());
-         transport.close();
+        // 3 - address the message
+        Address fromAddress = new InternetAddress(from);
+        Address toAddress = new InternetAddress(to);
+        message.setFrom(fromAddress);
+        message.setRecipient(Message.RecipientType.TO, toAddress);
+
+        // 4 - send the message
+        Transport.send(message);
     }
 }
 
-Hình 14-10 hiển thị một lớp trợ giúp có tên MailUtilGmail mà bạn có thể sử dụng 
-để gửi email với một máy chủ SMTP từ xa. Đặc biệt, bạn có thể sử dụng lớp này để 
-gửi email với một máy chủ SMTP từ Gmail. Tất nhiên, điều này chỉ hoạt động nếu bạn 
-có một tài khoản Gmail với tên người dùng và mật khẩu hợp lệ.
-Nếu bạn so sánh lớp này với lớp MailUtilLocal được hiển thị trong hình 14-8, 
-bạn sẽ thấy rằng chúng hoạt động tương tự nhau. Sự khác biệt chính là các thuộc 
-tính cho đối tượng Session chỉ định rằng phiên làm việc nên sử dụng giao thức SMTPS, 
-một máy chủ SMTP từ Gmail và cổng 465. Ngoài ra, thuộc tính auth yêu cầu xác thực 
-cho máy chủ SMTP. Kết quả là, phương thức connect của đối tượng Transport phải 
-chỉ định một tên người dùng và mật khẩu hợp lệ cho tài khoản Gmail.
+
+Hiện tại Google đã không cho phép bên thứ ba không uy tín dùng tính năng gửi email
+kể từ sau 2022
+
+Giải pháp là đoạn mã trên kia sử dụng Outlook của Microsoft
