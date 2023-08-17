@@ -98,6 +98,32 @@ https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.12/bin/apache-tomcat-10.1.12-win
     <version>2.1.1</version>
 </dependency>
 
+### pattern
+// 1 - get a mail session
+Properties props = new Properties();
+props.put("mail.smtp.host", "smtp.office365.com");
+props.put("mail.smtp.starttls.enable", "true");
+props.put("mail.smtp.port", 587);
+props.put("mail.smtp.auth", "true");
+props.put("mail.smtp.quitwait", "false");
+Session session = Session.getInstance(props, new Authenticator() {
+    @Override
+    protected PasswordAuthentication getPasswordAuthentication() {
+        return new PasswordAuthentication("nguyennt2004@outlook.com",
+                "Ntph33935@");
+    }
+});
+session.setDebug(true);
 
+// 2 - create a message
+...
 
+// 3 - address the message
+Address fromAddress = new InternetAddress(from);
+Address toAddress = new InternetAddress(to);
+message.setFrom(fromAddress);
+message.setRecipient(Message.RecipientType.CC, toAddress);
+
+// 4 - send the message
+Transport.send(message);
 
