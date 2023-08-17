@@ -71,7 +71,7 @@ A TLD file that contains two tag elements
 </tag
 
 ### properties of <tag>
-1. tag/name                       The name of the tag
+1. tag/name                       The name of the tag \n
 2. tag/tagclass                   Path of the Tag class
 3. tag/bodycontent                Determine whether tag is a body-containing [value: JSP] tag or a self-closing tag [value: empty or no need to write]
 4. tag/attribute                  Only for tags with attributes
