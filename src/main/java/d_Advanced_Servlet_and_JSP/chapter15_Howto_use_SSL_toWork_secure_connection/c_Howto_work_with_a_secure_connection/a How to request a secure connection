@@ -1,0 +1,25 @@
+Cách làm việc với kết nối bảo mật
+Sau khi một máy chủ từ xa hoặc cục bộ đã được cấu hình để làm việc với SSL, 
+việc yêu cầu một kết nối bảo mật và trả về kết nối HTTP thông thường đều dễ dàng.
+
+Cách yêu cầu một kết nối bảo mật
+Hình 15-6 thể hiện cách mã hóa một URL request một kết nối bảo mật. Để làm điều đó, 
+bạn mã hóa một URL tuyệt đối bắt đầu bằng https. Nếu bạn đang sử dụng một máy chủ 
+cục bộ, bạn cần bao gồm số cổng được sử dụng cho các kết nối SSL. Mặc dù hai ví dụ 
+cho thấy cách yêu cầu một JSP, bạn có thể sử dụng kỹ thuật tương tự để yêu cầu 
+các kết nối bảo mật cho bất kỳ URL nào.
+
+Khi một kết nối bảo mật được yêu cầu, máy chủ xác thực chính nó bằng cách gửi 
+chứng chỉ bảo mật của nó đến trình duyệt. Sau đó, nếu chứng chỉ không đến từ một 
+cơ quan chứng nhận đã được đăng ký với trình duyệt, trình duyệt sẽ hiển thị một 
+trang cảnh báo giống như trong hình này. Vì một chứng chỉ tự ký không đến từ một 
+nguồn tin cậy, trình duyệt của bạn nên hiển thị một hộp thoại như thế này khi 
+bạn yêu cầu một kết nối bảo mật trong môi trường kiểm thử cục bộ của bạn.
+
+A URL that requests a secure connection over the Internet 
+https://www.murach.com/email/join.jsp
+
+A URL that requests a secure connection from a local system 
+https://localhost:8443/ch15email/join.jsp
+
+ 

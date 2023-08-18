@@ -1,0 +1,20 @@
+Cách xác thực SSL hoạt động 
+Để sử dụng SSL để truyền dữ liệu, cả máy khách và máy chủ phải cung cấp xác thực, 
+như được hiển thị trong hình 15-2. Như vậy, cả máy khách và máy chủ có thể chấp nhận 
+hoặc từ chối kết nối an toàn. Trước khi thiết lập một kết nối an toàn, máy chủ sử dụng 
+xác thực máy chủ SSL để xác thực bản thân. Điều này được thực hiện bằng cách cung cấp 
+một chứng chỉ an toàn số hóa cho trình duyệt.
+
+Mặc định, trình duyệt chấp nhận các chứng chỉ an toàn số hóa từ các nguồn tin cậy. 
+Tuy nhiên, nếu trình duyệt không nhận ra chứng chỉ như một nguồn tin cậy, nó sẽ hiển 
+thị một trang cảnh báo như trang được hiển thị sau trong chương. Sau đó, người dùng 
+có thể quyết định liệu có tiếp tục không. Để hỗ trợ quyết định, người dùng có thể 
+xem chứng chỉ. Mặc dù kỹ thuật làm điều này khác nhau đối với mỗi trình duyệt, người 
+dùng thông thường có thể làm điều này bằng cách nhấp vào biểu tượng khóa và sử dụng 
+menu kết quả để xem chứng chỉ. Nếu người dùng chọn tiếp tục, kết nối an toàn được 
+thiết lập.
+Trong một số trường hợp hiếm, máy chủ có thể muốn máy khách xác thực chính nó bằng xác 
+thực máy khách SSL. Ví dụ, một ngân hàng có thể muốn sử dụng xác thực máy khách SSL 
+để đảm bảo rằng nó đang gửi thông tin nhạy cảm như số tài khoản và số dư đúng người. 
+Để thực hiện loại xác thực này, một chứng chỉ số hóa phải được cài đặt trên máy khách, 
+thường là một trình duyệt.

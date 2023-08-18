@@ -1,0 +1,33 @@
+Quan điểm
+Bây giờ bạn đã hoàn thành chương này, bạn nên có khả năng sử dụng Tomcat 
+để triển khai bảo mật quản lý bởi container trong ứng dụng của mình. 
+Tuy nhiên, bạn nên nhớ rằng chương này không bao hàm tất cả các khía cạnh 
+của việc sử dụng Tomcat cho xác thực.
+
+Cụ thể, Tomcat cung cấp một số vùng bảo mật khác mà không được trình bày trong 
+chương này. Ví dụ, JNDIRealm cho phép bạn tìm kiếm người dùng trong một máy chủ 
+thư mục LDAP được truy cập bởi một nhà cung cấp JNDI. Vì vậy, nếu các vùng bảo mật 
+được trình bày trong chương này không đủ cho ứng dụng của bạn, bạn có thể tham khảo 
+tài liệu có sẵn trên trang web của Tomcat.
+
+Tóm tắt
+• Để hạn chế truy cập vào các tài nguyên web như tài liệu HTML, JSP và servlet, 
+bạn có thể sử dụng bảo mật quản lý bởi container, còn được gọi là xác thực quản lý 
+bởi container.
+• Bạn có thể sử dụng tệp web.xml để xác định loại xác thực cho một ứng dụng.
+• Xác thực cơ bản hiển thị một hộp thoại định sẵn để nhận tên người dùng và mật khẩu. 
+Xác thực Digest hoạt động tương tự như xác thực cơ bản, nhưng nó mã hóa tên 
+người dùng và mật khẩu. Xác thực dựa trên biểu mẫu cho phép ứng dụng sử dụng một 
+biểu mẫu web tùy chỉnh để lấy tên người dùng và mật khẩu.
+• Bạn có thể sử dụng tệp web.xml để xác định ràng buộc bảo mật xác định các mẫu 
+URL nên có truy cập bị hạn chế và cũng để xác định các vai trò có quyền truy cập 
+vào các trang bị hạn chế.
+• Bạn có thể sử dụng tệp server.xml của Tomcat hoặc tệp context.xml của ứng dụng 
+để xác định một vùng bảo mật sử dụng giao diện để cung cấp tên người dùng, mật khẩu 
+và vai trò cho người dùng đã được ủy quyền.
+• Ba trong số các vùng bảo mật thường được sử dụng với Tomcat là UserDatabaseRealm, 
+JDBCRealm và DataSourceRealm. Bạn có thể sử dụng bất kỳ vùng bảo mật nào trong số 
+này với bất kỳ phương thức xác thực nào.
+• Khi bạn sử dụng xác thực dựa trên biểu mẫu, mã HTML cho trang đăng nhập phải bao gồm 
+một biểu mẫu và hai hộp văn bản sử dụng tên yêu cầu cho các thuộc tính cụ thể.
+

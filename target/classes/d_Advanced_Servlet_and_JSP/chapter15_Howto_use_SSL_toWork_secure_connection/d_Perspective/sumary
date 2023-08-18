@@ -1,0 +1,29 @@
+Khía cạnh tổng quan
+Bây giờ bạn đã hoàn thành chương này, bạn nên có khả năng điều chỉnh ứng dụng 
+của mình để sử dụng kết nối bảo mật khi cần thiết. Trong chương tiếp theo, 
+bạn sẽ tìm hiểu cách hạn chế truy cập vào một số phần của trang web bằng cách 
+yêu cầu người dùng cung cấp tên người dùng và mật khẩu. Đây là một hình thức 
+bảo mật khác được biết đến là xác thực thường được sử dụng cùng với kết nối bảo mật.
+
+Tóm tắt
+• Secure Sockets Layer (SSL) là một giao thức cũ được sử dụng trên Internet để 
+cho phép máy khách và máy chủ giao tiếp qua một kết nối bảo mật. Khi sử dụng 
+kết nối bảo mật, dữ liệu được truyền giữa máy khách và máy chủ được mã hóa.
+• Transport Layer Security (TLS) là phiên bản kế thừa của SSL, và nó hoạt động 
+tương tự. Vì SSL là giao thức cũ hơn và đã được thiết lập hơn, thường được sử 
+dụng để ám chỉ một kết nối bảo mật, ngay cả khi kết nối có thể sử dụng giao thức TLS.
+• Khi trình duyệt cố gắng giao tiếp với máy chủ bằng cách sử dụng một kết nối 
+bảo mật, máy chủ xác thực chính nó bằng cách cung cấp một chứng chỉ bảo mật số. 
+Điều này được gọi là xác thực máy chủ SSL.
+• Để có một chứng chỉ bảo mật số, bạn liên hệ với một cơ quan chứng thực sử 
+dụng một cơ quan đăng ký để cấp phép cho chứng chỉ của bạn. Chứng chỉ này chỉ 
+định sức mạnh của mã hóa SSL được sử dụng. Khi bạn có chứng chỉ, bạn cài đặt 
+nó trên trang web của bạn.
+• Java Secure Socket Extension (JSSE) API cho phép ứng dụng Java sử dụng kết nối 
+bảo mật. API này được bao gồm trong hầu hết các phiên bản hiện đại của JDK.
+• Để sử dụng kết nối bảo mật, bạn cần cài đặt chứng chỉ bảo mật số trên máy 
+chủ web của bạn và cấu hình máy chủ web của bạn để xác định một kết nối bảo mật.
+• Để yêu cầu một kết nối bảo mật từ ứng dụng web, bạn sử dụng một URL tuyệt đối 
+bắt đầu bằng https. Sau đó, bạn sử dụng URL tương đối để tiếp tục sử dụng kết nối 
+bảo mật. Để trở lại kết nối thông thường, bạn sử dụng một URL tuyệt đối bắt đầu 
+bằng http.

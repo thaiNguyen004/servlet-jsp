@@ -1,0 +1,119 @@
+Cách hạn chế truy cập vào tài nguyên web
+
+Bây giờ bạn đã hiểu khái niệm chung về cách xác thực được quản lý bởi container 
+hoạt động, bạn đã sẵn sàng để tìm hiểu cách sử dụng Tomcat để tạo ràng buộc hạn 
+chế truy cập vào tài nguyên web. Mặc dù chủ đề này sử dụng Tomcat để tạo ràng buộc, 
+những khái niệm này cũng áp dụng cho các container servlet khác.
+
+How to set a security constraint in a web.xml file 
+<security-role> 
+    <description>customer service employees</description> 
+    <role-name>service</role-name> 
+</security-role> 
+
+<security-role> 
+    <description>programmers</description> 
+    <role-name>programmer</role-name> 
+</security-role> 
+
+<security-constraint> 
+    <web-resource-collection> 
+        <web-resource-name>Protected Area</web-resource-name> 
+        <url-pattern>/admin/*</url-pattern> 
+        
+        <!-- NOT SECURE - Don't include these elements 
+            <http-method>GET</http-method> 
+            <http-method>POST</http-method> 
+        --> 
+    
+    </web-resource-collection> 
+    
+    <auth-constraint> 
+        <role-name>programmer</role-name> 
+        <role-name>service</role-name> 
+    </auth-constraint> 
+
+    <user-data-constraint> 
+        <transport-guarantee>CONFIDENTIAL</transport-guarantee> 
+    </user-data-constraint> 
+</security-constraint>
+
+
+Some elements used to create a security roles and consstraint
+<security-role> 
+Tạo một vai trò bảo mật cho một hoặc nhiều tài nguyên web.
+
+<role-name>
+Chỉ định tên cho một vai trò bảo mật.
+
+<security-constraint>
+Tạo một ràng buộc bảo mật cho một hoặc nhiều tài nguyên web.
+
+<web-resource-collection>
+Chỉ định một tập hợp các tài nguyên web bị hạn chế.
+
+<url-pattern>
+Chỉ định mẫu URL cho các tài nguyên web mà bạn muốn hạn chế. Bạn có thể sử dụng 
+ký tự dấu sao (*) để chỉ định nhiều tệp cùng một lúc. Mặc định, điều này hạn chế 
+truy cập cho tất cả các phương thức HTTP, thường là điều bạn muốn.
+
+<http-method>
+Chỉ định các phương thức HTTP yêu cầu xác thực. Nếu bạn bao gồm phần tử này, 
+tất cả các phương thức HTTP khác không yêu cầu xác thực, thường thì điều này không 
+phải là điều bạn muốn.
+
+<auth-constraint>
+Chỉ định các vai trò bảo mật được phép truy cập vào tài nguyên web bị hạn chế.
+
+<user-data-constraint>
+Chỉ định các ràng buộc áp dụng cho dữ liệu được lưu trữ trong các tài nguyên bị 
+hạn chế.
+
+<transport-guarantee>
+Đảm bảo một kết nối bảo mật khi được đặt thành giá trị CONFIDENTIAL.
+
+
+
+Cách thêm một role bảo mật
+Trước khi hạn chế truy cập vào tài nguyên web, bạn thường muốn thêm một hoặc 
+nhiều phần tử security-role vào tệp web.xml của ứng dụng như hình 16-3. 
+Những phần tử này xác định các vai trò bảo mật được phép truy cập vào tài nguyên 
+web bị hạn chế. Trong hình này, đã thêm hai vai trò bảo mật: service và programmer.
+
+Cách thêm một ràng buộc bảo mật
+Để hạn chế truy cập vào tài nguyên web, bạn thêm một phần tử security-constraint 
+vào tệp web.xml của ứng dụng. Phần tử này chỉ định các tài nguyên web bị hạn chế 
+và các vai trò có thể truy cập chúng.
+
+Khi mã hóa phần tử url-pattern, bạn có thể mã hóa một URL chỉ định một tệp duy nhất. 
+Hoặc bạn có thể sử dụng ký tự asterisk để hạn chế truy cập vào nhiều tệp. 
+Trong hình này, ký tự * hạn chế truy cập vào tất cả các URL trong thư mục admin. 
+Điều này bao gồm tất cả các tệp HTML và JSP cũng như bất kỳ servlet hoặc tài nguyên 
+khác nào được ánh xạ đến thư mục này.
+
+Khi mã hóa phần tử auth-constraint, bạn xác định các vai trò người dùng được ủy 
+quyền để truy cập vào tài nguyên bị hạn chế. Trong hình này, bất kỳ người dùng 
+nào liên quan đến vai trò programmer hoặc service đều được ủy quyền để truy cập 
+vào các tài nguyên có sẵn từ thư mục admin.
+
+Để hạn chế truy cập vào nhiều tệp hoặc thư mục, bạn có thể xác định một số phần 
+tử url-pattern trong một phần tử security-constraint duy nhất. Hoặc nếu bạn muốn 
+chỉ định các vai trò khác nhau cho các mẫu URL khác nhau, bạn có thể tạo nhiều 
+phần tử security-constraint.
+
+Nếu bạn muốn hạn chế truy cập vào một tài nguyên, nhưng chỉ cho các phương thức 
+HTTP cụ thể, bạn có thể sử dụng phần tử http-method để làm điều đó. Ví dụ, bạn 
+có thể sử dụng phần tử này để hạn chế truy cập từ các phương thức HTTP GET và POST. 
+Tuy nhiên, nếu bạn làm điều đó, các phương thức HTTP khác, chẳng hạn như phương 
+thức HEAD, không yêu cầu xác thực và có thể được sử dụng để truy cập tài nguyên, 
+điều này thường không phải là điều bạn muốn. May mắn thay, bạn có thể dễ dàng 
+hạn chế truy cập vào tất cả các phương thức HTTP bằng cách bỏ qua phần tử http-method, 
+điều này thường là điều bạn muốn.
+
+Trong hầu hết các trường hợp, dữ liệu được lưu trữ trong một tài nguyên bị hạn 
+chế nên được truyền giữa máy khách và máy chủ thông qua một kết nối bảo mật. 
+Cách đơn giản nhất để đảm bảo điều này là bao gồm một phần tử transport-guarantee 
+được đặt thành giá trị CONFIDENTIAL. Để làm cho việc này hoạt động, bạn cần phải 
+thiết lập một kết nối bảo mật như đã mô tả trong chương trước.
+
+

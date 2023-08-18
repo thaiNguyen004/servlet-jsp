@@ -1,0 +1,125 @@
+Cách triển khai "DataSourceRealm"
+
+Nếu ứng dụng của bạn đang sử dụng pooling kết nối như được miêu tả trong chương 12, 
+bạn có thể muốn triển khai "DataSourceRealm" như được hiển thị trong hình 16-6. 
+Realm này tương tự "JDBCRealm".
+
+So với "JDBCRealm", "DataSourceRealm" có hai ưu điểm khi sử dụng. 
+Thứ nhất, realm này có thể tận dụng việc pooling kết nối, cho phép ứng dụng xác 
+thực và ủy quyền người dùng nhanh hơn.
+
+Thứ hai, nếu bạn đã chỉ định thông tin kết nối cơ sở dữ liệu cho ứng dụng của 
+bạn trong một phần tử Resource, bạn không cần phải nhân đôi thông tin này trong 
+phần tử Realm. Thay vào đó, bạn có thể mã hóa một phần tử Realm sử dụng các thuộc 
+tính dataSourceName và localDataSource để sử dụng cùng thông tin kết nối với phần 
+tử Resource. Ví dụ, trong hình này, phần tử Resource chỉ định tất cả thông tin 
+kết nối cần thiết để kết nối đến cơ sở dữ liệu âm nhạc được sử dụng bởi ứng dụng 
+Music Store được trình bày trong phần 5.
+
+Sau khi mã hóa các thuộc tính Realm để kết nối với nguồn dữ liệu, bạn mã hóa phần 
+còn lại của các thuộc tính cũng như bạn đã làm với "JDBCRealm". 
+Ví dụ, trong hình này, phần tử Realm sử dụng các bảng và cột giống như JDBCRealm 
+được hiển thị trong hình trước.
+
+A context.xml file that implements the DataSourceRealm 
+<?xml version="l.0" encoding="UTF-8" ?> 
+<Context path="/musicStore"> 
+
+<Resource name="jdbc/musicDB" auth="Container"
+    maxActive="l00" maxidle="30" maxWait="l0000"
+    username="root" password="sesame" 
+    driverClassName="com.mysql.jdbc.Driver"
+    url="jdbc:mysql://localhost:3306/music?autoReconnect=true"
+    logAbandoned="true" removeAbandoned="true"
+    removeAbandonedTimeout="60" type="javax.sql.DataSource" /> 
+
+<Realm className="org.apache.catalina.realm.DataSourceRealm" debug="99"
+    dataSourceName="jdbc/musicDB" localDataSource="true"
+    userTable="UserPass" userNameCol="Username" userCredCol=" Password" 
+    userRoleTable="UserRole" roleNameCol="Rolename" /> 
+</Context
+
+
+The attributes of the Realm element for a DataSourceRealm
+
+className
+Tên đầy đủ của lớp DataSourceRealm.
+
+
+dataSourceName
+Tên xác định nguồn dữ liệu. Nếu phần tử Realm được mã hóa trong cùng tệp context.xml 
+với phần tử Resource được sử dụng để kết nối đến cơ sở dữ liệu, bạn có thể chỉ định 
+cùng tên như đã được chỉ định bởi phần tử Resource.
+
+
+localDataSource
+Mặc định, thuộc tính này được đặt là false, cho phép bạn sử dụng thuộc tính 
+dataSourceName để chỉ định một nguồn dữ liệu toàn cầu. Tuy nhiên, nếu phần tử 
+Realm được mã hóa trong cùng tệp context.xml với phần tử Resource, bạn có thể 
+đặt thuộc tính này thành true để chỉ định một nguồn dữ liệu cục bộ.
+Nếu thuộc tính localDataSource được đặt là "false" trong đoạn mã XML, điều này 
+sẽ có nghĩa rằng nguồn dữ liệu (data source) được sử dụng bởi Realm là một nguồn 
+dữ liệu toàn cầu (global) và không cần phải nằm trong cùng một vị trí (context) 
+với phần tử Realm.
+
+Khi thuộc tính localDataSource được đặt thành "false", Realm sẽ sử dụng một nguồn 
+dữ liệu toàn cầu, nghĩa là nguồn dữ liệu không cần nằm trong cùng một tệp context.xml 
+hoặc cùng một vị trí vật lý với phần tử Realm. Điều này có thể hữu ích trong các 
+tình huống khi bạn muốn sử dụng một nguồn dữ liệu chung mà có thể được truy cập 
+từ nhiều ứng dụng hoặc vị trí khác nhau.
+
+Ví dụ: Nếu bạn đang quản lý một hệ thống lớn với nhiều ứng dụng và muốn sử dụng 
+cùng một nguồn dữ liệu chung cho việc xác thực và phân quyền, bạn có thể đặt 
+localDataSource thành "false" và chỉ định nguồn dữ liệu toàn cầu mà tất cả các 
+ứng dụng có thể truy cập.
+
+
+
+Trong đoạn mã XML mẫu bạn đã cung cấp, có vẻ như bạn đang định cấu hình một tài 
+nguyên (resource) JDBC cho một ứng dụng sử dụng cơ sở dữ liệu MySQL. 
+Dưới đây là giải thích các thuộc tính (chỉ số) trong đoạn mã:
+
+1. name: Đây là tên của tài nguyên JDBC. Trong trường hợp này,
+ tài nguyên có tên "jdbc/musicDB".
+
+2. auth: Xác định phương thức xác thực được sử dụng để truy cập vào tài nguyên. 
+Trong trường hợp này, giá trị là "Container", đề cập đến việc sử dụng cơ chế xác 
+thực do môi trường thực thi cung cấp.
+
+3. maxActive: Số kết nối tối đa được phép cùng một lúc. Trong ví dụ này, 
+tối đa 100 kết nối được phép.
+
+4. maxIdle: Số kết nối tối đa được giữ trong một trạng thái chờ đợi. 
+Trong trường hợp này, tối đa 30 kết nối được giữ.
+
+5. maxWait: Thời gian tối đa mà một tiến trình sẽ chờ để lấy một kết nối từ pool. 
+Trong ví dụ này, thời gian chờ tối đa là 10000 milliseconds (10 giây).
+
+6. username: Tên người dùng để truy cập cơ sở dữ liệu. Trong trường hợp này, 
+tên người dùng là "root".
+
+7. password: Mật khẩu của người dùng để truy cập cơ sở dữ liệu. 
+Trong trường hợp này, mật khẩu là "sesame".
+
+8. driverClassName: Tên lớp của trình điều khiển (driver) JDBC để kết nối với 
+cơ sở dữ liệu MySQL. Trong ví dụ này, đang sử dụng trình điều khiển "com.mysql.jdbc.Driver".
+
+9. url: URL kết nối đến cơ sở dữ liệu MySQL. Trong ví dụ này, đang kết nối 
+tới cơ sở dữ liệu "music" trên máy localhost, cổng 3306, và có 
+tùy chọn "autoReconnect" được bật.
+
+10. logAbandoned: Chỉ định xem liệu các kết nối bị bỏ quên (abandoned) có nên 
+được ghi log hay không. Trong trường hợp này, ghi log khi có kết nối bị bỏ quên.
+
+11. removeAbandoned: Chỉ định xem liệu các kết nối bị bỏ quên có nên bị loại 
+bỏ khỏi pool hay không. Trong ví dụ này, kết nối bị bỏ quên sẽ bị loại bỏ.
+
+12. removeAbandonedTimeout: Thời gian (seconds) mà một kết nối được phép bị 
+bỏ quên trước khi bị loại bỏ (nếu removeAbandoned được bật). 
+Trong trường hợp này, thời gian bỏ quên tối đa là 60 giây.
+
+13. type: Loại của tài nguyên, trong trường hợp này, là "javax.sql.DataSource".
+
+Tóm lại, đoạn mã XML này đang cấu hình một tài nguyên JDBC để kết nối đến 
+cơ sở dữ liệu MySQL, và các chỉ số được sử dụng để định cấu hình cách tài nguyên 
+này hoạt động trong môi trường ứng dụng của bạn.

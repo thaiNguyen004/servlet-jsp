@@ -1,0 +1,23 @@
+Cách sử dụng SSL để làm việc với một kết nối an toàn 
+Nếu ứng dụng của bạn yêu cầu người dùng nhập dữ liệu nhạy cảm như số thẻ 
+tín dụng và mật khẩu, bạn nên sử dụng một kết nối an toàn khi gửi 
+dữ liệu giữa máy khách và máy chủ. Nếu không, một hacker có thể có khả năng 
+chặn và xem dữ liệu này. Trong chương này, bạn sẽ tìm hiểu cách truyền dữ liệu 
+qua một kết nối an toàn.
+
+Giới thiệu về SSL 
+Để ngăn người khác đọc dữ liệu được truyền qua Internet, bạn có thể sử dụng 
+Secure Sockets Layer (SSL). Đây là giao thức cho phép bạn truyền dữ liệu giữa 
+máy chủ và máy khách thông qua một kết nối an toàn. 
+
+Cách SSL hoạt động 
+Hình 15-1 thể hiện một trang web sử dụng SSL để truyền dữ liệu giữa máy chủ và 
+máy khách thông qua một kết nối an toàn. Để xác định liệu bạn có đang truyền 
+dữ liệu qua một kết nối an toàn hay không, bạn có thể đọc URL. Nếu nó bắt đầu 
+bằng https thay vì http, thì bạn đang truyền dữ liệu qua một kết nối an toàn. 
+Ngoài ra, một biểu tượng khóa nhỏ thường xuất hiện bên trái của URL. 
+Với một kết nối HTTP thông thường, toàn bộ dữ liệu được gửi dưới dạng văn bản 
+không mã hóa. Kết quả là, nếu một hacker chặn dữ liệu này, việc đọc dữ liệu là 
+dễ dàng. Tuy nhiên, với một kết nối an toàn, toàn bộ dữ liệu được mã hóa trước 
+khi nó được truyền giữa máy khách và máy chủ. Mặc dù hacker vẫn có thể chặn dữ 
+liệu này, họ sẽ không thể đọc nó trừ khi họ có thể giải mã mã hóa.

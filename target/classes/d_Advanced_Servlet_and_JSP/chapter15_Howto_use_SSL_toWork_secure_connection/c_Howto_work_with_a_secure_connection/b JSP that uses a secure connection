@@ -1,0 +1,31 @@
+Một JSP sử dụng kết nối bảo mật
+Sau khi quá trình xác thực hoàn tất, máy chủ gửi phản hồi đến trình duyệt. 
+Ví dụ, hình 15-7 thể hiện trang join.jsp khi nó được hiển thị qua một kết nối bảo mật. 
+Điều này có nghĩa là khi người dùng gửi dữ liệu trên trang này, dữ liệu sẽ được 
+mã hóa trước khi gửi đến máy chủ.
+Bạn có thể nhận biết trang này sử dụng một kết nối bảo mật khi URL bắt đầu bằng https. 
+Ngoài ra, vì trang này đang chạy trên máy chủ cục bộ, nó sử dụng cổng 8443 cho 
+kết nối bảo mật. Tuy nhiên, nếu trang này chạy trên Internet, nó sẽ không cần số cổng.
+Để xem chứng chỉ bảo mật cho kết nối bảo mật, bạn thường có thể nhấp vào biểu tượng 
+khóa bên trái của URL và sử dụng menu kết quả để hiển thị chứng chỉ. 
+Khi bạn xem một chứng chỉ cho môi trường kiểm thử cục bộ, trình duyệt sẽ hiển thị 
+thông tin bạn đã nhập khi bạn tạo chứng chỉ tự ký. Khi bạn xem chứng chỉ trên web, 
+trình duyệt nên hiển thị một chứng chỉ tương tự như trong hình 15-2.
+
+Cách trở lại kết nối HTTP thông thường
+Sau khi thiết lập một kết nối bảo mật, bạn có thể sử dụng đường dẫn tương đối để 
+yêu cầu tài nguyên web. Trong thực tế, cách duy nhất để trở lại kết nối HTTP 
+thông thường là sử dụng một URL tuyệt đối bắt đầu bằng http.
+
+Cách chuyển từ hệ thống cục bộ đến máy chủ Internet
+Khi bạn chuyển một trang web từ môi trường kiểm thử cục bộ sang một máy chủ web 
+trên Internet, bạn cần sửa đổi các URL tuyệt đối được sử dụng trong ứng dụng để 
+chúng tham chiếu đến trang web. Ví dụ, nếu trang web của bạn có tên là 
+www.trout.com, thì bạn cần thay đổi tất cả các URL bắt đầu bằng
+https://localhost:8443 thành https://www.trout.com. Bạn cũng cần thay đổi tất cả 
+các URL bắt đầu bằng http://localhost:8080 thành http://www.trout.com. Để làm cho
+việc chuyển này dễ dàng hơn, bạn có thể lưu trữ các biến tham chiếu đến kết nối 
+bảo mật và kết nối HTTP thông thường tại một vị trí trung tâm. Sau đó, bạn chỉ 
+cần thực hiện hai thay đổi trước khi triển khai ứng dụng web của bạn lên một máy 
+chủ web đang chạy trên Internet.
+

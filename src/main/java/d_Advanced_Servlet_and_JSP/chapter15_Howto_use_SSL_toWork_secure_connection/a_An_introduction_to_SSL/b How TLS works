@@ -1,0 +1,34 @@
+Cách TLS hoạt động 
+Transport Layer Security (TLS) là một giao thức khác được sử dụng để làm việc 
+với các kết nối an toàn. Giao thức này nâng cao hơn so với SSL, nhưng hoạt động 
+tương tự. Với tư cách là người dùng, khó để phân biệt liệu bạn đang sử dụng kết nối 
+SSL hay kết nối TLS. Mặc dù TLS chỉ được hỗ trợ bởi các trình duyệt mới hơn, bất 
+kỳ máy chủ nào thực hiện TLS cũng thực hiện SSL. Như vậy, các trình duyệt mới 
+hơn có thể sử dụng TLS, và các trình duyệt cũ hơn vẫn có thể sử dụng SSL. 
+Khi bạn làm việc với các kết nối an toàn, bạn thường thấy rằng SSL thường được 
+sử dụng để mô tả kết nối thay vì TLS. Điều này bởi vì SSL là giao thức cũ hơn, 
+đã được thành lập hơn để làm việc với các kết nối an toàn. Trong chương này, 
+thuật ngữ SSL được sử dụng mặc dù kết nối cũng có thể là kết nối TLS.
+
+Khi nào nên sử dụng kết nối an toàn 
+Do việc mã hóa và giải mã dữ liệu được gửi qua một kết nối an toàn mất 
+thời gian, kết nối an toàn chậm hơn so với các kết nối HTTP thông thường. 
+Kết quả là, bạn thường chỉ sử dụng kết nối an toàn khi ứng dụng của bạn 
+truyền dữ liệu nhạy cảm giữa máy khách và máy chủ.
+
+Mô tả 
+• Transport Layer Security (TLS) và Secure Sockets Layer (SSL) là hai giao thức 
+được sử dụng bởi Internet cho phép các máy khách và máy chủ giao tiếp qua một 
+kết nối an toàn.
+• TLS là phiên bản kế thừa của SSL. Mặc dù có những khác biệt nhỏ giữa SSL và TLS, 
+giao thức vẫn giữ nguyên bản chất. Do đó, chúng thường được gọi là giao thức TLS/SSL 
+hoặc các thuật ngữ này được sử dụng thay thế cho nhau.
+• Với SSL, trình duyệt mã hóa toàn bộ dữ liệu được gửi đến máy chủ và giải mã 
+toàn bộ dữ liệu nhận được từ máy chủ. Ngược lại, máy chủ mã hóa toàn bộ dữ liệu 
+được gửi đến trình duyệt và giải mã toàn bộ dữ liệu nhận được từ trình duyệt.
+• SSL có khả năng xác định xem dữ liệu đã bị thay đổi trong quá trình truyền.
+• SSL cũng có khả năng xác minh rằng một máy chủ hoặc một máy khách thực sự là 
+người/entity mà nó tuyên bố.
+• URL cho một kết nối an toàn bắt đầu bằng HTTPS thay vì HTTP.
+• Một trình duyệt web sử dụng kết nối an toàn thường hiển thị biểu tượng khóa 
+bên trái URL của trang web.

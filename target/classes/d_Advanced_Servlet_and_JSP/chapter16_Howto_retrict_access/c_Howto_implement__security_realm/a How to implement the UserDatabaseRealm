@@ -1,0 +1,56 @@
+Cách triển khai một "security realm" (miền bảo mật)
+
+Khi bạn sử dụng Tomcat để quản lý bảo mật, bạn cần xác định loại "security realm" 
+(hoặc gọi là realm) mà bạn muốn triển khai. Một realm là cơ chế xác định người 
+dùng được ủy quyền. Trong chủ đề này, bạn sẽ tìm hiểu cách sử dụng ba loại realm 
+bảo mật phổ biến nhất có sẵn trong Tomcat.
+
+Cách triển khai "UserDatabaseRealm"
+Mặc định, Tomcat lưu trữ tên người dùng, mật khẩu và vai trò trong tệp 
+tomcat-users.xml trong thư mục conf của nó. Để làm điều này, tệp server.xml 
+trong thư mục conf của Tomcat sử dụng phần tử Realm như trong hình 16-4 để chỉ 
+định một "UserDatabaseRealm" có tên là "UserDatabase". Sau đó, tệp server.xml 
+sử dụng một phần tử Resource để chỉ định tệp tomcat-users.xml làm cơ sở dữ liệu 
+người dùng. Vì những phần tử này được cấu hình mặc định khi bạn cài đặt Tomcat, 
+bạn không cần phải thay đổi chúng hoặc hiểu cách chúng hoạt động.
+
+Để thêm người dùng vào tệp tomcat-users.xml, bạn có thể mở tệp này trong một 
+trình soạn thảo văn bản. Sau đó, bạn có thể thêm các phần tử role chỉ định các 
+vai trò mới. Hoặc, bạn có thể thêm các phần tử user chỉ định tên người dùng, 
+mật khẩu và vai trò cho mỗi người dùng mới. Khi làm điều này, bạn có thể chỉ 
+định nhiều vai trò cho một người dùng bằng cách ngăn cách chúng bằng dấu phẩy.
+
+Ví dụ, trong hình này, tệp tomcat-users.xml chỉ định ba vai trò 
+(manager, programmer và service) và ba người dùng (admin, joel và andrea). 
+Trong số các người dùng này, andrea thuộc hai vai trò (programmer và server). 
+Sau đó, để áp dụng các người dùng này, bạn cần khởi động lại Tomcat.
+
+Khi bạn chỉnh sửa tệp tomcat-users.xml, những thay đổi này áp dụng cho tất cả 
+các ứng dụng đang chạy trên máy chủ hiện tại. Kết quả, bạn không muốn xóa bất 
+kỳ vai trò hoặc người dùng nào trừ khi bạn chắc chắn chúng không được sử dụng 
+bởi các ứng dụng khác. Ví dụ, ứng dụng Quản lý Ứng dụng Web Tomcat được bao gồm 
+trong Tomcat sử dụng tên người dùng "admin" và vai trò "manager".
+
+
+The default Realm element in Tomcat's server.xml file 
+<Realm className="org.apache.catalina.realm.UserDatabaseRealm" 
+resourceName="UserDatabase"/>
+
+The default Resource element in Tomcat's server.xml file 
+<Resource name="UserDatabase" auth="Container" 
+    type="org.apache.catalina.UserDatabase" 
+    description="User database that can be updated and saved" 
+    factory="org.apache.catalina.users.MemoryUserDatabaseFactory" 
+    pathname="conf/tomcat-users.xml" />
+
+
+A tomcat-users.xml file that specifies three roles and three users 
+<?xml version='l.0' encoding='utf-8' ?> 
+<tomcat-users> 
+<role rolename="manager"/> 
+<role rolename="programmer"/> 
+<role rolename="service" /> 
+<user username="admin" password="sesame" roles="manager"/> 
+<user username="joel" password="sesame" roles="programmer"/> 
+<user username="andrea" password="sesame" roles="programmer,service"/> 
+</tomcat-users>

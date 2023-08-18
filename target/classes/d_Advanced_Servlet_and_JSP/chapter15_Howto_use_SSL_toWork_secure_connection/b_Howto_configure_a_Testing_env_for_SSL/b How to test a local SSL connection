@@ -1,0 +1,20 @@
+Cách kiểm thử kết nối SSL cục bộ
+Sau khi bạn đã cấu hình môi trường kiểm thử của mình như mô tả trong hình cuối cùng, 
+bạn có thể kiểm thử kết nối SSL cục bộ bằng cách khởi động hoặc khởi động lại Tomcat 
+và nhập URL sau:
+https://localhost:8443
+Lưu ý rằng URL này bắt đầu bằng https và bao gồm số cổng cho kết nối SSL. Mặc dù 
+có thể thay đổi cổng SSL thành một giá trị khác khi bạn đang sử dụng môi trường 
+kiểm thử, bạn phải chỉ định số cổng SSL hợp lệ.
+
+Nếu kết nối SSL hoạt động và bạn đang sử dụng chứng chỉ kiểm thử tạm thời, 
+hầu hết các trình duyệt thường hiển thị một trang cảnh báo như trong hình tiếp theo. 
+Trang này cho thấy chứng chỉ không đến từ một nguồn tin cậy. Tại thời điểm này, 
+bạn thường có thể bỏ qua trang cảnh báo và tiếp tục đến trang được yêu cầu. 
+Trong trường hợp đó, bạn nên có thể xem trang như trong hình 15-5. Nếu điều này 
+không hoạt động, bạn sẽ cần khắc phục kết nối của mình. 
+
+Để làm điều đó, bạn có thể kiểm tra các vấn đề mô tả trong hình này và xem lại 
+hình trước. Nếu có vấn đề với tệp keystore, bạn có thể cần tìm tệp keystore, 
+xóa nó và tạo một tệp mới.
+

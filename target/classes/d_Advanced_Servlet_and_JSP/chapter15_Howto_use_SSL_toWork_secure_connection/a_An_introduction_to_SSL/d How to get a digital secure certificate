@@ -1,0 +1,54 @@
+Làm thế nào để có được một chứng chỉ an toàn số hóa
+Nếu bạn muốn thiết lập một kết nối an toàn với khách hàng của bạn, bạn phải có 
+một chứng chỉ an toàn số hóa từ một nguồn tin cậy như những nguồn được liệt kê 
+trong hình 15-3. 
+Những cơ quan chứng thực này (CA) xác minh rằng người hoặc công ty yêu cầu chứng 
+chỉ là một người hoặc công ty hợp lệ bằng cách kiểm tra với một cơ quan đăng ký 
+(RA). Để có được chứng chỉ an toàn số hóa, bạn sẽ cần cung cấp thông tin về chính 
+bạn hoặc công ty của bạn cho một RA. Khi RA chấp thuận yêu cầu, CA có thể cấp 
+chứng chỉ an toàn số hóa.
+
+Một chứng chỉ an toàn số hóa từ nguồn tin cậy thường không miễn phí, và chi phí 
+của chứng chỉ phụ thuộc vào nhiều yếu tố như mức độ bảo mật. Do đó, khi bạn mua 
+một chứng chỉ số hóa, bạn muốn có một cái phù hợp với nhu cầu của trang web của 
+bạn. Đặc biệt, bạn sẽ cần quyết định mã hóa SSL mạnh mà bạn muốn kết nối hỗ trợ. 
+Sức mạnh SSL đề cập đến mức độ mã hóa mà kết nối an toàn sử dụng khi truyền dữ liệu.
+
+Trong những ngày đầu của lập trình web, nhiều máy chủ web sử dụng chứng chỉ với 
+sức mạnh SSL 40-bit hoặc 56-bit. Vì có khả năng một hacker quyết tâm có thể 
+giải mã mã hóa cho các sức mạnh này, chúng hiếm khi được sử dụng nữa.
+
+Hiện nay, hầu hết máy chủ web sử dụng sức mạnh SSL 128-bit hoặc 256-bit. 
+Mặc dù những chứng chỉ này đắt hơn so với chứng chỉ 56-bit, hacker rất khó có 
+thể giải mã mã hóa. Vì hầu hết các trình duyệt web hiện đại hỗ trợ mã hóa 256-bit, 
+họ có thể sử dụng sức mạnh SSL này. Trong khi đó, các trình duyệt cũ không hỗ trợ 
+sức mạnh này có thể sử dụng bất kỳ sức mạnh thấp hơn nào mà chúng hỗ trợ.
+
+Khi bạn mua một chứng chỉ an toàn, thường bạn sẽ gửi nó cho nhà cung cấp dịch vụ 
+lưu trữ web của bạn để họ cài đặt cho trang web của bạn. Sau khi chứng chỉ được 
+cài đặt, bạn có thể sử dụng SSL để truyền dữ liệu qua kết nối an toàn.
+
+Some certificate authorities that issue digital secure certificates 
+www.symantec.com/ssl-sem-page 
+www.godaddy.com/ssl 
+www.globalsign.com 
+www.startcom.org 
+www.comodo.com/ 
+
+
+SSL strengths 
+40-bits
+Hầu hết các trình duyệt hỗ trợ nó, nhưng việc giải mã mã hóa tương đối dễ dàng.
+
+56-bits
+Nó mạnh hơn hàng nghìn lần so với sức mạnh 40-bit và hầu hết các trình duyệt hỗ 
+trợ nó, nhưng vẫn có khả năng giải mã mã hóa.
+
+128-bits
+Nó mạnh hơn hàng ngàn nghìn tỷ lần so với sức mạnh 40-bit, điều này khiến việc 
+giải mã mã hóa trở nên cực kỳ khó khăn, nhưng nó cũng đắt hơn.
+
+256-bits
+Nó gần như không thể giải mã mã hóa, nhưng nó đắt hơn và không phải tất cả các 
+trình duyệt đều hỗ trợ nó.
+

@@ -1,0 +1,73 @@
+Cách cấu hình môi trường kiểm tra cho SSL 
+Nếu bạn đang sử dụng một máy chủ web thương mại, bạn có thể sẽ không cần phải 
+cấu hình máy chủ cho SSL. Để triển khai SSL, bạn chỉ cần mua một chứng chỉ an toàn 
+và cung cấp nó cho công ty lưu trữ web. Sau đó, công ty lưu trữ web của bạn nên 
+cấu hình SSL cho bạn.
+
+Tuy nhiên, nếu bạn muốn có khả năng kiểm tra các kết nối an toàn trước khi triển 
+khai chúng lên máy chủ web của bạn, bạn sẽ cần cấu hình môi trường kiểm tra của bạn. 
+Để làm điều đó, bạn có thể tạo và cài đặt một chứng chỉ an toàn self-signed(tự ký) miễn phí. 
+Vì chứng chỉ self-signed(tự ký) không đến từ một nguồn tin cậy, nó sẽ khiến trình 
+duyệt hiển thị cảnh báo khi bạn sử dụng nó. Tuy nhiên, nó cho phép bạn cấu hình 
+một kết nối an toàn cho môi trường kiểm tra cục bộ của bạn như được mô tả trong 
+chủ đề này. Mặc dù chủ đề này chỉ ra cách làm việc với Tomcat 8.0, các kỹ năng 
+tương tự cũng áp dụng cho các máy chủ web khác.
+
+Java Secure Socket Extension (JSSE) API là một bộ sưu tập các lớp Java cho phép 
+bạn sử dụng các kết nối an toàn trong các chương trình Java của bạn. Nếu thiếu nó, 
+ứng dụng của bạn sẽ không thể kết nối với máy chủ truyền dữ liệu qua kết nối an toàn. 
+May mắn thay, JSSE API đã được bao gồm làm phần của thư viện Java SE kể từ phiên 
+bản 1.4 của JDK. Do đó, nếu bạn đang sử dụng phiên bản hiện đại của JDK, JSSE API 
+đã được cài đặt sẵn trên hệ thống của bạn.
+
+Cách tạo chứng chỉ cho mục đích kiểm tra
+Hình 15-4 hiển thị cách tạo một chứng chỉ an toàn số hóa tự ký cho hệ thống của bạn. 
+Để bắt đầu, bạn phải tạo một tệp lưu trữ chìa khóa (keystore). Để làm điều đó, 
+bạn có thể mở cửa sổ Command Prompt (PC) hoặc Terminal (Mac) và sử dụng lệnh cd 
+để thay đổi thư mục hiện tại thành thư mục bin của JDK của bạn. Tiếp theo, 
+bạn nhập lệnh keytool với các tham số được hiển thị trong hình này. Sau đó, 
+chương trình keytool sẽ yêu cầu bạn nhập một số mật khẩu và thông tin khác.
+Khi bạn được hỏi về mật khẩu tệp lưu trữ (keystore), bạn phải nhập "changeit". 
+Nếu bạn không nhập, chứng chỉ sẽ không hoạt động đúng cách. Sau đó, khi chương 
+trình keytool hỏi về mật khẩu khóa cho Tomcat, bạn nên nhấn Enter để sử dụng cùng 
+mật khẩu với mật khẩu tệp lưu trữ.
+
+Đối với các thông báo còn lại, bạn có thể nhập bất kỳ thông tin nào về chính bạn 
+và công ty của bạn mà bạn muốn. Chứng chỉ an toàn cho mục đích kiểm tra sẽ hiển thị 
+thông tin này.
+
+Khi bạn hoàn thành việc đáp ứng các thông báo, chương trình keytool sẽ tạo một tệp 
+lưu trữ chìa khóa có tên .keystore và lưu tệp này trong thư mục chính của bạn. 
+Thư mục này thay đổi tùy theo hệ điều hành của bạn, nhưng bạn nên có thể tìm 
+thấy tệp lưu trữ chìa khóa bằng cách tìm kiếm nó.
+
+
+Cách bật SSL trong Tomcat
+Sau khi bạn tạo tệp keystore, bạn cần bật SSL trong Tomcat bằng cách chỉnh sửa 
+tệp server.xml nằm trong thư mục conf của Tomcat. Để làm điều đó, bạn mở tệp 
+này bằng một trình soạn thảo văn bản. Sau đó, bạn có thể loại bỏ các comment 
+từ phần tử Connector như được hiển thị trong hình 15-4. Phần tử Connector này 
+xác định một kết nối an toàn trên cổng 8443 và nó chỉ định giao thức TLS làm 
+giao thức SSL. Kết quả là, các trình duyệt mới hơn sử dụng giao thức TLS và 
+các trình duyệt cũ hơn sử dụng giao thức SSL.
+Sau khi bạn loại bỏ các comment từ phần tử Connector này, bạn phải thêm hai 
+thuộc tính được làm nổi bật trong hình này. Trước hết, bạn phải thêm một thuộc tính 
+keystoreFile trỏ đến tệp .keystore. Sau đó, bạn phải thêm một thuộc tính 
+keystorePass chỉ định mật khẩu được sử dụng cho tệp keystore.
+
+Hoặc bạn có thể copy đoạn code dưới và paste thay thế 
+(Tomcat 10.1.12)
+
+Tomcat's server.xml file 
+The Connector element for an SSL connection 
+<Connector protocol="org.apache.coyote.http11.Http11NioProtocol" port="8443"
+            maxThreads="150" SSLEnabled="true" 
+                    maxParameterCount="1000"> 
+    <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+    <SSLHostConfig>
+            <Certificate
+            certificateKeystoreFile="C:/Users/nguye/.keystore"
+            certificateKeystorePassword="changeit"
+            type="RSA"/>
+    </SSLHostConfig>
+</Connector>

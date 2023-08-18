@@ -1,0 +1,111 @@
+Làm thế nào để hạn chế truy cập vào tài nguyên web
+
+Trong chương này, bạn sẽ tìm hiểu cách hạn chế truy cập vào các phần của một trang web. 
+Sau đó, bạn sẽ tìm hiểu cách cho phép người dùng được ủy quyền truy cập vào các 
+phần bị hạn chế của trang web. Ví dụ, nhiều trang web có một phần quản trị chỉ 
+có thể được truy cập bởi người dùng đăng nhập vào trang web bằng tên người 
+dùng và mật khẩu được ủy quyền.
+
+Mở đầu về xác thực (authentication)
+
+Mặc dù bạn có thể hạn chế truy cập vào một số phần của một ứng dụng web bằng cách 
+viết các servlet và JSP tùy chỉnh để làm việc trực tiếp với các yêu cầu và phản 
+hồi HTTP, nhưng việc làm điều đó có thể tốn thời gian và dễ mắc lỗi. 
+Đó là lý do tại sao hầu hết các container servlet hiện đại như Tomcat cung cấp 
+một cách tích hợp để hạn chế truy cập vào các phần của ứng dụng web. Điều này 
+được biết đến là bảo mật được quản lý bởi container hoặc xác thực được 
+quản lý bởi container.
+
+Cách xác thực được quản lý bởi container hoạt động
+
+Hình 16-1 thể hiện điều gì xảy ra khi người dùng yêu cầu một tài nguyên đã bị hạn chế. 
+Ở đây, người dùng đã chạy một ứng dụng và nhấp vào một liên kết để truy cập 
+trang web trong thư mục con admin của ứng dụng này. Vì tài nguyên này đã bị hạn chế, 
+một hộp thoại xuất hiện yêu cầu tên người dùng và mật khẩu. Sau đó, nếu người dùng 
+nhập tên người dùng và mật khẩu được ủy quyền, người dùng có thể truy cập tài nguyên đó. 
+Nếu không, người dùng không thể truy cập tài nguyên đó.
+
+Để hạn chế truy cập vào một tài nguyên, một ràng buộc bảo mật phải được mã hóa 
+trong tệp web.xml của ứng dụng. Trong hình này, ví dụ, ràng buộc bảo mật hạn chế 
+truy cập vào tất cả các tệp trong thư mục con admin của ứng dụng. Kết quả, 
+khi trình duyệt yêu cầu bất kỳ URL nào trong thư mục này, máy chủ thông báo cho 
+trình duyệt rằng người dùng phải xác định mình. Điều này được biết đến là xác thực.
+
+Khi người dùng gửi tên người dùng và mật khẩu đến máy chủ, máy chủ cố gắng xác 
+thực người dùng. Nếu người dùng cung cấp tên người dùng và mật khẩu hợp lệ, máy chủ 
+kiểm tra xem tên người dùng đó có liên quan đến một vai trò có quyền truy cập vào 
+tài nguyên hay không. Trong hình này, ví dụ, người dùng với các vai trò programmer 
+và service có thể truy cập vào tài nguyên. Điều này được biết đến là ủy quyền.
+
+Để ủy quyền tên người dùng và mật khẩu, máy chủ sử dụng một vùng bảo mật (security realm). Một vùng bảo mật là một giao diện cung cấp một cách linh hoạt để lưu trữ tên người dùng và mật khẩu cho các vai trò được ủy quyền. Điều này giúp cho nhà phát triển web có thể lưu trữ tên người dùng và mật khẩu cho các vai trò được ủy quyền trong một tệp XML, cơ sở dữ liệu hoặc một loại kho dữ liệu khác.
+
+Trong ví dụ trong hình này, trình duyệt đã yêu cầu một trang trong thư mục con admin. 
+Vì thư mục con này bị hạn chế, Tomcat đã hiển thị một hộp thoại yêu cầu tên người dùng 
+và mật khẩu. Sau đó, nếu Tomcat ủy quyền cho người dùng xem trang đã yêu cầu, 
+ủy quyền đó vẫn có hiệu lực cho các yêu cầu tiếp theo cho bất kỳ trang nào trong 
+thư mục admin.
+
+
+The security-constraint and login-config elements in the web.xml file 
+<security-constraint> 
+    <!-- Restrict access to all files in the /admin folder --> 
+    <web-resource-collection> 
+        <web-resource-name>Protected Area</web-resource-name> 
+        <url-pattern>/admin/*</url-pattern> 
+    </web-resource-collection> 
+    <!-- Authorize the programmer and service roles --> 
+    <auth-constraint> 
+        <role-name>programmer</role-name> 
+        <role-name>service</role-name> 
+    </auth-constraint> 
+</security-constraint> 
+
+<!-- Use basic authentication --> 
+<login-config> 
+    <auth-method>BASIC</auth-method> 
+    <realm-name>Admin Login</realm-name> 
+</login-config>
+
+
+Làm thế nào để thực hiện xác thực được quản lý bởi container với Tomcat
+
+• Để hạn chế truy cập vào một tài nguyên web, bạn mã hóa một phần tử 
+security-constraint trong tệp web.xml của ứng dụng, chỉ định các mẫu URL mà 
+bạn muốn hạn chế và các vai trò được ủy quyền để truy cập các URL này.
+• Để cho phép truy cập vào các tài nguyên bị hạn chế, bạn mã hóa một phần tử 
+login-config trong tệp web.xml của ứng dụng, chỉ định phương thức xác thực.
+• Bạn cũng cần triển khai một vùng bảo mật (security realm) cung cấp các tên 
+người dùng, mật khẩu và vai trò cho người dùng được ủy quyền như trong các 
+hình sau
+
+
+Ba loại xác thực (authentication)
+
+Hình 16-2 trình bày ba loại xác thực phổ biến. Xác thực cơ bản (Basic authentication) 
+khiến trình duyệt hiển thị hộp thoại giống như trong hình trước, yêu cầu tên người dùng 
+và mật khẩu. Sau đó, khi người dùng nhập tên người dùng và mật khẩu, dữ liệu này được 
+gửi dưới dạng văn bản thuần cho máy chủ để máy chủ thử ủy quyền cho người dùng. 
+Vì bạn không cần mã hóa một biểu mẫu cho loại xác thực này, việc triển khai dễ dàng. 
+Tuy nhiên, bạn không thể kiểm soát giao diện của hộp thoại này.
+
+
+Xác thực Digest cũng khiến trình duyệt hiển thị một hộp thoại yêu cầu tên người 
+dùng và mật khẩu. Tuy nhiên, khi người dùng nhập tên người dùng và mật khẩu, 
+xác thực Digest mã hóa tên người dùng và mật khẩu trước khi gửi chúng đến máy chủ. 
+Mặc dù điều này có vẻ an toàn hơn, nhưng nó không an toàn bằng cách sử dụng một 
+kết nối bảo mật như đã mô tả trong chương 15, và bạn không có quyền kiểm soát 
+mã hóa được sử dụng. Kết quả, xác thực Digest không được sử dụng thường xuyên như 
+các loại xác thực khác.
+
+Xác thực dựa trên biểu mẫu (Form-based authentication) sử dụng một biểu mẫu web 
+thay vì hộp thoại đăng nhập để yêu cầu tên người dùng và mật khẩu. Loại xác thực 
+này cho phép nhà phát triển kiểm soát giao diện của trang web. Kết quả, đây là 
+loại xác thực phổ biến nhất cho các trang web sản xuất.
+
+Vì xác thực cơ bản và xác thực dựa trên biểu mẫu gửi tên người dùng và mật khẩu 
+dưới dạng văn bản thuần, một hacker có thể thay đổi tên người dùng và mật khẩu 
+chưa mã hóa và truy cập vào tài nguyên web bị hạn chế. Kết quả, thông thường việc 
+sử dụng một kết nối bảo mật như đã mô tả trong chương 15 với các loại xác thực 
+này là phổ biến. Như vậy, tên người dùng và mật khẩu được mã hóa trước khi gửi 
+đến máy chủ.
+

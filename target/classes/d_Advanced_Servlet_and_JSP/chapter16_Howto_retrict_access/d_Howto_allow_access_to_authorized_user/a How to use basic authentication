@@ -1,0 +1,46 @@
+Làm thế nào để cho phép truy cập cho những người dùng đã được ủy quyền
+Sau khi bạn đã hạn chế truy cập vào các tài nguyên web và triển khai một vùng bảo mật,
+bạn đã sẵn sàng để cho phép truy cập cho những người dùng đã được ủy quyền.
+
+Cách sử dụng xác thực cơ bản
+Hình 16-7 thể hiện cách sử dụng xác thực cơ bản để cung cấp quyền truy cập vào một
+nguồn tài nguyên bị hạn chế. Đặc biệt, nó thể hiện cách sử dụng xác thực cơ bản để
+cung cấp quyền truy cập vào ứng dụng mẫu cho chương này.
+Nếu bạn yêu cầu một nguồn tài nguyên web bị hạn chế sử dụng xác thực cơ bản, 
+trình duyệt của bạn sẽ hiển thị một hộp thoại xác thực như hình dưới đây. 
+Hộp thoại này yêu cầu tên người dùng và mật khẩu. Sau đó, khi người dùng chọn nút 
+Đăng nhập, tên người dùng và mật khẩu sẽ được gửi đến máy chủ.
+
+Khi máy chủ nhận được tên người dùng và mật khẩu, nó sẽ kiểm tra vùng bảo mật
+để xem xét liệu tên người dùng và mật khẩu có hợp lệ, và nó kiểm tra xem người 
+dùng có liên quan đến một vai trò được ủy quyền để truy cập vào tài nguyên hay không.
+
+Nếu có, người dùng sẽ được phép truy cập vào tài nguyên.
+Vì xác thực cơ bản là loại xác thực đơn giản nhất, tệp web.xml chỉ cần một số yếu tố XML.
+Để bắt đầu, bạn mã hóa yếu tố login-config. Trong phần tử này, bạn chỉ định rằng 
+bạn muốn sử dụng xác thực cơ bản. Sau đó, bạn chỉ định một tên cho vùng bảo mật. 
+Tên này sẽ được hiển thị trong hộp thoại. Khi bạn thêm các thẻ XML cho phần tử 
+login-config vào tệp web.xml, chúng phải ngay lập tức đứng sau phần tử security-constraint
+mà chúng liên quan đến như hình 16-1 đã hiển thị.
+
+The web.xml elements that specify basic authentication 
+<login-config> 
+    <auth-method>BASIC</auth-method> 
+    <realm-name>Admin Login</realm-name> 
+</login-config> 
+
+
+
+<login-config>  
+Tạo loại xác thực để sử dụng
+
+<auth-method>
+Chỉ định phương thức xác thực. Các mục nhập hợp lệ bao gồm
+BASIC, DIGEST, FORM và CLIENT-CERT. Xác thực BASIC
+và DIGEST hiển thị một hộp thoại xác thực giống như
+hộp thoại được hiển thị trong hình dưới đây. Xác thực FORM hiển thị một
+biểu mẫu như mô tả trong hình tiếp theo. Và CLIENT-CERT
+sử dụng xác thực khách hàng SSL như mô tả trong chương 15.
+
+<realm-name>
+Chỉ định tên được hiển thị trong hộp thoại, nhưng điều này là tùy chọn.

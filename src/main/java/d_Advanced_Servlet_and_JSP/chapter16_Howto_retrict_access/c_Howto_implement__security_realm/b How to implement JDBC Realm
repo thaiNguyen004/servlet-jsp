@@ -1,0 +1,69 @@
+Cách triển khai "JDBCRealm"
+
+Đối với các ứng dụng đơn giản, "UserDatabaseRealm" cung cấp một cách nhanh chóng 
+và dễ dàng để triển khai realm. Tuy nhiên, đối với các ứng dụng web nghiêm túc hơn, 
+bạn thường muốn sử dụng "JDBCRealm" để lưu trữ tên người dùng, mật khẩu và vai trò 
+trong cơ sở dữ liệu quan hệ. Ngoài ra, bạn thường muốn triển khai một realm bảo mật 
+cho một ứng dụng cụ thể thay vì cho tất cả các ứng dụng trên máy chủ hiện tại.
+
+A context.xml file that implements the JDBCRealm 
+<?xml version="l.011 encoding="UTF-811 ?>
+<Context path="/ch16admin"> 
+
+    <Realm className="org.apache.catalina.realm.JDBCRealm" debug="99"
+        driverName="com.mysql.jdbc.Driver" 
+        connectionURL="jdbc:mysql://localhost:3306/murach" 
+        connectionName="root" connectionPassword="sesame" 
+        userTable="UserPass" userNameCol="Username" userCredCol="Password" 
+        userRoleTable="UserRole" roleNameCol="Rolename" /> 
+</Context>
+
+
+Để triển khai bảo mật cho một ứng dụng cụ thể, bạn có thể thêm một phần tử Realm 
+vào tệp context.xml của ứng dụng. Ví dụ, trong hình 16-5, tệp context.xml cho 
+ứng dụng ch16admin triển khai "JDBCRealm". Ở đây, "JDBCRealm" sử dụng trình điều 
+khiển Connector/J của MySQL để kết nối đến cơ sở dữ liệu MySQL có tên murach 
+với tên người dùng là root và mật khẩu là sesame.
+
+Các thuộc tính còn lại trong phần tử Realm cho "JDBCRealm" xác định tên các 
+bảng và cột được sử dụng để lưu trữ tên người dùng, mật khẩu và vai trò cho ứng dụng. 
+Các bảng này có thể được tạo và điền bằng cách sử dụng một tập lệnh SQL giống như 
+trong phần 2 của hình này.
+
+
+Nếu các bảng cho "JDBC realm" chưa tồn tại, bạn có thể tạo bảng User chứa tên người 
+dùng và mật khẩu cho mỗi người dùng và tạo bảng Role có thể được liên kết với mỗi 
+người dùng. Để thực hiện điều này, bạn có thể sử dụng một tập lệnh SQL giống như 
+trong phần 2 của hình 16-5. Lưu ý cách tên bảng và cột trong tập lệnh này khớp với 
+tên bảng và cột được chỉ định trong phần tử Realm được hiển thị trong phần 1 của 
+hình này.
+
+Sau khi tạo bảng UserPass, tập lệnh này tạo bảng UserRole. Ở đây, người dùng có 
+tên "joel" được liên kết với vai trò programmer, và người dùng có tên "andrea" 
+được liên kết với cả vai trò service và programmer. Tuy nhiên, lưu ý rằng người 
+dùng có tên "anne" không được liên kết với bất kỳ vai trò nào, vì vậy cô ấy không 
+được ủy quyền truy cập vào các phần hạn chế của ứng dụng.
+
+
+A SQL script that creates the tables used by the JDBCRealm 
+CREATE TABLE UserPass { 
+    Username varchar(15) NOT NULL PRIMARY KEY, 
+    Password varchar(15) NOT NULL 
+);
+
+INSERT INTO UserPass VALUES ('andrea', 'sesame'), 
+('joel', 'sesame'), 
+('anne', 'sesame' ) ; 
+
+CREATE TABLE UserRole { 
+    Username VARCHAR(15) NOT NULL, 
+    Rolename VARCHAR(15) NOT NULL, 
+    PRIMARY KEY (Username, Rolename)
+);
+ 
+INSERT INTO UserRole VALUES ('andrea', 'service'), 
+('andrea', 'programmer'), 
+('joel', 'programmer'); 
+
+
+
