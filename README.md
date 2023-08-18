@@ -1,6 +1,6 @@
-# Tomcat 10.1.11 
+# Tomcat 
+**10.1.12**
 https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.12/bin/apache-tomcat-10.1.12-windows-x64.zip
-
 
 # Servlet
 
@@ -126,4 +126,25 @@ message.setRecipient(Message.RecipientType.CC, toAddress);
 
 // 4 - send the message
 Transport.send(message);
+
+
+# SSL/TLS
+
+### How to configure a Testing Environment for SSL (tomcat)
+**Step 1** 
+CMD: "%JAVA_HOME%\bin\keytool" -genkey -alias tomcat -keyalg RSA
+
+**Step 2** 
+Configure file server.xml trong thư mục conf của Tomcat
+<Connector protocol="org.apache.coyote.http11.Http11NioProtocol" port="8443"
+            maxThreads="150" SSLEnabled="true" 
+                    maxParameterCount="1000"> 
+    <UpgradeProtocol className="org.apache.coyote.http2.Http2Protocol" />
+    <SSLHostConfig>
+            <Certificate
+            certificateKeystoreFile="C:/Users/nguye/.keystore"
+            certificateKeystorePassword="changeit"
+            type="RSA"/>
+    </SSLHostConfig>
+</Connector>
 
