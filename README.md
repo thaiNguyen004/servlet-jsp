@@ -69,7 +69,7 @@ https://dlcdn.apache.org/tomcat/tomcat-10/v10.1.12/bin/apache-tomcat-10.1.12-win
     <name>ifWeekday</name>
     <tagclass>murach.tags.IfWeekdayTag</tagclass>
     <bodycontent>JSP</bodycontent>
-</tag
+</tag>
 
 ### properties of <tag>
 1. **tag/name**                       The name of the tag

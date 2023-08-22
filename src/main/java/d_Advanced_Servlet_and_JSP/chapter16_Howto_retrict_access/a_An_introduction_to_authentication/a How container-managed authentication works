@@ -37,7 +37,11 @@ kiểm tra xem tên người dùng đó có liên quan đến một vai trò có
 tài nguyên hay không. Trong hình này, ví dụ, người dùng với các vai trò programmer 
 và service có thể truy cập vào tài nguyên. Điều này được biết đến là ủy quyền.
 
-Để ủy quyền tên người dùng và mật khẩu, máy chủ sử dụng một vùng bảo mật (security realm). Một vùng bảo mật là một giao diện cung cấp một cách linh hoạt để lưu trữ tên người dùng và mật khẩu cho các vai trò được ủy quyền. Điều này giúp cho nhà phát triển web có thể lưu trữ tên người dùng và mật khẩu cho các vai trò được ủy quyền trong một tệp XML, cơ sở dữ liệu hoặc một loại kho dữ liệu khác.
+Để ủy quyền tên người dùng và mật khẩu, máy chủ sử dụng một vùng bảo mật (security realm). 
+Một vùng bảo mật là một giao diện cung cấp một cách linh hoạt để lưu trữ tên người dùng và 
+mật khẩu cho các vai trò được ủy quyền. Điều này giúp cho nhà phát triển web có thể lưu trữ 
+tên người dùng và mật khẩu cho các vai trò được ủy quyền trong một tệp XML, cơ sở dữ liệu 
+hoặc một loại kho dữ liệu khác.
 
 Trong ví dụ trong hình này, trình duyệt đã yêu cầu một trang trong thư mục con admin. 
 Vì thư mục con này bị hạn chế, Tomcat đã hiển thị một hộp thoại yêu cầu tên người dùng 
