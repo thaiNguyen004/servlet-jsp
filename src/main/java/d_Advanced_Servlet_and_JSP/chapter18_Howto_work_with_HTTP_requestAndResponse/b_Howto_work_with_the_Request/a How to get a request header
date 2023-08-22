@@ -1,0 +1,57 @@
+Cách làm việc với request
+Chủ đề này hướng dẫn cách sử dụng các phương thức của đối tượng request để truy 
+xuất dữ liệu có trong một request HTTP.
+
+Cách để lấy header request
+Bạn có thể sử dụng nhóm phương thức đầu tiên trong hình 18-6 để lấy bất kỳ header 
+nào trong request HTTP. Phương thức getHeader cho phép bạn trả về giá trị của bất 
+kỳ header nào. Các phương thức getIntHeader và getDateHeader giúp bạn làm việc 
+dễ dàng hơn với các header chứa giá trị số nguyên và ngày tháng. 
+Và phương thức getHeaderNames trả về một đối tượng Enumeration chứa tên của tất 
+cả các header trong request.
+
+Bạn có thể sử dụng nhóm phương thức thứ hai để dễ dàng lấy các header request hơn. 
+Ví dụ, câu lệnh sau:
+
+int contentLength = request.getIntHeader("Content-Length");
+
+trả về cùng một giá trị như câu lệnh sau:
+
+int contentLength = request.getContentLength();
+
+An example that checks the preferred language
+String language = request.getHeader("accept-language");
+if(language.startsWith{"es") )
+    jsp = "index.spanish.jsp ";
+else
+    jsp = "index.english.jsp" ;
+
+Ví dụ đầu tiên sử dụng phương thức getHeader để trả về một chuỗi chứa danh sách 
+các ngôn ngữ ưa thích của trình duyệt (dựa trên ngôn ngữ ưa thích của người dùng). 
+Sau đó, nó sử dụng phương thức startsWith trong câu lệnh if để kiểm tra xem ngôn 
+ngữ ưa thích có phải là tiếng Tây Ban Nha hay không. Nếu có, mã sẽ thiết lập tệp 
+JSP cho phiên bản tiếng Tây Ban Nha. Nếu không, mã sẽ sử dụng ngôn ngữ mặc định, 
+trong trường hợp này là tiếng Anh.
+
+Ví dụ thứ hai sử dụng phương thức getHeader để trả về một chuỗi xác định loại 
+trình duyệt đã thực hiện request. Vì các phiên bản cũ hơn của Internet Explorer 
+luôn bao gồm chữ "MSIE" trong chuỗi user-agent của họ, ví dụ này sử dụng phương 
+thức indexOf trong câu lệnh if để kiểm tra xem chuỗi có chứa chữ "MSIE" hay không. 
+Nếu có, nó gọi một phương thức thực thi một số mã cụ thể cho các phiên bản cũ hơn 
+của Internet Explorer. Nếu không, nó gọi một phương thức thực thi phiên bản chung 
+của mã cho bất kỳ trình duyệt nào khác.
+
+An example that checks the browser type
+String browser = request.getHeader("user-agent");
+if (browser.indexOf{"MSIE " ) > -1)
+    doIECode();
+else
+    doGenericCode{)
+
+Mặc dù bạn có thể không bao giờ cần viết mã kiểm tra các kiểu MIME hoặc loại 
+trình duyệt, những ví dụ này minh họa các khái niệm chung mà bạn có thể sử dụng 
+để kiểm tra bất kỳ header request nào. Đầu tiên, bạn sử dụng các phương thức 
+getHeader, getIntHeader hoặc getDateHeader để lấy một header. Sau đó, bạn có thể 
+sử dụng câu lệnh if để kiểm tra header. Đối với đối tượng String, bạn có thể sử 
+dụng phương thức indexOf để kiểm tra xem một chuỗi con có tồn tại trong chuỗi không. 
+Đối với giá trị số nguyên và đối tượng Date, bạn có thể sử dụng các phép so sánh khác.

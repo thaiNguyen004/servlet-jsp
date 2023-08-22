@@ -1,0 +1,83 @@
+Làm thế nào để làm việc với các yêu cầu và phản hồi HTTP
+Khi bạn viết các servlet và JSP, các lớp và phương thức của API servlet sẽ bảo vệ 
+bạn khỏi việc phải làm việc trực tiếp với giao thức HTTP. Tuy nhiên, đôi khi bạn 
+cần biết nhiều hơn về yêu cầu và phản hồi HTTP, và bạn cần sử dụng các phương thức 
+của API servlet để làm việc với chúng. Vì vậy, đó là những gì bạn sẽ tìm hiểu trong 
+chương này. Trong quá trình làm việc, bạn sẽ có cái nhìn sâu hơn về cách thức hoạt 
+động của giao thức HTTP.
+
+Giới thiệu về HTTP
+Chủ đề này giới thiệu bạn với một số (Header) tiêu đề và (Status codes) mã trạng 
+thái phổ biến nhất, tạo nên Giao thức Truyền tải Siêu văn bản (HTTP). Giao thức này 
+có thể được sử dụng để gửi yêu cầu đến máy chủ và cũng có thể được sử dụng để trả 
+về phản hồi từ máy chủ.
+
+Yêu cầu và phản hồi HTTP
+Hình ảnh 18-1 cho thấy các thành phần của một yêu cầu HTTP tiêu chuẩn và một phản hồi 
+HTTP tiêu chuẩn. Khi bạn tìm hiểu thêm về các thành phần này, bạn sẽ có cái nhìn 
+rõ ràng hơn về cách thức hoạt động của yêu cầu và phản hồi HTTP.
+
+Dòng đầu tiên của yêu cầu HTTP được gọi là dòng yêu cầu. Dòng này chứa phương thức 
+yêu cầu, URL yêu cầu và giao thức yêu cầu. Thông thường, phương thức yêu cầu là 
+GET hoặc POST, nhưng HTTP cũng hỗ trợ các phương thức khác. Tương tự, giao thức yêu 
+cầu thường là HTTP 1.1, nhưng cũng có thể là HTTP 1.0 hoặc HTTP 1.2.
+Sau dòng yêu cầu, yêu cầu HTTP chứa các tiêu đề yêu cầu. Những tiêu đề này chứa 
+thông tin về máy khách đang tạo yêu cầu. Trong hình ảnh này, yêu cầu HTTP chứa tám 
+tiêu đề yêu cầu với một tiêu đề trên mỗi dòng, nhưng một yêu cầu có thể chứa nhiều 
+tiêu đề hơn. Mỗi tiêu đề yêu cầu bắt đầu bằng tên của tiêu đề yêu cầu, sau đó là 
+hai dấu chấm và một khoảng trắng, tiếp theo là giá trị của tiêu đề yêu cầu.
+Sau các tiêu đề yêu cầu, yêu cầu HTTP sử dụng phương thức POST có thể bao gồm một 
+dòng trống, sau đó là các tham số của yêu cầu. Khác với yêu cầu GET, yêu cầu POST 
+không bao gồm các tham số của nó trong URL.
+
+Dòng đầu tiên của phản hồi HTTP được gọi là dòng trạng thái. Dòng này chỉ định phiên 
+bản HTTP đang được sử dụng, mã trạng thái và thông điệp liên quan đến mã trạng thái.
+Sau dòng trạng thái, phản hồi HTTP chứa các tiêu đề phản hồi. Những tiêu đề này chứa 
+thông tin về máy chủ và về phản hồi đang được trả về cho máy khách. Tương tự như các 
+tiêu đề yêu cầu, mỗi tiêu đề phản hồi chiếm một dòng. Ngoài ra, mỗi dòng bắt đầu bằng 
+tên của tiêu đề, sau đó là hai dấu chấm và một khoảng trắng, tiếp theo là giá trị của 
+tiêu đề.
+
+Sau các tiêu đề phản hồi, phản hồi HTTP chứa một dòng trống, sau đó là thực thể phản 
+hồi hoặc phần thân phản hồi. Trong hình ảnh này, thực thể phản hồi là một tài liệu 
+HTML, nhưng nó cũng có thể là tài liệu XML, văn bản thuần túy, văn bản được phân cách 
+bằng tab, hình ảnh, tệp PDF, tệp âm thanh, tệp video và nhiều loại tệp khác.
+Để tìm hiểu thêm về HTTP 1.1, bạn có thể tìm kiếm trên web với từ khóa 
+"HTTP 1.1 specification" và xem tài liệu có sẵn từ www.w3.org. Tài liệu này cung cấp 
+mô tả kỹ thuật rất chi tiết về HTTP 1.1 bao gồm danh sách đầy đủ các tiêu đề và 
+mã trạng thái.
+
+
+An HTTP request
+
+    GET http://www.murach.com/email/index.html HTTP/1.1
+    referer: http://www.murach.com/index.html
+    connection: keep-alive
+    user-agent: Mozilla/5.0 (Windows NT 6.1; WOW 64) Chrome/33.0.1750.146
+    host: www.murach.com
+    accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+    accept-encoding: gzip, deflate
+    accept-language: en-US,en;q=O.S
+    cookie: emailCookie=joel@murach.com; firstNameCookie=Joel
+
+
+An HTTP response
+
+    HTTP/1.1 200 OK
+    date: Sat, 17 Mar 2014 10:32:54 GMT
+    server: Apache/2.2.3 {Unix) PHP/5.2.4
+    content-type: text/html
+    content-length: 201
+    last-modified: Fri, 16 Aug 2013 12:52:09 GMT
+
+    <!DOCTYPE html>
+    <html>
+        <head>
+            <title>Murach's Java Ser vlets and JSP</title>
+        </head>
+
+        <body>
+            <hl>Join our email list</hl>
+        </body>
+    </html>
+

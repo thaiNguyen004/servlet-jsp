@@ -1,0 +1,57 @@
+Các tiêu đề yêu cầu HTTP thông thường
+Hình ảnh 18-3 liệt kê một số tiêu đề yêu cầu HTTP phổ biến nhất. 
+Hiện nay, hầu hết các trình duyệt web hỗ trợ HTTP 1.1, vì vậy bạn thường có thể 
+sử dụng các tiêu đề HTTP 1.1.
+Hầu hết thời gian, trình duyệt web tự động đặt các tiêu đề yêu cầu này khi thực hiện 
+một yêu cầu. Sau đó, khi máy chủ nhận được yêu cầu, nó có thể kiểm tra các tiêu đề 
+này để tìm hiểu về trình duyệt. Ngoài ra, bạn cũng có thể viết các servlet để đặt 
+một số tiêu đề yêu cầu này. Ví dụ, chương 7 hướng dẫn cách sử dụng API servlet để 
+đặt tiêu đề cookie. Và chương 16 hướng dẫn cách sử dụng container servlet để tự 
+động đặt tiêu đề ủy quyền (authorization header).
+
+-- Các common HTTP Request Header có sẵn trong icloud
+
+accept              
+Chỉ định thứ tự ưu tiên của các loại MIME mà trình duyệt có thể chấp nhận.
+Loại "/" cho biết rằng trình duyệt có thể xử lý bất kỳ loại MIME nào.
+
+accept-charset  
+Chỉ định các bộ mã ký tự mà trình duyệt có thể chấp nhận.
+
+accept-encoding 
+Chỉ định các loại mã hóa nén mà trình duyệt có thể chấp nhận.
+
+accept-language
+Chỉ định mã ngôn ngữ chuẩn cho các ngôn ngữ mà trình duyệt ưa thích. 
+Mã ngôn ngữ chuẩn cho Tiếng Anh là "en" hoặc "en-us".
+
+authorization
+Xác định cấp độ xác thực cho trình duyệt. Khi bạn sử dụng bảo mật do chính 
+container quản lý như đã mô tả trong chương 16, container servlet sẽ tự động thiết 
+lập tiêu đề này.
+
+connection
+Chỉ ra loại kết nối đang được sử dụng bởi trình duyệt. Trong HTTP 1.0, giá trị 
+"keep-alive" có nghĩa là trình duyệt có thể sử dụng một kết nối liên tục cho 
+phép nó nhận nhiều tệp tin với một kết nối duy nhất. Trong HTTP 1.1, loại kết nối 
+này là mặc định.
+
+cookie
+Chỉ ra các cookie đã được gửi trước đó bởi máy chủ hiện tại. Trong chương 7, 
+bạn đã học cách sử dụng giao diện lập trình ứng dụng servlet để làm việc với tiêu đề này.
+
+host
+Chỉ ra máy chủ và cổng của máy chủ ban đầu gửi yêu cầu. Tiêu đề này là tùy chọn 
+trong HTTP 1.0 và bắt buộc trong HTTP 1.1.
+
+pragma
+Một giá trị "no-cache" cho biết đến trình duyệt, máy chủ proxy và cổng rằng 
+tài liệu này không nên được lưu trữ trong bộ nhớ cache.
+
+referer
+Chỉ ra URL của trang web tham khảo. Lỗi chính tả này đã được tạo ra bởi một 
+trong những tác giả ban đầu của HTTP và hiện nay là một phần của giao thức.
+
+user-agent
+Chỉ ra loại trình duyệt. Mặc dù hầu hết các trình duyệt tự nhận dạng mình là 
+"Mozilla", tên của trình duyệt thường được bao gồm ở đâu đó trong chuỗi.

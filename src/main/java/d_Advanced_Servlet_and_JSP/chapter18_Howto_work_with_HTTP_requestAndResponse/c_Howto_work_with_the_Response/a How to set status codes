@@ -1,0 +1,57 @@
+Cách làm việc với response
+Hình 18-8 mô tả cách sử dụng các trường và phương thức của đối tượng response
+để thiết lập dữ liệu chứa trong một response HTTP.
+
+Cách đặt mã trạng thái
+Hầu hết thời gian, máy chủ web tự động đặt mã trạng thái cho một
+response HTTP. Tuy nhiên, nếu bạn cần đặt mã trạng thái, bạn có thể sử dụng
+phương thức setStatus. Để chỉ định giá trị cho mã này, bạn có thể sử dụng một 
+trong hai cách, giá trị số nguyên hoặc một trong các trường của đối tượng 
+response. Ví dụ, hình này cho thấy hai cách để chỉ định mã trạng thái 404 
+(Không tìm thấy).
+
+The main method for setting the status codes
+setStatus(int code)     : đặt mã trạng thái cho phản hồi
+
+Cách mã trạng thái ánh xạ tới các trường của đối tượng phản hồi
+200                  SC_OK
+404                  SC_NOT_FOUND
+XXX (Xxx Xxx)        SC_XXX_XXX
+
+Examples that set the status code
+response.setStatus(404);
+response.setStatus(response.SC_NOT_FOUND);
+
+
+Các phương pháp chung để đặt tiêu đề phản hồi
+setHeader(String name, String value):        
+Đặt tiêu đề phản hồi với tên và giá trị được chỉ định. 
+
+setIntHeader(String name, int value):
+Đặt tiêu đề phản hồi với tên và giá trị int được chỉ định. 
+
+setDateHeader(String name, long value):
+Đặt tiêu đề phản hồi với tên và giá trị date được chỉ định. 
+
+
+Các phương pháp (convenience) tiện lợi để đặt tiêu đề phản hồi
+
+setContentType(String mimeType):
+Thiết lập kiểu MIME của phản hồi đang được gửi đến máy khách trong 
+tiêu đề Content-Type.
+
+
+setContentLength(int lengthInBytes):
+Thiết lập độ dài của nội dung thân trong tiêu đề Content-Length.
+
+addCookie(Cookie cookie):
+Thêm cookie đã chỉ định vào phản hồi. Để biết thêm thông tin về phương thức này,
+xem chương 7.
+
+
+Examples that set response headers
+response.setContentType("text/html");
+response.setContentLength(403);
+response.setHeader("pragma", "no-cache");
+response.setIntHeader("refresh", 60);
+response.setDateHeader("expires", currentDate.getTime() + 60 * 60 * 1000);

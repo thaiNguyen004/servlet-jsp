@@ -1,0 +1,20 @@
+Góc nhìn
+
+Bây giờ khi bạn đã đọc xong chương này, bạn nên (1) hiểu rõ hơn về cách các 
+yêu cầu và phản hồi HTTP hoạt động và (2) có khả năng sử dụng Java để làm việc 
+với các yêu cầu và phản hồi HTTP. Cụ thể, bạn nên có khả năng sử dụng mã Java 
+để kiểm tra các giá trị trong tiêu đề của một yêu cầu HTTP và cũng để đặt mã 
+trạng thái và giá trị của các tiêu đề trong phản hồi HTTP. Tuy nhiên, hầu hết 
+thời gian, API servlet và môi trường chứa servlet giúp bạn không cần phải làm 
+việc trực tiếp với HTTP.
+
+Tóm tắt
+• Một yêu cầu HTTP bao gồm một dòng yêu cầu tiếp theo là các tiêu đề yêu cầu, 
+trong khi một phản hồi HTTP bao gồm một dòng trạng thái tiếp theo là các tiêu 
+đề phản hồi và sau đó là thân phản hồi. Các tiêu đề chỉ định các thuộc tính của 
+một yêu cầu hoặc một phản hồi.
+• Các loại MIME (Multipurpose Internet Mail Extension) cung cấp các tiêu chuẩn 
+cho các loại dữ liệu khác nhau có thể được truyền qua Internet.
+• Bạn có thể sử dụng các phương thức get của đối tượng yêu cầu để lấy giá trị 
+của các tiêu đề yêu cầu, và bạn có thể sử dụng các phương thức set của đối tượng 
+phản hồi để đặt giá trị của các tiêu đề phản hồi.

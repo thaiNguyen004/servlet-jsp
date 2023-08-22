@@ -1,0 +1,73 @@
+Kỹ năng thực tế về HTTP
+Bây giờ bạn đã hiểu các khái niệm đằng sau việc sử dụng API servlet để làm việc
+với các yêu cầu và phản hồi HTTP, bạn đã sẵn sàng để học một số kỹ năng thực tế
+để làm việc với HTTP.
+
+Cách trả về một bảng tính (spreadsheet)
+Đôi khi, bạn có thể muốn trả về dữ liệu dưới dạng một bảng tính để người dùng có thể
+mở dữ liệu đó dễ dàng bằng một ứng dụng bảng tính như Microsoft Excel
+hoặc OpenOffice Calc. Để làm điều đó, bạn có thể sử dụng các lớp từ dự án Apache POI
+để tạo một workbook. Sau đó, bạn có thể sử dụng đối tượng phản hồi để trả lại
+workbook đó cho máy khách.
+Để thực hiện điều này, bạn cần tìm kiếm trang web của dự án Apache POI trên
+Internet, tải xuống tệp JAR của nó và làm cho tệp JAR đó có sẵn cho
+ứng dụng của bạn. Sau đó, bạn có thể tạo đối tượng Workbook, Sheet và Row và
+lưu dữ liệu của bạn trong những đối tượng này.
+
+
+
+Mã trong hình 18-9 bắt đầu bằng cách tạo một đối tượng Workbook từ lớp
+HSSFWorkbook. Đối tượng này được thiết kế để làm việc với các tệp có phần mở rộng .xls
+. Sau đó, mã này tạo một bảng trong workbook, tạo dòng đầu tiên của bảng và đặt 
+giá trị vào ô đầu tiên của dòng đó. Tiếp theo, mã này truy xuất tất cả các cột 
+và dòng của bảng User từ cơ sở dữ liệu và lưu dữ liệu đó vào các ô của bảng tính.
+Khi mã hoàn thành việc lưu trữ dữ liệu trong bảng tính, câu lệnh được làm nổi bật 
+đầu tiên sử dụng tiêu đề content-disposition để chỉ định rằng phản hồi
+là một tệp đính kèm có tên là users.xls. Trên hầu hết các hệ thống, phần mở rộng .xls
+được liên kết với một ứng dụng bảng tính như Microsoft Excel hoặc OpenOffice Calc.
+Kết quả là, điều này thường làm cho việc người dùng mở tệp này như một bảng tính dễ dàng.
+Cuối cùng, ba câu lệnh được hiển thị trong phần 2 của hình này lấy một đối tượng 
+OutputStream cho phản hồi và sử dụng phương thức write của đối tượng Workbook để 
+trả lại workbook cho trình duyệt.
+Khi bạn trả lại một workbook cho trình duyệt, hầu hết các trình duyệt cung cấp một 
+cách dễ dàng để người dùng mở workbook với ứng dụng bảng tính. 
+Ví dụ, Chrome thường hiển thị một nút ở góc dưới bên trái mà người dùng có thể nhấp 
+vào để mở workbook. Tuy nhiên, các trình duyệt khác có thể hiển thị hộp thoại như hình 18-10.
+
+protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    // create the workbook, its worksheet, and its title row
+    Workbook workbook = new HSSFWorkbook();
+    Sheet sheet = workbook.createSheet("User table");
+    Row row = sheet.createRow(0);
+    row.createCell(0).setCellValue("The User table");
+
+    EntityManager em = null;
+    try {
+        em = Persistence.createEntityManagerFactory("default")
+                .createEntityManager();
+        TypedQuery<User> tq = em.createQuery("SELECT u FROM User u", User.class);
+        listUser = tq.getResultList();
+    } catch (NoResultException e) {
+        System.out.println(e);
+    } finally {
+        em.close();
+    }
+
+    Iterator<User> it = listUser.iterator();
+    int i = 2;
+    User u = null;
+    while(it.hasNext()) {
+        row = sheet.createRow(i);
+        u = it.next();
+        row.createCell(0).setCellValue(u.getUserId());
+        row.createCell(1).setCellValue(u.getLastName());
+        row.createCell(2).setCellValue(u.getFirstName());
+        row.createCell(3).setCellValue(u.getEmail());
+        System.out.println(u.getEmail());
+        i++;
+    }
+
+    // set the response headers
+    resp.setHeader("content-disposition", "attachment; filename=users.xls");
+    resp.setHeader("cache-control", "no-cache");
+}

@@ -1,0 +1,39 @@
+Cách tạo trang HTML ảo
+
+Hình 18-11 cho thấy cách bạn có thể tạo các trang web ảo. Mã này sử dụng phần cuối 
+của URL yêu cầu để tra cứu một người dùng trong cơ sở dữ liệu. Sau đó, nó trả về một 
+trang cụ thể cho người dùng đó. Tuy nhiên, những trang này thực sự không tồn tại 
+dưới dạng các tệp thực tế. Thay vào đó, chúng được tạo ra từ một mẫu JSP và tự động 
+điền dữ liệu từ cơ sở dữ liệu.
+
+Ví dụ đầu tiên cho thấy mẫu URL cho ánh xạ của servlet. Kết quả là, bạn có thể yêu 
+cầu servlet với một URL được định dạng giống như các URL trong ví dụ thứ hai. 
+Ở đây, phần cuối của URL chỉ định một tên người dùng xác định duy nhất cho người dùng.
+
+Ví dụ thứ ba bắt đầu bằng cách gọi phương thức getPathInfo trên đối tượng request. 
+Điều này trả về bất kỳ thông tin đường dẫn URL bổ sung nào vượt quá ánh xạ của servlet. 
+Tuy nhiên, nó không trả lại bất kỳ tham số truy vấn nào. Kết quả là, đối với một 
+URL "/users/jane_doe", phương thức này trả về một giá trị "/jane_doe".
+
+Sau khi đảm bảo biến userString không phải là null, mã này cố gắng tra cứu người 
+dùng trong cơ sở dữ liệu. Để bắt đầu, nó gọi phương thức substring trên chuỗi 
+với đối số 1 để chỉ trả về phần của userString sau ký tự đầu tiên. 
+Nói cách khác, nó loại bỏ dấu gạch chéo đầu tiên mà phương thức getPathinfo đã trả về.
+
+Sau đó, nó cố gắng lấy một đối tượng User bằng cách truyền tên người dùng cho phương 
+thức getByUsername của lớp UserDB.
+
+Nếu người dùng không phải là null, mã này đặt một thuộc tính có tên là "user" 
+thành đối tượng User. Sau đó, nó chuyển tiếp đến trang user.jsp.
+
+Nếu ngược lại, người dùng là null, có nghĩa là không có người dùng cho tên người 
+dùng được chỉ định. Theo quy luật, trang ảo được yêu cầu không tồn tại. Trong trường hợp 
+này, mã này gọi phương thức sendError trên đối tượng phản hồi để trả về lỗi 404 
+đến trình duyệt. Để làm điều đó, mã này đặt trạng thái thành 404 và bao gồm một 
+thông báo để trình duyệt hiển thị trên trang lỗi 404 của nó.
+
+Như đã đề cập trước đây trong chương này, bạn cũng có thể gọi phương thức setStatus 
+trên đối tượng HttpServletResponse để đặt trạng thái phản hồi. Tuy nhiên, việc đặt 
+trạng thái thực sự không gửi một phản hồi từ máy chủ. Do đó, bạn phải chuyển tiếp 
+hoặc chuyển hướng người dùng thủ công đến trang lỗi giống như bạn sẽ làm với bất kỳ 
+trang nào khác.

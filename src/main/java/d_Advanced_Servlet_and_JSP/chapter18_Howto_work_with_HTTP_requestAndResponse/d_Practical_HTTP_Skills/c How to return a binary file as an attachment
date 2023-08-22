@@ -1,0 +1,63 @@
+Làm cách nào để trả về một tệp nhị phân dưới dạng tập tin đính kèm
+
+Trong một ứng dụng web, bạn có thể viết mã một liên kết HTML trỏ đến một tệp 
+nhị phân có thể tải xuống. Ví dụ, bạn có thể viết mã một liên kết trỏ đến một 
+tệp định dạng Tài liệu Di động (PDF). Sau đó, khi người dùng nhấp vào liên kết này, 
+hầu hết trình duyệt sử dụng một trình đọc tích hợp để hiển thị tệp PDF.
+
+Điều này có thể đủ cho một số ứng dụng. Tuy nhiên, đối với các ứng dụng khác, 
+bạn có thể muốn cho phép người dùng tải xuống hoặc mở tệp. Để làm điều đó, bạn có 
+thể sử dụng tiêu đề content-disposition để chỉ ra rằng tệp là một tệp đính kèm 
+với tên cụ thể.
+
+Đối với một số trình duyệt, điều này hiển thị một nút. Đối với những trình duyệt khác, 
+nó hiển thị một hộp thoại như hình 18-10. Dù cách nào, điều này cho phép người dùng 
+lựa chọn mở hoặc lưu tệp.
+
+An HTML link to an MP3 sound file
+<a href="filter.mp3"> Joe Rut - Filter </a>
+
+
+An HTML link to the servlet for downloading the file
+<a href="downloadFile?name=filter.mp3">Joe Rut - Filter</a>
+
+The servlet code that identifies the file as an attached binary file
+@Override
+public void doGet(HttpServletRequest request,HttpServletResponse response)
+                throws IOException, ServletException {
+    ServletContext sc = getServletContext();
+    String path = sc.getRealPath("/");
+    String name = request.getParameter("name");
+    response.setContentType("application/octet-stream" );
+    response.setHeader("content-disposition", "attachment;filename=" + name);
+    FileinputStream in = new FileinputStream(path+"/"+name);
+    PrintWriter out = response.getWriter();
+    int i = in.read();
+    while (i != -1) {
+        out.write(i);
+        i = in.read();
+    }
+    in.close();
+    out.close();
+}
+
+
+Ví dụ đầu tiên cho thấy cách viết mã một liên kết HTML đến một tệp MP3. Đối với hầu 
+hết trình duyệt, nhấp vào một liên kết như thế này sẽ tự động khởi chạy một trình phát 
+âm thanh để phát tệp âm thanh. Nếu điều này không phải là ý muốn của bạn, bạn có 
+thể viết mã một liên kết HTML đến một servlet sử dụng tiêu đề content-disposition 
+để chỉ ra rằng tệp là một tệp đính kèm với tên cụ thể như được hiển thị trong ví dụ 
+thứ hai.
+
+
+Ví dụ thứ ba cho thấy một số mã từ một servlet xử lý yêu cầu được tạo bởi ví dụ thứ hai. 
+Trong phương thức doGet, ba câu lệnh đầu tiên lấy đường dẫn và tên của tệp được 
+gửi dưới dạng tham số yêu cầu. Sau đó, câu lệnh thứ tư đặt tiêu đề phản hồi 
+content-type để chỉ ra rằng phản hồi chứa dữ liệu nhị phân chung, và câu lệnh thứ 
+năm đặt tiêu đề content-disposition để chỉ ra rằng phản hồi chứa một tệp đính kèm. 
+Điều này khiến trình duyệt xử lý phản hồi theo cách tương ứng.
+
+Khi tiêu đề phản hồi đã được đặt, mã này sử dụng vòng lặp while để đọc từng byte 
+từ tệp cụ thể. Sau đó, nó sử dụng đối tượng PrintWriter để ghi từng byte vào phản hồi. 
+Cuối cùng, mã này đóng luồng đầu vào và đầu ra.
+
