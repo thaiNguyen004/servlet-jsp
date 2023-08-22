@@ -1,0 +1,57 @@
+Các phương thức của các đối tượng event
+Hình 19-4 trình bày các phương thức của các đối tượng event (event objects) 
+mà bạn có thể sử dụng từ các phương thức của các giao diện bộ lắng nghe. 
+Ví dụ, nếu bạn triển khai giao diện HttpSessionListener, các phương thức 
+sessionCreated và sessionDestroyed của giao diện này phải bao gồm một đối tượng 
+HttpSessionEvent như tham số. Sau đó, bạn có thể sử dụng phương thức getSession 
+của đối tượng HttpSessionEvent để trả về đối tượng HttpSession đã gây ra event.
+
+Tương tự, đối tượng ServletContextAttributeEvent cung cấp các phương thức getName 
+và getValue để trả về tên và giá trị của thuộc tính đã gây ra event. Ngoài ra, vì
+lớp ServletContextAttributeEvent kế thừa từ lớp ServletContextEvent, bạn cũng 
+có thể gọi phương thức getServletContext từ đối tượng event này.
+
+• The ServletContextEvent class
+getServletContext();
+Trả về đối tượng ServletContext đã được khởi tạo hoặc hủy bỏ.
+
+
+• The ServletContextAttributeEvent class 
+getName();
+Trả về một chuỗi đại diện cho tên của thuộc tính đã được thêm vào, loại bỏ khỏi 
+hoặc thay thế trong đối tượng ServletContext.
+
+getValue();
+Trả về một đối tượng đại diện cho giá trị của thuộc tính đã được thêm vào, loại bỏ 
+khỏi hoặc thay thế trong đối tượng ServletContext.
+
+
+• The HttpSessionEvent class
+getSession();
+Trả về đối tượng HttpSession đã gây ra
+
+
+• The HttpSessionBindingEvent class
+getName();
+Trả về một chuỗi đại diện cho tên của thuộc tính đã được thêm vào, loại bỏ khỏi 
+hoặc thay thế trong đối tượng HttpSession.
+
+getValue();
+Trả về một đối tượng đại diện cho giá trị của thuộc tính đã được thêm vào, loại bỏ 
+khỏi hoặc thay thế trong đối tượng HttpSession.
+
+
+• The ServletRequestEvent class 
+getServletRequest();
+Trả về đối tượng ServletRequest đã được khởi tạo hoặc hủy bỏ.
+
+
+• The ServletRequestAttributeEvent class 
+getName();
+Trả về một chuỗi đại diện cho tên của thuộc tính đã được thêm vào, loại bỏ khỏi 
+hoặc thay thế trong đối tượng ServletRequest.
+
+
+getValue();
+Trả về một đối tượng đại diện cho giá trị của thuộc tính đã được thêm vào, 
+loại bỏ khỏi hoặc thay thế trong đối tượng ServletRequest.

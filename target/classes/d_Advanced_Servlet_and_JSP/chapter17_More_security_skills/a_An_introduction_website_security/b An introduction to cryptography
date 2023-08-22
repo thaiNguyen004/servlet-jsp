@@ -1,0 +1,65 @@
+Một giới thiệu về mật mã học
+Mật mã học là quá trình lấy dữ liệu đọc được và thay đổi nó một cách nào đó để 
+nó không còn đọc được như văn bản gốc. Một trong những hình thức đơn giản nhất 
+của mật mã học là một hệ thống thay thế đơn giản, mà bạn có thể đã quen thuộc 
+qua những trò chơi mà trẻ em thường tham gia. Trong loại hệ thống này, bạn đơn 
+giản thay thế các biểu tượng khác nhau cho các ký tự trong văn bản của bạn để 
+tạo ra một thông điệp được mã hóa. Sau đó, người nào có chìa khóa thay thế, 
+cho biết biểu tượng nào tương ứng với chữ cái nào, có thể giải mã thông điệp đã 
+được mã hóa.
+
+Mật mã học máy tính phức tạp hơn đáng kể so với các hệ thống thay thế đơn giản 
+này. Tuy nhiên, mục tiêu cơ bản vẫn giống như nhau: Lấy dữ liệu đọc được và 
+thay đổi nó để không còn đọc được. Có hai loại mật mã học thông thường được 
+sử dụng trong bảo mật IT.
+
+
+Loại đầu tiên là băm một chiều (one-way hashing). Trong loại mật mã học này, 
+bạn đưa một thông điệp qua một thuật toán tạo ra phiên bản bị xáo trộn của nó. 
+Với loại mã hóa này, không thể khôi phục lại thông điệp gốc từ phiên bản bị 
+xáo trộn. Nói cách khác, bạn không thể đảo ngược mã hóa. Do đó, băm một chiều 
+rất hữu ích để lưu trữ mật khẩu trong cơ sở dữ liệu. Trong trường hợp này, 
+bạn không bao giờ cần đảo ngược mật khẩu đã được mã hóa miễn là người dùng 
+biết mật khẩu của họ. Khi người dùng đăng nhập, bạn băm mật khẩu và đảm bảo 
+rằng nó khớp với băm của mật khẩu trong cơ sở dữ liệu. Nếu khớp, mật khẩu đúng.
+
+
+Bởi vì không thể đảo ngược băm một chiều, không thể tìm hiểu mật khẩu của người 
+dùng là gì. Nếu người dùng quên mật khẩu, bạn có thể đặt lại mật khẩu cho một 
+mật khẩu mới. Tương tự, vì băm không thể đảo ngược, loại mật mã học này không 
+hữu ích cho việc gửi email tài liệu cho ai đó mà họ cần phải đọc. Đối với các 
+loại nhiệm vụ như vậy, bạn cần sử dụng loại mã hóa thứ hai, mã hóa có thể đảo 
+ngược.
+
+Mã hóa đảo ngược, như tên gợi ý, là mã hóa có thể đảo ngược. Để làm cho điều này 
+khả thi, dữ liệu được mã hóa bằng cách sử dụng một khóa. Trong các hình thức 
+đơn giản của mã hóa này, bạn sử dụng một khóa để mã hóa dữ liệu, và bất kỳ ai 
+cũng có chìa khóa đó cũng có thể giải mã dữ liệu. Loại mã hóa này hữu ích cho 
+các nhiệm vụ như lưu trữ dữ liệu an toàn trong cơ sở dữ liệu và truyền dữ liệu 
+an toàn qua Internet.
+
+Hình 17-2 tóm tắt năm thuật toán có thể được sử dụng để băm và mã hóa dữ liệu. 
+Một số trong những thuật toán này an toàn hơn so với các thuật toán khác. 
+Ví dụ, thuật toán SHA-2 an toàn hơn so với thuật toán SHA-1 hoặc thuật toán md5. 
+Tương tự, thuật toán AES-256 an toàn hơn thuật toán AES-128.
+
+md5
+Một thuật toán băm một chiều cũ hơn với độ dài 128 bit. Mặc dù phổ biến, 
+nhưng nó được biết đến là dễ bị va chạm và không nên sử dụng.
+
+SHA-1
+Một thuật toán băm một chiều với độ dài 160 bit. Lý thuyết thì nó có thể bị 
+dễ bị va chạm, nhưng hiện chưa tìm thấy va chạm nào.
+
+SHA-2
+SHA-2 hỗ trợ độ dài băm từ 224 đến 512 bit. Một khóa 256 bit thường được xem 
+là khó phá bằng tiêu chuẩn sức mạnh tính toán của ngày nay.
+
+AES-128
+Một tiêu chuẩn mã hóa đảo ngược với khóa 128 bit. Thường được coi là phù hợp 
+cho hầu hết nhu cầu mã hóa.
+
+AES-256
+Một phiên bản AES với khóa 256 bit. Đây thường là mức tối thiểu của mã hóa 
+được yêu cầu bởi chính phủ Hoa Kỳ cho dữ liệu bí mật cấp cao.
+

@@ -1,0 +1,53 @@
+Quan điểm
+Bây giờ bạn đã hoàn thành chương này, bạn đã có thêm một loạt kỹ năng để bảo vệ 
+người dùng và ứng dụng web của bạn khỏi việc truy cập trái phép. Tuy nhiên, bảo mật 
+là một chủ đề phức tạp và còn nhiều điều hơn chúng ta không thể bao quát được 
+trong cuốn sách này.
+Một chủ đề quan trọng mà cuốn sách này chưa đề cập đến là mã hóa cơ sở dữ liệu, 
+điều này là một ý tưởng tốt nếu bạn lưu trữ bất kỳ dữ liệu nhạy cảm nào trong 
+cơ sở dữ liệu của bạn như số thẻ tín dụng của khách hàng hoặc thông tin có thể 
+cho phép kẻ tấn công ăn cắp danh tính của người dùng.
+Thật không may, MySQL không cung cấp cách dễ dàng để mã hóa cơ sở dữ liệu một 
+cách minh bạch và yêu cầu kỹ thuật lập trình đặc biệt trong ứng dụng của bạn để 
+thực hiện việc này. Nếu bạn cần mã hóa dữ liệu nhạy cảm, chúng tôi đề xuất hai 
+tùy chọn.
+
+Tùy chọn đầu tiên là sử dụng một cơ sở dữ liệu cung cấp mã hóa cơ sở dữ liệu minh bạch. 
+Hầu hết các cơ sở dữ liệu thương mại đều làm điều này, cũng như cơ sở dữ liệu 
+mã nguồn mở PostgreSQL.
+Tùy chọn thứ hai là mã hóa ổ cứng lưu trữ cơ sở dữ liệu. Nhiều hệ điều hành đã tích 
+hợp sẵn phần mềm mã hóa ổ cứng. Cũng có một số giải pháp bên thứ ba có sẵn cho việc này. 
+Ngoài ra, một số bộ điều khiển ổ cứng hỗ trợ mã hóa ở mức phần cứng. Để xem xem 
+thiết bị của bạn có hỗ trợ không, bạn có thể tham khảo tài liệu đi kèm với máy chủ 
+hoặc liên hệ nhà cung cấp máy chủ.
+
+Tóm tắt
+• Các cuộc tấn công Cross-site scripting (XSS) cho phép kẻ tấn công chèn mã 
+Javascript vào trang của bạn.
+• Các cuộc tấn công SQL injection cho phép kẻ tấn công chạy mã SQL độc hại 
+trên cơ sở dữ liệu của bạn.
+• Cuộc tấn công kỹ thuật xã hội xảy ra khi kẻ tấn công cố gắng truy cập vào 
+hệ thống một cách trái phép bằng cách lừa dối người dùng thay vì khai thác 
+các lỗ hổng kỹ thuật.
+• Để ngăn chặn các cuộc tấn công kỹ thuật xã hội, hãy giáo dục người dùng 
+của bạn về sức mạnh của mật khẩu và nguy cơ cung cấp thông tin cho những 
+người không rõ.
+• Thuật toán băm một chiều lấy một chuỗi đầu vào và biến nó thành một chuỗi 
+đầu ra đã mã hóa có độ dài cố định. Hash không thể đảo ngược.
+• Mã hóa đảo ngược mã hóa dữ liệu theo một khóa và dữ liệu sau đó có thể 
+được giải mã khi cần đọc. Loại mã hóa này hữu ích cho các nhiệm vụ như 
+lưu trữ số thẻ tín dụng hoặc truyền tải an toàn tài liệu qua mạng.
+• Mật khẩu yếu là mật khẩu mà kẻ tấn công có thể đoán hoặc phá vỡ dễ dàng.
+• Mật khẩu trong văn bản thường, hoặc mật khẩu chưa được mã hóa, là mật khẩu 
+được lưu trữ trong cơ sở dữ liệu hoặc gửi qua mạng mà không được mã hóa.
+• Trong cuộc tấn công từ điển, kẻ tấn công cố gắng đoán mật khẩu bằng cách 
+sử dụng một chương trình tự động và một từ điển điện tử.
+• Trong cuộc tấn công bảng cầu vồng (rainbow table), kẻ tấn công sử dụng cơ sở 
+dữ liệu trước tính toán của từ và các giá trị băm của chúng để cố gắng phá vỡ 
+các mật khẩu băm mà họ đã tiếp cận.
+• Để băm một chuỗi, bạn sử dụng lớp MessageDigest.
+• Xung đột xảy ra khi hai chuỗi đầu vào băm thành cùng một giá trị.
+• Muối là một chuỗi ngẫu nhiên được đính kèm vào mật khẩu. Điều này ngăn chặn 
+cuộc tấn công bảng cầu vồng.
+• Để tạo muối ngẫu nhiên an toàn, bạn có thể sử dụng lớp SecureRandom để tạo ra 
+một mảng các byte ngẫu nhiên và lớp Base64 để mã hóa mảng đó thành một giá trị chuỗi.

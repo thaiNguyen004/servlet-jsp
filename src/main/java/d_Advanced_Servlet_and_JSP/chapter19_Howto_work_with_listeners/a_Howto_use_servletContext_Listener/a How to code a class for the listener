@@ -1,0 +1,19 @@
+Bắt đầu từ (specification)đặc tả servlet 2.3, bạn có thể thêm một listener 
+bộ lắng nghe vào một ứng dụng web. Ví dụ, bạn có thể tạo một lớp lắng nghe chứa 
+mã được thực thi khi ứng dụng web của bạn khởi động. Hoặc bạn có thể tạo một lớp 
+lắng nghe chứa mã được thực thi mỗi khi người dùng bắt đầu một phiên làm việc mới. 
+Trong chương này, bạn sẽ tìm hiểu cách sử dụng các bộ lắng nghe.
+
+Cách sử dụng ServletContextListener
+Một bộ lắng nghe (listener) là một lớp được lắng nghe cho các sự kiện khác nhau 
+có thể xảy ra trong suốt vòng đời của một ứng dụng web và cung cấp các phương 
+thức được thực thi khi những sự kiện đó xảy ra. Ví dụ, bạn có thể sử dụng một 
+ServletContextListener để xác định khi một ứng dụng được khởi động, và bạn có 
+thể sử dụng phương thức contextInitialized của nó để khởi tạo một hoặc nhiều 
+biến toàn cầu khi sự kiện đó xảy ra. Điều này cho phép bạn khởi tạo các biến 
+toàn cầu trước khi lần đầu tiên một trang JSP hoặc servlet của ứng dụng được yêu cầu.
+
+Bởi vì đây là một cách sử dụng phổ biến của bộ lắng nghe, chương này sẽ sử dụng 
+một ServletContextListener làm ví dụ duy nhất. Tuy nhiên, điều đó nên cung cấp 
+cho bạn nền tảng tốt để sử dụng bất kỳ bộ lắng nghe nào khác.
+

@@ -1,0 +1,45 @@
+Làm thế nào để đăng ký bộ lắng nghe:
+
+Sau khi bạn viết mã cho một lớp lắng nghe, bạn cần đăng ký bộ lắng nghe với ứng 
+dụng web. Để làm điều đó, bạn phải thêm một phần tử listener vào tệp web.xml của 
+ứng dụng, như được hiển thị trong phần 2 của hình 19-1. Ở đây, mã có màu được 
+tô sáng chứa phần tử listener. Trong phần tử listener, phần tử listener-class 
+xác định tên đầy đủ của lớp. Trong trường hợp này, nó chỉ định lớp CartContextListener 
+trong gói murach.util, đó là lớp được hiển thị trong phần 1 của hình này.
+Dưới phần tử listener trong hình này, bạn có thể thấy phần tử context-param 
+xác định tham số khởi tạo ngữ cảnh cho địa chỉ email dịch vụ khách hàng. 
+Điều này, tất nhiên, không liên quan gì đến việc sử dụng bộ lắng nghe, ngoại trừ 
+tham số này được đọc bởi lớp lắng nghe được trình bày trong phần 1. Như bạn có thể 
+thấy, tham số này có tên là custServEmail và giá trị là "custserv@murach.com".
+
+
+A web.xml file that includes a listener element
+<?xml version="l.0" encoding="UTF-8"?>
+<web-app version="3.0"
+    xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+        http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" >
+
+    <servlet>
+        <servlet-name>CartServlet</servlet-name>
+        <servlet-class>murach.cart.CartServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CartServlet</servlet-name>
+        <url-pattern>/cart</url-pattern>
+    </servlet-mapping>
+    <listener>
+        <listener-class>murach.util.CartContextListener</listener-class>
+    </listener>:
+    <context-param>
+        <param-name>custServEmail</param-name>
+        <param-value>custserv@murach.com</param-value>
+    </context-param>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>

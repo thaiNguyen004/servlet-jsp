@@ -1,0 +1,71 @@
+Cách viết mã cho một lớp listener:
+Để viết mã cho một lớp listener, bạn cần triển khai một trong các giao diện 
+lắng nghe được lưu trữ trong gói javax.servlet và javax.servlet.http. Ví dụ, 
+trong phần 1 của hình 19-1, lớp CartContextListener triển khai giao diện 
+ServletContextListener nằm trong gói javax.servlet. Nói cách khác, lớp 
+CartContextListener là một ServletContextListener.
+
+Một lớp triển khai giao diện lắng nghe phải ghi đè tất cả các phương thức của 
+giao diện đó. Trong hình này, ví dụ, lớp CartContextListener ghi đè hai phương thức 
+của giao diện ServletContextListener: phương thức contextInitialized và phương thức 
+contextDestroyed. Cả hai phương thức này đều có một đối tượng ServletContextEvent 
+như tham số.
+Phương thức contextInitialized chứa mã được thực thi ngay sau khi ứng dụng khởi động. 
+Trong phương thức trong hình này, câu lệnh đầu tiên gọi phương thức getServletContext 
+từ tham số sự kiện để trả về đối tượng ServletContext. Lưu ý rằng một lớp lắng nghe 
+không mở rộng lớp HttpServlet nên nó không phải là một servlet. Do đó, bạn không thể 
+gọi phương thức getServletContext của lớp HttpServlet trực tiếp từ lớp lắng nghe. 
+Thay vào đó, bạn phải gọi phương thức này từ tham số sự kiện.
+Sau khi có đối tượng ngữ cảnh, phần còn lại của các câu lệnh trong phương thức này 
+khởi tạo các biến toàn cầu và đặt chúng thành thuộc tính của đối tượng 
+ServletContext. Kết quả, các thuộc tính này sẵn có cho tất cả các trang JSP và 
+servlet của ứng dụng. Ở đây, mã lấy địa chỉ email dịch vụ khách hàng từ tệp web.xml 
+của ứng dụng. Sau đó, nó lấy một giá trị int cho năm hiện tại. Tiếp theo, nó lấy 
+đường dẫn cho tệp văn bản có tên là products.txt được lưu trữ trong thư mục WEB-INF.
+Cuối cùng, mã này sử dụng đường dẫn này và lớp ProductsIO để tạo ra một danh sách 
+ArrayList của các đối tượng Product từ các giá trị được lưu trữ trong tệp văn bản.
+Ngược lại, phương thức contextDestroyed được sử dụng cho mã được thực thi khi 
+ứng dụng dừng lại và hủy bỏ đối tượng ServletContext. Phương thức này thường chứa 
+mã dọn dẹp giải phóng bất kỳ tài nguyên nào như kết nối cơ sở dữ liệu được sử dụng 
+bởi phương thức contextlnitialized. Tuy nhiên, trong hình này, phương thức 
+contextInitialized không sử dụng bất kỳ tài nguyên cần phải dọn dẹp. 
+Do đó, phương thức này không chứa bất kỳ mã nào.
+
+package servlet;
+
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
+public class CartContextListener implements ServletContextListener {
+    @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        ServletContext sc = sce.getServletContext();
+        
+        // init the customer service email address
+        String custServEmail = sc.getInitParameter("custServEmail");
+        sc.setAttribute("custServEmail", custServEmail);
+        
+        // init the current year
+        GregorianCalendar currentDate = new GregorianCalendar();
+        int currentYear = currentDate.get(Calendar.YEAR);
+        sc.setAttribute("currentYear", currentYear);
+        
+        // init the path for the products text file
+        String productsPath = sc.getRealPath("/WEB-INF/products.txt");
+        sc.setAttribute("productsPath", productsPath);
+        
+        // init the list of products
+        ArrayList<Product> products = ProductIO.getProducts("productsPath");
+        sc.setAttribute("products", products);
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) {
+        ServletContextListener.super.contextDestroyed(sce);
+    }
+}

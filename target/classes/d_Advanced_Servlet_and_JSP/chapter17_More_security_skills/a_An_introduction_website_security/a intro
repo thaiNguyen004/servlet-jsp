@@ -1,0 +1,72 @@
+Mạo danh danh tính do những lỗ hổng bảo mật IT gây ra là một vấn đề nghiêm trọng, 
+như nhiều câu chuyện được đưa lên báo đã chỉ ra. Vì vậy, bảo vệ danh tính và 
+tính bảo mật của người dùng của bạn là một trong những phần quan trọng nhất trong 
+việc phát triển ứng dụng web. Mặc dù bạn đã học được một số kỹ năng để bảo vệ 
+ứng dụng web của bạn, chương này sẽ giúp bạn học thêm những kỹ năng quan trọng 
+khác mà không phù hợp trong các phần khác của cuốn sách này.
+
+Một giới thiệu về bảo mật trang web
+Trước khi bạn có thể bảo vệ một trang web, việc hiểu một số khái niệm cơ bản 
+và thuật ngữ về bảo mật trang web sẽ rất hữu ích.
+
+Các cuộc tấn công phổ biến vào trang web
+Hình 17-1 trình bày một số kỹ thuật mà kẻ tấn công thường sử dụng để truy cập 
+trái phép vào thông tin cá nhân của người dùng. Cho đến nay trong cuốn sách này, 
+bạn đã học được một số kỹ thuật để ngăn chặn hai loại cuộc tấn công đầu tiên. 
+Trong chương 9, bạn đã học cách ngăn chặn cuộc tấn công cross-site scripting (XSS). 
+Sau đó, trong các chương 12 và 13, bạn đã học cách ngăn chặn cuộc tấn công SQL injection. 
+Trong chương này, bạn sẽ học các kỹ thuật bổ sung để bảo vệ ứng dụng web của bạn, 
+bao gồm cách ngăn chặn cuộc tấn công kỹ thuật xã hội (social engineering) và bảo vệ mật khẩu.
+
+Cách ngăn chặn cuộc tấn công social engineering
+Trong cuộc tấn công social engineering, kẻ tấn công cố gắng truy cập trái phép 
+vào dữ liệu người dùng bằng cách tìm hiểu thông tin về người dùng đó, cho phép 
+họ truy cập vào tài khoản của người dùng.
+
+Một kỹ thuật thông thường, thường được sử dụng để nhắm vào nhân viên của một 
+doanh nghiệp, là kẻ tấn công giả vờ làm nhân viên của phòng IT của công ty. 
+Sau đó, kẻ tấn công gọi điện thoại cho nhân viên, tuyên bố đang khắc phục sự cố 
+và yêu cầu tên người dùng và mật khẩu của nhân viên. Để ngăn chặn loại tấn công này, 
+hãy đảm bảo rằng nhân viên của bạn biết rằng phòng IT của bạn sẽ không bao giờ yêu 
+cầu mật khẩu của họ.
+
+Một kỹ thuật khác mà kẻ tấn công đôi khi sử dụng là đứng ngoài văn phòng của một 
+công ty để thu thập thông tin. Thường thì những kẻ tấn công này sẽ tuyên bố họ 
+đang thực hiện một dự án học tập. Sau đó, họ phỏng vấn nhân viên của bạn, hỏi họ 
+về thông tin mà họ có thể sử dụng để truy cập vào hệ thống IT của bạn. Loại cuộc 
+tấn công này đặc biệt nguy hiểm và hiệu quả nếu nhân viên của bạn đang sử dụng 
+mật khẩu được tạo từ thông tin dễ dàng khám phá về họ như tên con cái, tên của 
+thú cưng, thức ăn yêu thích và như vậy.
+
+Để ngăn chặn loại tấn công này, bạn nên đào tạo nhân viên của bạn để cảnh giác 
+khi cung cấp thông tin cho những người tuyên bố đang tiến hành nghiên cứu, dự án 
+học tập và như vậy. Tương tự, bạn nên đảm bảo nhân viên của bạn không sử dụng mật 
+khẩu được tạo từ thông tin về họ dễ dàng khám phá. Tên thú cưng, con cái, món ăn 
+yêu thích và như vậy có thể dễ dàng khám phá thông qua các cuộc tấn công 
+social engineering hoặc tìm kiếm trên mạng xã hội trên Internet.
+
+Cuối cùng, phần mềm cũ hoặc chưa được vá lỗi đang chạy trên máy chủ của bạn có 
+thể cho phép kẻ tấn công khai thác các lỗ hổng bảo mật. Để ngăn chặn loại tấn 
+công này, bạn nên đảm bảo rằng máy chủ cho trang web của bạn đang chạy phần mềm 
+bao gồm các bản vá bảo mật mới nhất.
+
+Các cuộc tấn công bảo mật trang web phổ biến
+• Cuộc tấn công cross-site scripting (XSS) cho phép kẻ tấn công chèn mã Javascript vào trang của bạn nhằm mục đích lừa người dùng của bạn gửi cho họ dữ liệu cá nhân như tên người dùng và mật khẩu.
+• Cuộc tấn công SQL injection cho phép kẻ tấn công chạy mã SQL độc hại trên cơ sở dữ liệu của bạn. Điều này có thể cho phép họ thực hiện nhiều hành động khác nhau bao gồm truy cập vào thông tin chứng thực người dùng và thông tin cá nhân, bypass cơ chế xác thực, và thay đổi hoặc phá hủy dữ liệu.
+• Trong cuộc tấn công kỹ thuật xã hội, kẻ tấn công lừa ai đó tiết lộ tên người dùng và mật khẩu của họ, thường bằng cách giả vờ làm nhân viên IT của công ty.
+• Phần mềm cũ hoặc chưa được vá lỗi đang chạy trên máy chủ của bạn có thể cho phép kẻ tấn công khai thác các lỗ hổng bảo mật để truy cập trái phép vào dữ liệu của bạn.
+
+Cách ngăn chặn cuộc tấn công kỹ thuật xã hội
+• Đảm bảo nhân viên, khách hàng và người dùng của bạn nhận thức rằng không ai 
+từ trang web của bạn sẽ liên hệ với họ và yêu cầu mật khẩu của họ.
+• Cẩn trọng khi có những người không rõ danh tính nói chuyện với nhân viên của 
+bạn và tuyên bố đang tiến hành khảo sát, nghiên cứu, và như vậy. Họ có thể đang 
+cố gắng thu thập thông tin để giúp họ truy cập vào hệ thống IT của bạn.
+• Đảm bảo nhân viên, khách hàng và người dùng của bạn nhận thức về nguy cơ sử dụng 
+mật khẩu dựa trên thông tin mà kẻ tấn công có thể dễ dàng khám phá về họ. 
+Ví dụ, một kẻ tấn công có thể khai thác mạng xã hội để tìm thông tin về tên thú cưng, 
+con cái, thức ăn yêu thích, và như vậy.
+• Khi tìm kiếm sự giúp đỡ với các vấn đề kỹ thuật trực tuyến, chẳng hạn như câu hỏi 
+về lập trình, đừng tiết lộ chi tiết về cấu hình mạng nội bộ, bảo mật IT và các loại 
+thông tin khác mà sẽ hữu ích cho kẻ tấn công.
+

@@ -1,0 +1,18 @@
+Quan điểm
+Sau khi bạn hoàn thành chương này, bạn nên có khả năng viết mã một 
+ServletContextListener để khởi tạo các biến toàn cục cho một ứng dụng web khi 
+ứng dụng bắt đầu hoạt động. Bạn cũng nên biết các sự kiện mà các bộ lắng nghe khác 
+có thể phản ứng, và thông qua việc thử nghiệm, bạn nên có thể tìm hiểu cách viết 
+mã cho một trong những bộ lắng nghe đó nếu cần.
+
+Tóm tắt
+• Một bộ lắng nghe là một lớp lắng nghe các sự kiện khác nhau có thể xảy ra 
+trong vòng đời của một ứng dụng web và cung cấp các phương thức được thực thi 
+khi các sự kiện cụ thể xảy ra.
+• Để tạo một bộ lắng nghe, bạn phải viết mã cho một lớp triển khai một trong 
+các giao diện lắng nghe, và bạn phải đăng ký bộ lắng nghe bằng cách thêm một 
+phần tử lắng nghe vào tệp web.xml của ứng dụng.
+• Tất cả các phương thức của một giao diện lắng nghe đều có một đối tượng sự kiện 
+làm tham số duy nhất. Bạn có thể gọi các phương thức của đối tượng sự kiện này 
+trong các phương thức lắng nghe của bạn.
+

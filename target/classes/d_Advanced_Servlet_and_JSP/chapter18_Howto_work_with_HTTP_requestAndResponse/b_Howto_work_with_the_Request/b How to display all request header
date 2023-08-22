@@ -1,0 +1,70 @@
+Cách hiển thị tất cả tiêu đề yêu cầu
+
+The servlet code that gets all request headers
+Enumeration<String> headerNames = request.getHeaderNames();
+Map<String, String> headers = new HashMap<String, String>();
+while {headerNames.hasMoreElements{)) {
+    String headerName = headerNames.nextElement();
+    headers.put(headerName, request.getHeader(headerName));
+    request.setAttribute("headers", headers);
+}
+
+The JSP code that displays the headers
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    <hl>Request Headers</hl>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+    <c:forEach var="headers "items=" ${headers}">
+    <tr>
+        <td><c:out value=" ${headers.key}"/></td>
+        <td><c:out value=" ${headers.value}"/></td>
+    </tr>
+    </c:forEach>
+    </table>
+
+
+
+Hình 18-7 trình bày một phần của một servlet sử dụng phương thức getHeaderNames 
+của đối tượng yêu cầu để trả về một đối tượng Enumeration chứa tên của tất cả 
+các tiêu đề yêu cầu. Sau đó, nó lặp qua đối tượng liệt kê và lưu trữ mỗi tiêu 
+đề yêu cầu trong một bản đồ băm, sử dụng tên tiêu đề làm khóa và giá trị tiêu 
+đề là giá trị trong bản đồ. Sau đó, nó đặt một thuộc tính yêu cầu có tên là 
+"headers" để làm cho bản đồ băm có sẵn từ JSP.
+
+Phần thứ hai của hình này hiển thị JSP hiển thị tất cả các tiêu đề yêu cầu. 
+Nếu bạn đang phát triển ứng dụng web cần kiểm tra các tiêu đề yêu cầu khác, 
+bạn có thể sử dụng JSP này để nhanh chóng xem các tiêu đề yêu cầu cho tất cả 
+các trình duyệt khác nhau mà ứng dụng web của bạn hỗ trợ. Sau đó, bạn có 
+thể viết mã kiểm tra các tiêu đề yêu cầu và làm việc với chúng.
+
+JSP này bắt đầu bằng cách xác định tiền tố taglib cho các thẻ JSTL cơ bản. 
+Sau đó, nó tạo ra một bảng chứa các tiêu đề yêu cầu. Trong hàng đầu tiên của bảng, 
+cột đầu tiên là cột Tên và cột thứ hai là cột Giá trị.
+
+Sau hàng đầu tiên của bảng, trang này sử dụng thẻ forEach của JSTL để lặp qua 
+bản đồ băm mà servlet đã lưu trữ làm thuộc tính "headers" của yêu cầu. 
+Khi vòng lặp forEach lặp qua bản đồ băm, nó tạo ra một hàng mới cho mỗi mục 
+trong bản đồ. Trong cột đầu tiên, nó in ra khóa từ bản đồ, đó là tên của tiêu đề. 
+Trong cột thứ hai, nó in ra giá trị từ bản đồ, cũng chính là giá trị của tiêu đề.
+
+Phần thứ hai của hình này hiển thị các tiêu đề yêu cầu cho trình duyệt Chrome. 
+Trong trường hợp này, tiêu đề accept-language cho thấy ngôn ngữ ưa thích là 
+tiếng Anh Hoa Kỳ.
+
+Tiêu đề accept cho thấy rằng Chrome chấp nhận một số loại nội dung, 
+bao gồm html và xml. Các loại nội dung được liệt kê theo thứ tự ưu tiên. 
+Do đó, nếu máy chủ có cả phiên bản html và phiên bản xml của cùng một tài liệu, 
+Chrome ưu tiên phiên bản html.
+
+Dấu * trong cuối tiêu đề accept là một ký tự đại diện cho bất kỳ loại nội dung nào, 
+giả sử nội dung không có sẵn trong bất kỳ định dạng ưu tiên trước đó nào. 
+Trong trường hợp đó, Chrome thường tải xuống dữ liệu và cho phép người dùng chọn 
+ứng dụng để mở nó.
+
+Tiêu đề yêu cầu cho các trình duyệt khác trông tương tự. Nếu bạn muốn xem các tiêu đề 
+yêu cầu cho các trình duyệt khác, bạn có thể sử dụng các trình duyệt khác để 
+chạy ứng dụng mẫu cho chương này.
+

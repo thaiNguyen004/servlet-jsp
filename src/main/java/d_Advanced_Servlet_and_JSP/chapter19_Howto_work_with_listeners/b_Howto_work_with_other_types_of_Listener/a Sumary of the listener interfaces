@@ -1,0 +1,57 @@
+Cách làm việc với các loại bộ lắng nghe khác:
+
+Bây giờ bạn đã biết cách sử dụng một ServletContextListener, bạn sẵn sàng để tìm 
+hiểu cách làm việc với các loại bộ lắng nghe khác.
+
+Tóm tắt về các giao diện bộ lắng nghe:
+Hình 19-2 tóm tắt tám giao diện lắng nghe. Trong số các giao diện này, các giao 
+diện ServletContext và ServletRequest được lưu trữ trong gói javax.servlet, 
+và các giao diện HttpSession được lưu trữ trong gói javax.servlet.http. 
+Nếu bạn xem xét các mô tả của các giao diện này, bạn sẽ thấy chúng cho phép bạn 
+lắng nghe một loạt các sự kiện xảy ra trên đối tượng ServletContext, HttpSession 
+và ServletRequest. Nói cách khác, chúng cho phép bạn lắng nghe các sự kiện xảy ra 
+ở phạm vi ứng dụng, phiên hoặc yêu cầu.
+
+Ví dụ, giao diện HttpSessionListener hoạt động giống như ServletContextListener. 
+Tuy nhiên, nó cho phép bạn viết mã được thực thi khi một phiên mới được tạo ra 
+hoặc bị hủy bỏ. Thông thường, một phiên sẽ bị hủy bỏ khi người dùng không yêu cầu 
+URL từ ứng dụng web trong vòng 30 phút, nhưng thời gian đó được xác định bởi 
+tệp web.xml cho ứng dụng.
+
+Như hình này cho thấy, các bộ lắng nghe khác cho phép bạn phản ứng với các sự kiện 
+xảy ra khi một thuộc tính được thêm vào, loại bỏ khỏi hoặc thay thế trong các đối 
+tượng ServletContext, phiên hoặc yêu cầu. Bạn cũng có thể phản ứng với các sự 
+kiện xảy ra khi một đối tượng được liên kết hoặc gỡ bỏ khỏi một phiên hoặc khi 
+một phiên được kích hoạt hoặc vô hiệu hóa. Tuy nhiên, đối với hầu hết các ứng dụng 
+web, bộ lắng nghe duy nhất mà bạn có thể sử dụng là ServletContextListener.
+
+HttpSessionListener
+Cung cấp các phương thức được thực thi khi đối tượng phiên (session) được tạo ra 
+và hủy bỏ cho một người dùng. Điều này xảy ra mỗi khi một người dùng mới truy cập 
+vào ứng dụng và khi phiên của một người dùng bị hủy bỏ.
+
+HttpSessionAttributeListener
+Cung cấp các phương thức được thực thi khi thuộc tính được thêm vào, loại bỏ khỏi 
+hoặc thay thế trong đối tượng session.
+
+HttpSessionBindingListener
+Cung cấp các phương thức được thực thi khi một đối tượng được liên kết hoặc gỡ 
+bỏ khỏi session.
+
+HttpSessionActivationListener
+Cung cấp các phương thức được thực thi khi phiên được kích hoạt hoặc vô hiệu hóa. 
+Điều này xảy ra khi phiên chuyển đổi sang một Java Virtual Machine (JVM) khác.
+
+ServletRequestListener
+Cung cấp các phương thức được thực thi khi đối tượng yêu cầu (request) được 
+khởi tạo và hủy bỏ. Điều này xảy ra mỗi khi máy chủ nhận và xử lý một yêu cầu.
+
+ServletRequestAttributeListener
+Cung cấp các phương thức được thực thi khi thuộc tính được thêm vào, loại bỏ 
+khỏi hoặc thay thế trong đối tượng yêu cầu.
+
+
+
+
+
+

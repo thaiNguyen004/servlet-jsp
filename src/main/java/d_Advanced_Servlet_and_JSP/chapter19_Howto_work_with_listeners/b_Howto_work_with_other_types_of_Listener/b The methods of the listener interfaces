@@ -1,0 +1,52 @@
+Các phương thức của các giao diện bộ lắng nghe
+Để hoàn thiện kiến thức của bạn về các bộ lắng nghe, hình 19-3 trình bày các 
+phương thức của các giao diện bộ lắng nghe được tóm tắt trong hình trước. 
+Nếu bạn nghiên cứu những phương thức này, bạn sẽ thấy rằng tất cả chúng đều bao 
+gồm một đối tượng sự kiện (event object) làm tham số duy nhất. Sau đó, bạn có 
+thể sử dụng các phương thức được cung cấp bởi đối tượng sự kiện trong các phương 
+thức lắng nghe của bạn như được mô tả trong hình tiếp theo.
+
+The ServletContext interfaces 
+
+The ServletContextlistener interface
+    contextInitialized(ServletContextEvent e)
+    contextDestroyed(ServletContextEvent e) 
+
+The ServletContextAttributelistener interface
+    attributeAdded(ServletContextAttributeEvent e)
+    attributeRemoved(ServletContextAttributeEvent e)
+    attributeReplaced(ServletContextAttributeEvent e) 
+
+
+
+The HttpSession interfaces
+
+The HttpSessionlistener interface
+    sessionCreated(HttpSessionEvent e)
+    sessionDestroyed(HttpSessionEvent e)
+
+The HttpSessionAttributelistener interface
+    attributeAdded(HttpSessionBindingEvent e)
+    attributeRemoved(HttpSessionBindingEvent e)
+    attributeReplaced(HttpSessionBindingEvent e)
+
+The HttpSessionBindinglistener interface
+    valueBound(HttpSessionBindingEvent e)
+    valueUnbound(HttpSessionBindingEvent e)
+
+The HttpSessionActivationlistener interface
+    sessionDidActivate(HttpSessionEvent e)
+    sessionWillPassivate(HttpSessionEvent e)
+
+
+
+The ServletRequest interfaces
+
+The ServletRequestlistener interface
+    requestInitialized(ServletRequestEvent e)
+    requestDestroyed(ServletRequestEvent e)
+
+The ServletRequestAttributelistener interface
+    attributeAdded(ServletRequestAttributeEvent e)
+    attributeRemoved(ServletRequestAttributeEvent e)
+    attributeReplaced(ServletRequestAttributeEvent e) 

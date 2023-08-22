@@ -1,0 +1,66 @@
+Làm thế nào để nén một phản hồi bằng GZIP 
+Vì hầu hết các trình duyệt hiện đại hỗ trợ nén, nên thường có ý nghĩa để nén bất 
+kỳ phản hồi lớn nào được trả về bởi máy chủ web của bạn. May mắn thay, hầu hết 
+các máy chủ web có thể xử lý điều này tự động. Ví dụ, nếu bạn đang sử dụng Tomcat 
+làm máy chủ web, bạn có thể mở tệp server.xml của Tomcat và thêm thuộc tính nén 
+vào phần tử Connector để kiểm soát cách Tomcat xử lý nén. 
+
+How to modify Tomcat's server.xml to automatically handle compression
+<Connector port="8080" protocol="HTTP/1.1"
+    maxThreads="l50" connectionTimeout="20000"
+    redirectPort="8443" compression="on"/>
+
+Trong phần 2 của hình 18-9, ví dụ, phần tử Connector nén tất cả các phản hồi 
+chứa dữ liệu văn bản được trả về trên cổng 8080 của Tomcat. Vì các phản hồi chứa 
+các loại dữ liệu khác như hình ảnh, âm thanh hoặc video thường đã được nén, 
+bạn thường không nhận được nhiều lợi ích về hiệu suất bằng cách nén các loại 
+phản hồi này. Do đó, cài đặt được hiển thị trong hình này là cài đặt phổ biến nhất.
+
+Tuy nhiên, nếu máy chủ web của bạn không tự động xử lý nén, bạn có thể mã hóa một 
+response bằng nén GZIP bằng cách kiểm tra và sửa đổi các tiêu đề HTTP cho yêu cầu 
+và phản hồi. Điều này có thể cải thiện đáng kể thời gian tải xuống cho các tài 
+liệu lớn. Ví dụ, nếu bảng có tên User chứa một lượng lớn dữ liệu, có thể hợp lý 
+để mã hóa workbook được trả về trong hình cuối cùng bằng nén GZIP.
+ Để làm điều đó, bạn có thể thêm mã được hiển thị trong ví dụ cuối cùng.
+Ở đây, câu lệnh đầu tiên sử dụng phương thức getHeader để trả về tiêu đề yêu cầu 
+accept-encoding. Tiêu đề yêu cầu này là một chuỗi chứa các loại mã hóa mà 
+trình duyệt hỗ trợ. Sau đó, câu lệnh thứ hai khai báo một đối tượng OutputStream.
+Trong khối if, câu lệnh if kiểm tra xem trình duyệt có hỗ trợ mã hóa GZIP hay không. 
+Nếu có, mã này tạo một đối tượng OutputStream sử dụng đối tượng GZIPOutputStream 
+để nén luồng đầu ra. Mã này cũng sử dụng phương thức setHeader để đặt tiêu đề 
+phản hồi content-encoding thành GZIP. Như vậy, trình duyệt biết sử dụng GZIP 
+để giải nén luồng trước khi cố gắng đọc nó.
+Tuy nhiên, nếu trình duyệt không hỗ trợ mã hóa GZIP, phương thức getOutputStream 
+của đối tượng phản hồi được sử dụng để trả về một đối tượng OutputStream bình thường. 
+Dù sao, đối tượng OutputStream được sử dụng để trả về phản hồi cho trình duyệt.
+
+
+The import statement for the GZIPOutputStream class
+import java.util.zip.GZIPOutputStream;
+
+How to manually (thủ công) encode a response with GZIP compression
+String encodingString = request.getHeader("accept-encoding");
+    OutputStream out;
+    if(encodingString != null && encodingString.contains("gzip")) {
+        out = new GZIPOutputStream(response.getOutputStream());
+        response.setHeader("content-encoding", "gzip");
+    } else {
+        out = response.getOutputStream();
+    }
+}
+
+
+Valid values for the compression attribute of the Connector element
+on
+Cho phép nén dữ liệu văn bản.
+
+force
+Bắt buộc nén cho tất cả các loại dữ liệu.
+
+int value
+Cho phép nén dữ liệu văn bản nhưng chỉ định một lượng dữ liệu tối 
+thiểu trước khi đầu ra được nén.
+
+off
+Vô hiệu hóa việc nén.
+

@@ -1,0 +1,55 @@
+Các loại MIME phổ biến
+Hình ảnh 18-2 cho thấy một số loại MIME (Multipurpose Internet Mail Extension) 
+phổ biến nhất được sử dụng trong HTTP. Bạn có thể sử dụng chúng trong tiêu đề 
+accept của yêu cầu hoặc tiêu đề content-type của phản hồi.
+
+Để xác định một loại MIME, bạn có thể sử dụng định dạng sau:
+type/subtype
+
+Trước đây, việc sử dụng tiền tố x để chỉ định các loại nội dung thử nghiệm và 
+không chính thức là phổ biến. Ví dụ: type/x-subtype. Tuy nhiên, điều này gây 
+ra nhiều vấn đề hơn là giải quyết vấn đề. Do đó, từ cuối năm 2012, thực hiện 
+theo tiêu chuẩn RFC 6648, việc này đã bị loại bỏ.
+
+Mặc dù loại MIME "text/plain" là loại MIME mặc định cho một servlet, loại MIME 
+phổ biến nhất là "text/html". Sau này trong chương này, bạn sẽ tìm hiểu cách 
+sử dụng một số loại MIME trong yêu cầu và phản hồi HTTP.
+
+Nếu bạn muốn tìm hiểu thêm về các loại MIME, bạn có thể tìm kiếm trên web với 
+từ khóa "MIME types" và xem tài liệu có sẵn từ www.iana.org. Tài liệu này cung 
+cấp mô tả kỹ thuật chi tiết về các loại MIME. Hoặc bạn cũng có thể xem các trang 
+web khác cung cấp mô tả về các loại MIME không kỹ thuật hơn.
+
+-- Ảnh của các MIME phổ biến có sẵn trong icloud
+
+text/plain                      Plain text document
+text/html                       HTML document
+text/css                        HTML cascading style sheet
+text/xml                        XML document
+text/csv                        CSV (comma-separted values) document
+text/tab-separated-values       TSV (tab-separated values) document
+
+image/gif                       GIF image
+image/jpeg                      JPEG image
+image/png                       PNG image
+image/tiff                      TIFF image
+image/x-xbitmap                 Windows bitmap image
+
+application/atom-xml            Atom feed
+application/rss-xml             RSS feed
+application/pdf                 PDF file
+application/postscript          PostScript file
+application/zip                 ZIP file
+application/gzip                GZIP file
+application/octet-stream        Binary data
+application/msword              Microsoft Word document
+application/vnd.ms.excel        Microsoft Excel spreadsheet
+
+audio/x-midi                    MIDI sound file
+audio/mpeg                      MP3 sound
+audio/vnd.wav                   WAV sound file
+
+video/mpeg                      MPEG video file
+video/x-flv                     Adobe Flash file
+
+

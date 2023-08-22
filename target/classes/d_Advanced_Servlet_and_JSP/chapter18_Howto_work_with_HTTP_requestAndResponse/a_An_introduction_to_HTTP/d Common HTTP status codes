@@ -1,0 +1,54 @@
+Các mã trạng thái HTTP phổ biến
+Hình 18-4 tóm tắt năm nhóm mã trạng thái. Sau đó, hình này liệt kê một số mã 
+trạng thái phổ biến nhất.
+Đối với các yêu cầu thành công, máy chủ thường trả về mã trạng thái 200 (OK).
+Tuy nhiên, nếu máy chủ không thể tìm thấy tệp được yêu cầu, thông thường nó sẽ 
+trả về mã trạng thái 404 (Không tìm thấy). 
+Hoặc, nếu máy chủ gặp lỗi trong quá trình cố gắng lấy tệp, nó có thể trả về mã 
+trạng thái 500 (Lỗi Máy chủ Nội bộ) không kém phần tristemente nổi tiếng.
+
+
+100-199             Informational       Yêu cầu đã được nhận và đang được xử lý.
+200-299             Success             Yêu cầu đã thành công
+300-399             Redirection         Cần thực hiện các hành động khác để hoàn thành yêu cầu.
+400-499             Client error        Client đã gửi một yêu cầu chứa lỗi
+500-599             Server error        Máy chủ đã gặp lỗi
+
+
+200                 OK      
+Mã trạng thái mặc định chỉ ra rằng phản hồi là bình thường.
+
+301                 Moved Permanenly
+Tài nguyên yêu cầu đã được chuyển vĩnh viễn đến một URL mới.
+
+302                 Found   
+Tài nguyên yêu cầu tạm thời tồn tại dưới một URL mới.
+
+400                 Bad Request
+Yêu cầu không thể được máy chủ hiểu do cú pháp không hợp lệ.
+
+401                 Unauthorized
+Yêu cầu yêu cầu xác thực. Phản hồi phải bao gồm tiêu đề www-authenticate. 
+Nếu bạn sử dụng bảo mật được quản lý bởi container như mô tả trong chương 16, 
+máy chủ web sẽ tự động trả lại mã trạng thái này khi cần.
+
+403                 Forbidden
+Truy cập vào tài nguyên yêu cầu đã bị từ chối. Điều này thường do cấu hình sai 
+quyền truy cập tệp mà máy chủ không có quyền truy cập tài liệu yêu cầu.
+
+404                 Not Found
+Máy chủ không thể tìm thấy URL yêu cầu.
+
+405                 Method Not Allowed
+Phương thức được chỉ định trong dòng yêu cầu không được phép cho URL yêu cầu.
+
+414                 Request-URI too long
+Thường do cố gắng truyền quá nhiều dữ liệu trong một yêu cầu GET gây ra. 
+Thông thường có thể giải quyết bằng cách chuyển đổi yêu cầu GET thành yêu cầu POST.
+
+418                 I'm a teapot
+Yêu cầu bị từ chối vì trình duyệt cố gắng pha cà phê bằng ấm đun nước. 
+Không tin chúng tôi? Bạn có thể đọc về nó trong RFC-2324.
+
+500                 Internal Server Error
+Máy chủ gặp tình trạng không mong đợi đã ngăn nó hoàn thành yêu cầu.

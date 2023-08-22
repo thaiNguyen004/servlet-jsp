@@ -1,0 +1,79 @@
+Các tiêu đề phản hồi HTTP phổ biến
+Hình 18-5 liệt kê một số tiêu đề phản hồi HTTP phổ biến nhất. Hầu hết thời gian, 
+máy chủ web tự động thiết lập các tiêu đề phản hồi này khi trả về phản hồi. 
+Tuy nhiên, có những lúc bạn có thể muốn sử dụng mã Java để thiết lập các tiêu đề 
+phản hồi điều khiển phản hồi được gửi bởi máy chủ web của bạn. Ví dụ, bạn có thể 
+sử dụng tiêu đề cache-control để kiểm soát cách trình duyệt web lưu trữ tạm thời 
+phản hồi. Để làm điều đó, bạn có thể sử dụng các giá trị cache-control được chỉ định 
+trong hình này để tắt lưu trữ tạm thời, sử dụng bộ nhớ cache riêng, sử dụng bộ nhớ 
+cache công khai, chỉ định khi nào phản hồi phải được xác minh lại, hoặc tăng thời 
+gian lưu trữ tạm thời. Bạn sẽ thấy một ví dụ về điều này sau trong chương này.
+
+Common HTTP response header
+cache-control
+Điều khiển thời điểm và cách mà trình duyệt lưu trữ tạm một trang. 
+Để biết thêm thông tin, xem hình 18-9 và danh sách các giá trị có thể 
+được hiển thị bên dưới.
+
+content-dispostition
+Có thể được sử dụng để xác định rằng phản hồi bao gồm một tệp nhị phân đính kèm. 
+Để xem ví dụ, xem hình 18-9 và 18-11.
+
+content-length
+Xác định độ dài của phần thân của phản hồi dưới dạng byte. Điều này cho phép 
+trình duyệt biết khi nào nó đã đọc xong toàn bộ phản hồi và là cần thiết để 
+trình duyệt sử dụng một kết nối liên tục, duy trì kết nối.
+
+content-type
+Chỉ định kiểu MIME của tài liệu phản hồi. Bạn có thể sử dụng định dạng "maintype/subtype" 
+được hiển thị trước đó trong chương để xác định kiểu MIME.
+
+content-encoding
+Chỉ định kiểu mã hóa mà phản hồi sử dụng. Mã hóa một tài liệu bằng nén như GZIP 
+có thể tăng hiệu suất. Để xem ví dụ, xem hình 18-10.
+
+expires (hết hạn)
+Xác định thời điểm mà trang không nên được lưu trữ tạm thời nữa.
+
+last-modified
+Xác định thời điểm khi tài liệu được sửa đổi lần cuối.
+
+location
+Hoạt động với các mã trạng thái trong dãy 300 để xác định vị trí mới của tài liệu.
+
+pragma
+Tắt lưu trữ tạm thời cho các trình duyệt cũ khi nó được đặt thành giá trị "no-cache".
+
+refresh
+Xác định số giây trước khi trình duyệt nên yêu cầu một trang cập nhật.
+
+www-authenticate
+Hoạt động với mã trạng thái 401 (Unauthorized) để xác định loại xác thực và phạm vi. 
+Nếu bạn sử dụng bảo mật do container quản lý như được mô tả trong chương 16, máy chủ 
+servlet sẽ tự động đặt tiêu đề này khi cần thiết.
+
+
+Values for the cache-control header
+public
+Tài liệu có thể được lưu trữ trong bộ nhớ cache công khai, được chia sẻ.
+
+private
+Tài liệu chỉ có thể được lưu trữ trong bộ nhớ cache riêng, cho một người dùng duy nhất.
+
+no-cache
+Tài liệu không nên bao giờ được lưu trữ trong bộ nhớ cache.
+
+no-store
+Tài liệu không nên bao giờ được lưu trữ trong bộ nhớ cache hoặc lưu trữ tạm thời trên đĩa.
+
+must-revalidate (xác nhận lại)
+Tài liệu phải được xác minh lại với máy chủ gốc (không phải máy chủ proxy) mỗi lần yêu cầu.
+
+proxy-revalidate
+Tài liệu phải được xác minh lại trên máy chủ proxy nhưng không cần xác minh lại trên máy chủ gốc.
+
+max-age=x
+Tài liệu phải được xác minh lại sau x giây cho các bộ nhớ cache riêng.
+
+a-max-age=x
+Tài liệu phải được xác minh lại sau x giây cho các bộ nhớ cache được chia sẻ.
