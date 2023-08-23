@@ -1,0 +1,72 @@
+Cách hạn chế (restrict) truy cập bằng địa chỉ IP
+Tên người dùng và mật khẩu là một đường phòng ngự tốt đầu tiên để bảo vệ truy cập 
+vào các trang web của bạn, nhưng đôi khi bạn có thể muốn thêm một cấp độ bảo mật 
+bổ sung. 
+
+Ví dụ, bạn có thể muốn hạn chế truy cập vào phần quản trị của ứng dụng chỉ đến 
+một số ít địa chỉ IP như địa chỉ cục bộ.
+
+Hình 20-8 thể hiện một ví dụ về cách bạn có thể thực hiện điều này. Ở đây, 
+tệp web.xml ánh xạ lớp Filter Bảo mật vào các trang admin của trang web. 
+Ngoài ra, tệp web.xml bao gồm một tham số khởi tạo chứa một danh sách các địa chỉ 
+IP được phép.
+Trong lớp SecurityFilter, câu lệnh đầu tiên tạo một biến thể hiện cho đối tượng 
+FilterConfig được đặt tên là filterConfig. Sau đó, câu lệnh thứ hai tạo một biến 
+thể hiện cho một mảng chuỗi.
+Phương thức init gọi phương thức getInitParameter trên đối tượng filterConfig 
+để lấy danh sách các địa chỉ từ xa được phép từ phần tử filter. Sau đó, nó kiểm tra 
+chuỗi. Nếu nó không rỗng, mã này tạo một mảng chuỗi bằng cách sử dụng ký tự xuống 
+dòng (\n) để tách chuỗi. Kết quả là bạn có thể lưu danh sách các địa chỉ IP 
+được phép bằng cách đặt mỗi địa chỉ trên một dòng trong phần tử param-value 
+của filter như được hiển thị ở phần 2 của hình này.
+
+Phương thức doFilter gọi phương thức getRemoteAddr của đối tượng HttpServletRequest 
+để lấy địa chỉ IP của máy chủ đang cố gắng kết nối. Sau đó, nó đặt biến cho phép 
+(allowed) thành false.
+Vòng lặp kiểm tra mỗi địa chỉ IP từ mảng allowedHosts và cắt bỏ khoảng trắng ở 
+đầu trước khi so sánh địa chỉ với địa chỉ từ xa. Nếu các địa chỉ khớp nhau, mã 
+này đặt biến cho phép thành true và sử dụng câu lệnh break để kết thúc vòng lặp. 
+Điều này vì không có lý do để kiểm tra các địa chỉ IP còn lại trong danh sách 
+sau khi tìm thấy khớp. Nếu vòng lặp kết thúc mà không tìm thấy khớp nào, biến 
+cho phép vẫn giữ giá trị false.
+
+Sau vòng lặp, câu lệnh if kiểm tra giá trị của biến cho phép. Nếu biến này là 
+true, filter gọi phương thức doFilter của tham số FilterChain để xử lý yêu cầu 
+bình thường. Tuy nhiên, nếu biến này là false, filter ghi lại một số dữ liệu về 
+việc cố gắng truy cập các tính năng admin từ một địa chỉ IP chưa được ủy quyền và 
+gửi một phản hồi lỗi 404 đến trình duyệt. Kết quả là filter ngăn các địa chỉ IP 
+chưa được ủy quyền khỏi việc truy cập phần quản trị của ứng dụng.
+Trong trường hợp này, mã sử dụng lỗi 404 Not Found thay vì một lỗi khác như một 
+cách làm sai lệch. Nếu mã trả về lỗi 401 Unauthorized thay vào đó, một kẻ tấn 
+công sẽ biết rằng có một tài nguyên tại URL /admin, nhưng máy chủ không cho phép 
+truy cập. Tuy nhiên, lỗi 404 làm cho nó trông như không có tài nguyên nào tồn tại 
+tại URL đó, có thể ngăn kẻ tấn công tiếp tục cố gắng truy cập.
+
+Phần 2 của hình minh họa các phần tử filter và filter-mapping được lưu trữ trong 
+tệp web.xml. Phần tử filter bao gồm một phần tử init-param được đặt tên là 
+allowedHosts để lưu danh sách các địa chỉ IP được phép. Địa chỉ đầu tiên là một 
+địa chỉ cục bộ thay vì địa chỉ IP, và đây là những gì phương thức getRemoteAddr 
+trả về khi có một kết nối từ cùng một máy mà máy chủ đang chạy.
+
+Kết quả là, nếu bạn cố gắng kết nối từ cùng một máy, bạn nên có thể truy cập 
+servlet bình thường bằng cách sử dụng bất kỳ URL nào trong thư mục admin. 
+Tuy nhiên, nếu bạn xóa dòng đầu tiên khỏi phần tử param-value và khởi động lại 
+ứng dụng, bộ lọc sẽ hoạt động khác biệt. Trong trường hợp đó, nếu bạn sử dụng URL 
+được hiển thị trong hình này, bạn nên nhận được một lỗi 404 Not Found.
+
+The filter element for the security filter
+<filter>
+    <filter-name>SecurityFilter</filter-name>
+    <filter-class>murach.admin.SecurityFilter</filter-class>
+    <init-param>
+        <param-name>allowedHosts</param-name>
+        <param-value>
+        0:0:0:0:0:0:0:1
+        127.0.0.1
+        </param-value>
+    </init-param>
+</filter>
+<filter-mapping>
+    <filter-name>SecurityFilter</filter-name>
+    <url-pattern>/admin/*</url-pattern>
+</filter-mapping>

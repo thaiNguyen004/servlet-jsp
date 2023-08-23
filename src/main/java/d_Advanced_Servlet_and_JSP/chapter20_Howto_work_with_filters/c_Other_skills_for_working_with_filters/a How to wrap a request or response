@@ -1,0 +1,121 @@
+Các kỹ năng khác khi làm việc với filter
+Bây giờ bạn đã biết cách viết một filter thực hiện xử lý phía request hoặc response, 
+bạn sẽ học thêm hai kỹ năng khác mà đôi khi hữu ích khi làm việc với filter. 
+
+Đầu tiên, bạn sẽ học cách thêm chức năng vào đối tượng request hoặc response bằng 
+cách tạo đối tượng request hoặc response tùy chỉnh. 
+
+Thứ hai, bạn sẽ học cách thêm tham số khởi tạo vào filter.
+
+
+Cách bọc một request hoặc response
+Hình 20-6 bắt đầu bằng cách tóm tắt hai wrap class (lớp bọc) mà bạn có thể sử dụng để tạo ra 
+đối tượng request hoặc response tùy chỉnh. Các lớp này thực hiện một mẫu thiết kế 
+được gọi là mẫu bọc(wrap) bọc hoặc mẫu trang trí.
+Lớp HttpServletRequestWrapper thực hiện giao diện HttpServletRequest bằng cách 
+cung cấp các phương thức gọi các phương thức của giao diện HttpServletRequest gốc. 
+Kết quả là, nếu bạn viết một lớp mở rộng từ lớp HttpServletRequestWrapper, 
+tất cả các phương thức hiện có đã hoạt động.
+
+Sau đó, để thêm chức năng mới, bạn có thể thêm một phương thức không tồn tại 
+trong giao diện HttpServletRequest. Hoặc để thay đổi chức năng hiện có, 
+bạn có thể ghi đè một trong các phương thức của lớp HttpServletRequest.
+Như bạn mong đợi, lớp HttpServletResponseWrapper bao quanh giao diện 
+HttpServletResponse chính như lớp HttpServletRequestWrapper bao quanh giao diện 
+HttpServletRequest. Kết quả là, khi bạn hiểu cách sử dụng một trong các lớp này, 
+bạn nên hiểu cách sử dụng lớp còn lại. Vì lớp HttpServletRequestWrapper 
+thường được sử dụng nhiều hơn, hình này hiển thị cách sử dụng lớp đó.
+
+Nếu bạn xem xét hai trang mã trong hình này, bạn sẽ thấy trang đầu tiên giới thiệu 
+lớp LogResponseCookiesFilter và trang thứ hai giới thiệu lớp ResponseCookiesWrapper. 
+Vì lớp bọc này chỉ được sử dụng bởi lớp LogResponseCookiesFilter, lớp bọc này được 
+nhúng trong cùng một tệp như lớp filter. Ngoài ra, vì lớp bọc này được nhúng, nó 
+không thể được khai báo là public. Thay vào đó, nó được khai báo với phạm vi mặc định.
+
+Lớp LogResponseCookiesFilter hoạt động tương tự như các filter được giới thiệu trước 
+đó trong chương. Tuy nhiên, nó sử dụng lớp ResponseCookiesWrapper để tạo ra một đối tượng 
+response tùy chỉnh. Lớp response tùy chỉnh này bao gồm một phương thức mới có tên là 
+getCookies trả về tất cả các đối tượng Cookie đã được lưu trữ trong đối tượng response. 
+Lớp response tùy chỉnh này cũng ghi đè phương thức addCookie trong đối tượng response 
+gốc để nó có thể theo dõi các cookie được thêm vào response.
+Khi filter này tạo ra đối tượng response tùy chỉnh, nó chuyển nó vào phương thức 
+doFilter của đối tượng FilterChain. Điều này đảm bảo bất kỳ filter hoặc servlet 
+nào được gọi sau đó trong chuỗi sử dụng đối tượng response tùy chỉnh thay vì đối 
+tượng response tiêu chuẩn. Kết quả là xử lý phía response cho filter này có thể 
+gọi phương thức getCookies có sẵn từ đối tượng response tùy chỉnh, nhưng không có 
+sẵn từ đối tượng HttpServletResponse tiêu chuẩn. Sau đó, filter này có thể ghi các 
+cookie được lưu trữ trong đối tượng response vào tệp nhật ký.
+
+
+page 1
+The code for a filter that uses a custom response object
+package murach.filters;
+
+import java.io.*;
+import.java.util.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class LogResponseCookiesFilter implements Filter {
+    private FilterConfig filterConfig = null;
+    
+    @Override
+    public void init(FilterConfig filterConfig) {
+        this.filterConfig = filterConfig;
+    }
+
+    @Override
+    public void doFilter (
+            ServletRequest request,
+            ServletResponse response,
+            FilterChain chain) throws IOException, ServletException {
+
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        ResponseCookiesWrapper wrappedResponse =
+                        new ResponseCookiesWrapper(httpResponse);
+        chain.doFilter = (request, wrappedResponse);
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        ServletContext sc = filterConfig.getServletContext();
+        String filterName = filterConfig.getFilterName();
+        String servletPath = "Servlet path: " + httpRequest.getServletPath ();
+        ArrayList<Cookie> cookies = wrappedResponse.getCookies();
+        String cookiesString = "";
+        for (Cookie c: cookies)
+            cookiesString += c.getName() + "=" + c.getValue() + " ";
+        sc.log(filterName + " | " + servletPath + " | cookies: " + cookiesString); 
+    }
+
+    @Override
+    public void destroy () {
+        filterConfig = null;
+    }
+}
+
+Page  2
+
+class ResponseCookiesWrapper extends HttpServletResponseWrapper {
+    
+    private ArrayList<Cookie> cookies = null;
+
+    public ResponseCookiesWrapper (HttpServletResponse response) {
+        super(response);
+        cookies = new ArrayList<Cookie>();
+    }
+
+    // provide a new method for the ResponseWrapper class
+    public ArrayList<Cookie> getCookies() {
+        return cookies();
+    }
+
+    // override the addCookie method of the HttpServletResponse object
+    @Override
+    public void addCookie (Cookie cookie) {
+        // store the cookie in the response wrapper object
+        cookies.add(cookie);
+
+        // store the cookie in the original response object
+        HttpServletResponse httpResponse = 
+                        (HttpServletResponse) this.getResponse();
+        httpResponse.addCookie(cookie);
+    }
+}

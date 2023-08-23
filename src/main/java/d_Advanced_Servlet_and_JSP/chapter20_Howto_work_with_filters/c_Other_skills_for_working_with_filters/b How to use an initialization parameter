@@ -1,0 +1,25 @@
+Cách sử dụng tham số khởi tạo
+Hình 20-7 cho thấy bạn làm thế nào để cung cấp một tham số khởi tạo cho một filter. 
+Vì điều này hoạt động tương tự như các tham số khởi tạo cho các servlet, bạn không 
+nên gặp nhiều khó khăn trong việc hiểu cách hoạt động này.
+
+Để bắt đầu, bạn thêm một hoặc nhiều tham số khởi tạo vào tệp web.xml. Trong hình 
+này, ví dụ, một tham số khởi tạo với tên là logFilename và giá trị là 
+"test_init_params.log" đã được thêm vào filter có tên là TestInitParamsFilter. 
+Sau đó, bạn có thể sử dụng phương thức getInitParameter của đối tượng FilterConfig 
+để trả về giá trị của tham số đó.
+
+A filter element that includes an initialization parameter
+<filter>
+    <filter-name>TestinitParamsFilter</filter-name>
+    <filter-class>filters.TestinitParamsFilter</filter-class>
+    <init-param>
+        <param-name>logFilename</param-name>
+        <param-value>test_init_params.log</param-value>
+    </init-param>
+</filter> 
+
+Filter code that reads the initialization parameter
+String logFilename = filterConfig.getinitParameter("logFilename");
+
+

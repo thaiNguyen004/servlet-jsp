@@ -1,0 +1,66 @@
+Cách làm việc với filter
+Bắt đầu từ đặc tả servlet 2.3, bạn có thể thêm một filter vào ứng dụng web của mình. 
+Ví dụ, bạn có thể viết một lớp filter để kiểm tra một yêu cầu HTTP và thực hiện 
+một số xử lý dựa trên các giá trị của các tiêu đề yêu cầu HTTP. Đôi khi, việc xử lý 
+này có thể bao gồm việc sửa đổi phản hồi HTTP được trả về cho máy khách. Vì filter 
+thường làm việc mật thiết với các yêu cầu và phản hồi HTTP, bạn có thể muốn đọc 
+chương 18 trước khi đọc chương này.
+
+Mở đầu về filter
+Một filter có thể chặn một yêu cầu HTTP và thực thi mã trước hoặc sau khi servlet 
+hoặc JSP được yêu cầu được thực thi. Kết quả là, filter rất lý tưởng cho việc xử lý 
+những vấn đề cắt ngang (cross-cutting concerns), tức là những khía cạnh của ứng dụng 
+cắt ngang qua các phần khác nhau của ứng dụng.
+
+Cách filter hoạt động
+Sơ đồ trong hình 20-1 cho thấy cách filter hoạt động. Ở đây, ứng dụng sử dụng 
+hai filter (filter 1 và filter 2) và hai servlet (Servlet1 và Servlet2). Trong 
+sơ đồ này, filter 1 đã được ánh xạ với Servlet1, trong khi filter 1 và filter 2 
+đã được ánh xạ với Servlet2.
+Khi một máy khách yêu cầu Servlet1, filter 1 có thể thực thi một số mã trước khi 
+mã cho Servlet1 được thực thi. Sau đó, sau khi mã cho Servlet1 được thực thi, 
+filter 1 có thể thực thi thêm mã trước khi phản hồi được trả về cho máy khách.
+Khi một máy khách yêu cầu Servlet2, cả filter 1 và filter 2 có thể thực thi một 
+số mã trước khi mã cho Servlet2 được thực thi. Sau đó, sau khi mã cho Servlet2 
+được thực thi, filter 2 và filter 1 có thể thực thi thêm mã trước khi phản hồi 
+được trả về cho máy khách.
+
+Hai lợi ích của filter
+Một lợi ích của filter là chúng cho phép bạn tạo mã modular có thể áp dụng cho 
+các phần khác nhau của ứng dụng. Nói cách khác, servlet được yêu cầu không cần 
+phải biết về filter. Kết quả là, bạn có thể bật hoặc tắt một filter mà không 
+ảnh hưởng đến hành vi của servlet.
+
+Lợi ích khác của filter là chúng cho phép bạn tạo mã linh hoạt. Điều này hoạt động 
+bởi vì bạn sử dụng tệp web.xml của ứng dụng để kiểm soát khi nào filter được thực thi. 
+Kết quả là, bạn có thể dễ dàng áp dụng filter cho các phần khác nhau của ứng dụng 
+và bạn có thể dễ dàng bật hoặc tắt một filter.
+
+Khi nào sử dụng filter
+Như đã đề cập trước đó, filter rất lý tưởng cho việc xử lý các vấn đề cắt ngang. 
+Ví dụ, một filter có thể được sử dụng để ghi dữ liệu vào tệp nhật ký, xử lý xác thực, 
+hoặc nén một phản hồi. Ngoài ra, một filter cũng có thể được sử dụng để xử lý việc 
+chuyển đổi kiểu ảnh, đa ngôn ngữ hóa, biến đổi XSL, lưu trữ tạm thời và nhiều hơn nữa.
+Tất nhiên, nếu máy chủ servlet của bạn đã cung cấp chức năng bạn cần, thì thường 
+dễ dàng và ít gặp lỗi hơn khi sử dụng chức năng tích hợp sẵn. Kết quả là, trước 
+khi bạn viết một filter tùy chỉnh để xử lý một tác vụ phức tạp như nén phản hồi, 
+bạn nên kiểm tra tài liệu cho máy chủ servlet của bạn để xem liệu nó đã cung cấp 
+chức năng kiểu này chưa. Thường thì chỉ cần cấu hình máy chủ servlet của bạn.
+ 
+Ví dụ, trong chương 18, bạn đã tìm hiểu cách sử dụng Tomcat để tự động nén phản hồi.
+
+Hai lợi ích khi sử dụng bộ lọc
+1. Mã modular: Bộ lọc cho phép bạn lưu trữ mã trong một vị trí duy nhất có thể 
+được áp dụng cho nhiều phần khác nhau của ứng dụng.
+2. Mã linh hoạt: Bạn có thể sử dụng tệp web.xml để kiểm soát khi nào bộ lọc được 
+thực thi. Điều này cho phép bạn áp dụng bộ lọc cho các phần khác nhau của ứng dụng 
+và cho phép bạn bật hoặc tắt một bộ lọc.
+
+
+Các loại nhiệm vụ mà bộ lọc có thể thực hiện
+• Ghi nhật ký (Logging): Bạn có thể sử dụng bộ lọc để ghi nhật ký các yêu cầu 
+và phản hồi của ứng dụng web.
+• Xác thực (Authentication): Bạn có thể sử dụng bộ lọc để chỉ cho phép người dùng 
+được ủy quyền truy cập vào một số phần cụ thể của trang web.
+• Nén (Compression): Bạn có thể sử dụng bộ lọc để nén các phản hồi để cải thiện
+hiệu suất của ứng dụng web của bạn.
