@@ -1,0 +1,49 @@
+Cách làm việc với JavaServer Faces
+Bạn có thể sử dụng JSF (JavaServer Faces) thay vì JSP để phát triển các trang 
+web của bạn. Khác với JSP, JSF là một framework dựa trên thành phần, điều này 
+có nghĩa là bạn có thể phát triển ứng dụng web giống như ứng dụng desktop, 
+bằng cách sử dụng các thành phần giao diện người dùng được tạo sẵn.
+
+Vì JSF là một chủ đề lớn và phức tạp, cuốn sách này chỉ cung cấp một giới thiệu 
+về nó. Tuy nhiên, chương này trình bày những kỹ năng bạn cần để bắt đầu với JSF. 
+Sau đó, bạn sẽ có một nền tảng tốt để học thêm về JSF.
+
+Một sự giới thiệu về JSF
+JSF (JavaServer Faces) được thiết kế như một sự thay thế cho JSP, một công nghệ 
+cũ hơn. Với JSF, bạn thiết kế các trang web của mình bằng cách sử dụng các 
+thành phần. Điều này làm cho việc thiết kế trang web giống hơn việc thiết kế 
+ứng dụng desktop và giới thiệu các tính năng mạnh mẽ mới. Ví dụ, JSF cho phép 
+bạn thêm chức năng phức tạp được tạo sẵn vào trang web của bạn với một dòng mã JSF 
+duy nhất, mà không cần viết bất kỳ mã JavaScript nào.
+
+Tóm tắt về các phiên bản của JSF
+JSF là một đặc tả cho cách các thành phần chế độ xem tương tác với các thành 
+phần điều khiển và mô hình trên máy chủ. Nhiều nhà cung cấp cung cấp các 
+phiên bản cài đặt của đặc tả JSF core. Hình 21-1 liệt kê hai phiên bản: 
+(1) phiên bản tham chiếu JSF 2 chính thức từ Oracle (gọi là Mojarra) và 
+(2) Apache MyFaces. 
+
+Những phiên bản cài đặt này chỉ cung cấp chức năng cốt lõi thay thế cho các 
+yếu tố HTML tiêu chuẩn như điều khiển biểu mẫu.
+
+Tuy nhiên, thư viện thành phần bên thứ ba có thể mở rộng sức mạnh của JSF một 
+cách lớn. Hình ảnh này liệt kê hai trong những thư viện thành phần bên thứ ba 
+phổ biến nhất: JBoss RichFaces và PrimeFaces. Cả hai thư viện thành phần này 
+cung cấp các điều khiển tiên tiến mà bạn có thể thêm vào các trang web của bạn 
+chỉ với một vài dòng mã JSF. Ví dụ, cả hai thư viện đều cung cấp một điều khiển 
+lịch mà bạn có thể thêm chỉ với một dòng mã và mà không cần viết bất kỳ bộ 
+xử lý sự kiện JavaScript nào.
+
+Các điều khiển tiên tiến khác được cung cấp bởi cả hai thư viện này bao gồm 
+hộp tự động hoàn thành, chức năng kéo và thả, menu và bảng có thể chỉnh sửa 
+với các cột có thể sắp xếp và co giãn. Các thành phần tiên tiến này nằm ngoài 
+phạm vi của chương này. Tuy nhiên, cả RichFaces và PrimeFaces đều có các bản 
+demo trên trang web của họ để hiển thị cách các thành phần này hoạt động cũng 
+như các ví dụ mã hiển thị cách triển khai chúng dễ dàng như thế nào.
+
+
+Cách thêm thư viện JSF vào dự án
+• Trong NetBeans, mở dự án. Sau đó, nhấp chuột phải vào thư mục Libraries 
+của dự án, chọn mục Add Library và chọn thư viện JSF 2.
+• Để thêm một thư viện thành phần bên thứ ba, hãy xem tài liệu đi kèm 
+với thư viện đó.

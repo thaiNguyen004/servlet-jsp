@@ -1,0 +1,66 @@
+Cách viết form action
+Hình 21-8 cho thấy cách viết form action. Ở đây, các 
+• ví dụ đầu tiên và thứ hai cho thấy cách gửi một biểu mẫu đến máy chủ để xử lý, 
+• và ví dụ thứ ba cho thấy cách chuyển hướng đến trang khác.
+
+Để gửi biểu mẫu đến máy chủ để xử lý, bạn thêm một phương thức vào bean quản lý 
+của bạn để xử lý dữ liệu, sau đó trả về một chuỗi chỉ định tên của tệp JSF 
+sẽ hiển thị sau khi quá trình xử lý hoàn tất. Trong hình này, ví dụ, phương thức 
+addToEmailList đã được thêm vào bean EmailList.
+
+An action method in a managed bean
+public String addToEmailList() {
+    if (UserDB.emailExists(user.getEmail())) {
+        message = "This email address already exists. " +
+            "Please enter another email address";
+        return "index";
+    } else {
+        UserDB.insert(user);
+        return "thanks";
+    }
+} 
+
+Phương thức addToEmailList bắt đầu bằng cách gọi một phương thức của lớp cơ sở 
+dữ liệu để kiểm tra xem địa chỉ email mà người dùng cung cấp đã tồn tại trong 
+cơ sở dữ liệu hay chưa. Nếu có, mã này đặt văn bản của trường message thành 
+thông báo lỗi và hiển thị lại trang index.xhtml. Điều này cho phép người dùng 
+có cơ hội nhập một địa chỉ email khác. Nếu không, mã sẽ gọi một phương thức của 
+lớp cơ sở dữ liệu để chèn dữ liệu của người dùng vào cơ sở dữ liệu và hiển thị 
+trang thanks.xhtml.
+
+Code that submits a form and calls an action method
+<h:commandButton id= "submit"
+    action="#{emailList.addToEmailList}"
+    value= "Join Now"/>
+
+Trong trang JSF, bạn có thể gọi phương thức addToEmailList bằng cách viết một thẻ 
+commandButton như thể hiện ở ví dụ thứ hai. Ở đây, thuộc tính action chỉ định tên 
+của bean và tên của phương thức. Sau đó, thuộc tính value chỉ định văn bản được 
+hiển thị trên nút.
+Trước khi gọi phương thức addToEmailList, bất kỳ bộ xác thực nào được bao gồm 
+trong trang JSF cũng được thực hiện. Nếu bất kỳ xác thực nào thất bại, phương 
+thức sẽ không được gọi. Thay vào đó, người dùng sẽ được chuyển hướng lại biểu mẫu 
+và thông báo lỗi của bộ xác thực sẽ được hiển thị.
+
+
+Code that redirects to another page
+<h:commandButton id="return"
+    action="index?faces-redirect=true"
+    value="Return"/> 
+
+Đôi khi, thay vì xử lý dữ liệu trên máy chủ, bạn có thể muốn chuyển hướng người 
+dùng đến một trang khác. Ví dụ, bạn có thể muốn bao gồm một nút trên biểu mẫu 
+cho phép người dùng trở lại trang chủ của trang web mà không cần gửi biểu mẫu. 
+Để làm điều đó, bạn có thể viết một thẻ commandButton như trong ví dụ thứ ba. 
+Ở đây, phần đầu của thuộc tính action chỉ định tên của trang JSF mà không có 
+phần mở rộng .xhtml. Sau đó, phần sau dấu chấm hỏi cho biết JSF nên chuyển hướng 
+đến trang index thay vì chuyển tiếp đến nó.
+
+
+
+action: Để gửi một biểu mẫu, thuộc tính này chỉ định tên của bean và tên của 
+phương thức thực hiện xử lý.
+Để chuyển hướng đến trang khác, thuộc tính này chỉ định tên của tệp JSF mà không 
+có phần mở rộng .xhtml, theo sau là một chuỗi thiết lập tham số faces-redirect 
+thành true.
+

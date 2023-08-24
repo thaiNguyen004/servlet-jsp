@@ -1,0 +1,85 @@
+Cách xác thực dữ liệu
+Khi người dùng nhập dữ liệu, bạn thường muốn xác thực dữ liệu đó. Ví dụ, bạn có 
+thể muốn đảm bảo người dùng không để trống trường. Hoặc, bạn có thể muốn đảm bảo 
+người dùng đã nhập giá trị số trong một phạm vi cụ thể. Hoặc, bạn có thể cần thực 
+hiện các hình thức xác thực tùy chỉnh phức tạp khác.
+
+Hình 21-7 cho thấy hai cách sử dụng các thành phần JSF tích hợp sẵn để xác thực dữ liệu.
+
+How to require an entry
+<h:inputText id="firstName" equired="true"
+    value="#{emailList.user.firstName}"
+    requiredMessage="A first name is required"/>
+<h:message showSummary="true" showDetail="false"
+    for="firstName" class="error" /><br />
+
+
+Ví dụ đầu tiên đảm bảo rằng người dùng không để trống trường. Để thực hiện điều này, 
+mã này đặt thuộc tính required của thẻ inputText thành true. Sau đó, nó đặt thuộc 
+tính requiredMessage thành thông báo sẽ được hiển thị nếu xác thực thất bại.
+
+Để hiển thị thông báo này, ví dụ đầu tiên sử dụng thẻ message. Thẻ này có một số 
+thuộc tính. Để bắt đầu, thuộc tính showSummary quyết định xem thông báo được đặt 
+trong thuộc tính requiredMessage có nên được hiển thị hay không. Sau đó, thuộc tính 
+showDetail quyết định xem thông báo có nên hiển thị thông tin lỗi chi tiết hơn 
+hay không. Trong ứng dụng thực tế, bạn thường muốn đặt thuộc tính này thành false 
+và sử dụng thuộc tính requiredMessage để đặt thông báo thân thiện hơn với người dùng.
+
+Thuộc tính for của thẻ message liên kết thông báo này với một thành phần bằng cách 
+sử dụng id của thành phần. Trong trường hợp này, nó liên kết thành phần message 
+với thành phần inputText có thuộc tính id là firstName.
+
+Thuộc tính class của thẻ message có thể được sử dụng để đặt một lớp CSS cho 
+thành phần điều khiển giao diện của văn bản. Trong trường hợp này, nó đặt lớp CSS 
+thành một lớp có tên là error. Điều này áp dụng các kiểu được định nghĩa cho 
+lớp đó trong một tệp stylesheet đã được bao gồm.
+
+How to validate a numerical range
+<h:inputText id="birthYear" required="true"
+    value="#{emailList.user.birthYear}"
+    requiredMessage="A birth year is required."
+    validatorMessage="A valid 4-digit birth year is required">
+    <f:validateLongRange minimum= "1900" maximum= "2014"/>
+</h:inputText>
+<h:message showSummary="true" showDetail="false"
+    for="birthYear" class="error" /><br /> 
+
+Ví dụ thứ hai cho thấy cách bạn có thể liên kết một thành phần xác thực với một 
+thành phần. Ví dụ này liên kết thành phần validateLongRange với thành phần inputText. 
+Điều này đảm bảo ngày nhập vào nằm trong khoảng từ 1900 đến 2014. Nếu không phải vậy, 
+nó sẽ hiển thị thông báo được lưu trong thuộc tính validatorMessage của thành phần 
+inputText.
+JSF cung cấp nhiều thành phần xác thực khác nhau, bao gồm cả xác thực độ dài tối 
+thiểu và tối đa. Ngoài ra, bạn có thể viết các xác thực tùy chỉnh nếu không có xác 
+thực tích hợp nào làm điều bạn cần.
+Các xác thực được giới thiệu trong chương này chạy trên máy chủ. Nói cách khác, 
+xác thực được thực hiện trên máy chủ khi biểu mẫu được gửi đi. Nếu xác thực thất bại, 
+biểu mẫu sẽ được hiển thị lại cùng với các thông báo lỗi xác thực. Tuy nhiên, một số 
+thư viện JSF bên thứ ba cũng sử dụng JavaScript để thực hiện xác thực trên máy khách. 
+Điều này có nghĩa là xác thực được thực hiện trước khi biểu mẫu được gửi đến máy chủ. 
+Vì điều này tiết kiệm việc truyền qua lại với máy chủ, thường đây là điều bạn muốn.
+
+required: 
+Nếu đặt thành true, yêu cầu người dùng nhập giá trị.
+
+requiredMessage:
+Chỉ định thông báo sẽ được hiển thị nếu một trường bắt buộc không được nhập.
+
+validatorMessage: 
+Chỉ định thông báo xác thực sẽ được hiển thị nếu trường không vượt qua xác thực 
+được chỉ định bởi một bộ xác thực như thẻ validateLongRange.
+
+
+showSummary:
+Nếu đặt thành true, hiển thị văn bản từ thuộc tính requiredMessage hoặc 
+validatorMessage của thành phần được liên kết.
+
+showDetail
+Nếu đặt thành true, hiển thị chi tiết như ID của thành phần không vượt qua 
+xác thực và thông báo lỗi xác thực Java.
+
+for
+Liên kết bộ xác thực với một thành phần.
+
+class or styleClass
+Xác định một lớp CSS áp dụng các kiểu cho thông báo.

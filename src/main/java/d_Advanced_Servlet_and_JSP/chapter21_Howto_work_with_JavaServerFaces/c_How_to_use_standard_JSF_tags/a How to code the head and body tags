@@ -1,0 +1,74 @@
+Cách sử dụng các thẻ chuẩn của JSF
+Một trang JSF 2 là một tài liệu XHTML. Điều này cải thiện đáng kể so với JSF 1, 
+nơi mà sử dụng một lược đồ XML khác. Do đó, trong JSF 1, bạn không thể bao gồm 
+HTML trong trang JSF của bạn trừ khi bạn bọc nó trong các thẻ đặc biệt. 
+Với JSF 2, hạn chế này đã được loại bỏ.
+
+
+Cách viết các thẻ head và body
+Hình 21-4 cho thấy cách viết các thẻ head và body cho một trang JSF. 
+Hai dòng đầu tiên là tiêu đề xml tiêu chuẩn và mã hóa, tiếp theo là khai báo 
+DOCTYPE, mô tả tài liệu này là một tài liệu HTML sử dụng XHTML. Dòng này chứa 
+liên kết đến Document type definition (DTD) (định nghĩa kiểu tài liệu) cho XHTML. 
+DTD được sử dụng bởi các trình soạn thảo văn bản nhận biết XML để thực hiện việc 
+hoàn thành tự động thẻ và kiểm tra cú pháp của tài liệu.
+
+Dòng tiếp theo là thẻ mở html. Khác với HTML, XHTML cho phép các không gian tên. 
+Hình này xác định hai trong số chúng.
+
+Không gian tên đầu tiên là tập hợp các thẻ HTML tiêu chuẩn. Theo quy ước, đây 
+được gán không gian tên h. Tuy nhiên, không có gì đặc biệt về chữ h, và bạn có 
+thể đặt bất kỳ không gian tên nào bạn muốn.
+
+Không gian tên thứ hai là tập hợp các thẻ JSF core. Theo quy ước, điều này sử dụng 
+không gian tên f. Đã sử dụng không gian tên này thay vì c để tránh va chạm không gian 
+tên với JSTL, mà đã sử dụng không gian tên c cho tập hợp các thẻ core.
+
+Phần còn lại của tài liệu nên trông quen thuộc với bạn. Sự khác biệt duy nhất giữa 
+điều này và HTML bình thường là bạn sử dụng h:head và h:body thay vì các thẻ head 
+và body HTML thông thường.
+
+Trong các thẻ này, bạn có thể sử dụng các thẻ HTML tiêu chuẩn. Tuy nhiên, các thẻ này 
+cần tuân theo cú pháp XHTML, mà thường nghiêm ngặt hơn cú pháp HTML.
+
+Trước tiên, XHTML phân biệt chữ hoa chữ thường, vì vậy tất cả các thẻ phải viết thường. 
+Ngược lại, HTML không phân biệt chữ hoa chữ thường và thông thường thấy các thẻ HTML 
+được viết hoa chữ trong mã lập trình cũ hơn.
+
+Thứ hai, tất cả các thẻ XHTML phải được đóng đúng cách. Do đó, các thứ mà là phong 
+cách tệ nhưng hợp lệ trong HTML (như không đóng thẻ đoạn văn) là không hợp lệ trong 
+XHTML. Tương tự, các thẻ trống như thẻ ngắt dòng phải bao gồm dấu gạch chéo đóng.
+
+Thứ ba, tất cả các thẻ phải được lồng nhau đúng cách và các phần tử không được 
+chồng chéo lên nhau. Ví dụ, trong hình này, bạn phải đóng thẻ nghiêng trước khi 
+đóng thẻ đậm. Điều này đảm bảo phần tử nghiêng nằm trong phần tử đậm.
+
+Nếu một thẻ không tuân theo cú pháp XHTML nghiêm ngặt, nó sẽ gây ra lỗi. Tuy nhiên, 
+miễn là bạn viết mã HTML hợp chuẩn, bạn không nên gặp bất kỳ vấn đề nào khi chuyển 
+sang XHTML.
+
+
+Coding the head and body tags
+Chapter 21 How to work with JavaServer Faces 621
+<?xml version='l.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtmll/DTD/xhtmll-transitional.dtd" >
+
+<html xmlns= "http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Murach's Java Servlets and JSP</title>
+    </h:head>
+    <h:body>
+        <hl>Hello, world!</hl>
+    </h:body>
+</html> 
+
+
+Causes                                  Fixes error
+<TITLE>My Page</TITLE>                  <title>My Page</title>
+<p>My paragraph                         <p>My paragraph</p>
+<br>                                    <br />
+<b><i>Bold and italic<b><i>             <b><i>Bold and italic<i><b>
+
