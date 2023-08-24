@@ -1,0 +1,11 @@
+Góc nhìn
+
+Bây giờ khi bạn đã hoàn thành chương này, bạn nên có khả năng viết mã và triển 
+khai các bộ lọc, và hiểu khi nào thì một bộ lọc có thể hữu ích. Tuy nhiên, trước khi bạn sử dụng một bộ lọc để viết mã tùy chỉnh, bạn nên kiểm tra xem loại chức năng này đã có sẵn cho bạn từ máy chủ web hoặc máy chủ servlet của bạn hay chưa.
+Ví dụ, vì hầu hết các máy chủ web (bao gồm Apache 2.x) và máy chủ servlet (bao gồm Tomcat 4.x và mới hơn) cung cấp chức năng nén các phản hồi trước khi chúng được trả lại cho máy khách, bạn không cần sử dụng bộ lọc để thực hiện điều đó. Thay vào đó, bạn chỉ cần cấu hình máy chủ web hoặc máy chủ servlet của bạn để sử dụng tính năng mà bạn muốn sử dụng. Điều này dễ dàng và ít dễ gây lỗi hơn việc viết mã cho một bộ lọc. Ví dụ, chương 18 cho thấy cách bật nén cho Tomcat.
+Tóm tắt
+• Bạn có thể sử dụng một bộ lọc để chặn một yêu cầu HTTP và thực hiện một số xử lý trước hoặc sau khi servlet hoặc JSP được yêu cầu được thực thi.
+• Bộ lọc rất lý tưởng để giải quyết những vấn đề cắt ngang, đó là những khía cạnh của một ứng dụng cắt qua các phần khác nhau của ứng dụng.
+• Bạn có thể kết nối hai hoặc nhiều bộ lọc với nhau.
+• Để viết mã một bộ lọc, bạn phải viết một lớp triển khai giao diện Filter. Ngoài ra, bạn phải ánh xạ Filter vào một mẫu URL bằng cách thêm phần tử filter và phần tử filter-mapping vào tệp web.xml của ứng dụng.
+• Các lớp HttpServletRequestWrapper và HttpServletResponseWrapper thực hiện một mẫu thiết kế được biết đến với tên là mẫu bọc hay mẫu trang trí. Bạn có thể sử dụng chúng để tạo các đối tượng yêu cầu và phản hồi tùy chỉnh.

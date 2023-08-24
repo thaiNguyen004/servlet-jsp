@@ -1,0 +1,98 @@
+Cách thêm một filter
+Thêm một filter vào ứng dụng hoạt động tương tự như việc thêm một servlet vào 
+ứng dụng. Để bắt đầu, bạn cần viết mã cho lớp của filter. 
+Sau đó, bạn thêm một số mã vào tệp web.xml để ánh xạ filter với một hoặc nhiều mẫu URL.
+
+Cách viết mã cho filter
+Hình 20-2 mô tả cách viết mã cho lớp của một filter đơn giản, ghi một số thông tin 
+cơ bản về yêu cầu và phản hồi vào tệp nhật ký. Để bắt đầu, câu lệnh gói lưu trữ 
+lớp trong gói có tên murach.filters. Sau đó, ba câu lệnh import import các gói 
+cần thiết để làm việc với filter. Lưu ý rằng các gói này giống như các gói được 
+sử dụng để làm việc với servlet.
+
+Sau các câu lệnh import, mã khai báo một lớp có tên TestFilter1 thực hiện giao 
+diện Filter. Lớp này thực hiện tất cả ba phương thức của giao diện Filter: 
+init, doFilter và destroy. Những phương thức này được gọi khi filter được khởi tạo, 
+thực thi và hủy bỏ.
+
+Sau khai báo lớp, một biến thể private được khai báo cho một đối tượng FilterConfig 
+có tên là filterConfig. Đối tượng này được khởi tạo trong phương thức init. 
+Để thực hiện điều này, phương thức init gán biến thể filterConfig cho đối tượng 
+FilterConfig được truyền vào phương thức init như một đối số.
+
+Sau phương thức init, phương thức doFilter chứa mã được thực thi bởi filter. 
+Để bắt đầu, hai câu lệnh đầu tiên ép kiểu các tham số ServletRequest và ServletResponse 
+thành các đối tượng HttpServletRequest và HttpServletResponse. Như vậy, phương thức 
+doFilter có thể gọi tất cả các phương thức của các đối tượng HttpServletRequest và 
+HttpServletResponse giống như servlet. Sau đó, câu lệnh thứ ba lấy đối tượng 
+ServletContext của ứng dụng bằng cách gọi phương thức getServletContext của biến thể 
+filterConfig.
+
+Sau khi thiết lập xong các đối tượng yêu cầu, phản hồi và ServletContext, 
+câu lệnh thứ tư lấy tên của filter từ đối tượng FilterConfig và câu lệnh thứ năm 
+lấy đường dẫn servlet từ đối tượng yêu cầu. Sau đó, câu lệnh thứ sáu sử dụng phương 
+thức log của đối tượng ServletContext để ghi dữ liệu này vào tệp nhật ký. 
+
+Và câu lệnh thứ bảy sử dụng phương thức doFilter của tham số FilterChain để truyền 
+yêu cầu và phản hồi cho filter hoặc servlet tiếp theo trong chuỗi. Tại thời điểm này, 
+việc thực thi được truyền dọc theo chuỗi.
+
+Sau khi servlet được thực thi, câu lệnh cuối cùng trong phương thức doFilter được 
+thực thi. Câu lệnh này ghi dữ liệu tương tự vào tệp nhật ký như câu lệnh thứ sáu. 
+Tuy nhiên, nó thêm "after request" vào cuối dữ liệu để chỉ ra rằng mã này được thực 
+thi sau khi servlet được yêu cầu nhưng trước khi phản hồi được trả lại cho máy khách.
+
+Phương thức cuối cùng trong lớp này là phương thức destroy, chứa một giá trị null 
+được gán cho biến thể filterConfig. Mặc dù việc gán giá trị này không cần thiết, 
+nhưng nó thường được coi là một thực hành lập trình tốt.
+
+Mặc dù lớp này đơn giản, nó minh họa tất cả các nguyên tắc bạn cần để viết mã cho 
+một filter, bao gồm cách khởi tạo đối tượng FilterConfig và cách lấy các đối tượng 
+yêu cầu, phản hồi và ServletContext. Trong trường hợp này, lớp chỉ ghi nhật ký 
+một số dữ liệu từ đối tượng FilterConfig và các đối tượng yêu cầu (request), 
+nhưng có thể dễ dàng biến đổi xử lý dựa trên dữ liệu trong yêu cầu. Ví dụ, nếu bạn 
+muốn chặn các yêu cầu từ người dùng không được ủy quyền, bạn có thể kiểm tra tiêu 
+đề ủy quyền của yêu cầu để xem xem người dùng có được ủy quyền hay không. Nếu có, 
+bạn có thể gọi phương thức doFilter của đối tượng FilterChain để chuyển tiếp yêu cầu. 
+Nếu không, bạn có thể sử dụng một đối tượng RequestDispatcher để chuyển tiếp yêu 
+cầu đến trang đăng nhập.
+
+
+package murach.filters;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class TestFilterl implements Filter {
+
+    private FilterConfig filterConfig = null;
+    
+    @Override
+    public void init(FilterConfig filterConfig) {
+        this.filterConfig = filterConfig;
+    }
+    
+    @Override
+    public void doFilter {
+                ServletRequest request,
+                ServletResponse response,
+                    FilterChain chain) throws IOException, ServletException (
+   
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
+        ServletContext sc = filterConfig.getServletContext();
+        
+        String filterName = filterConfig.getFilterName();
+        String servletPath = "Servlet path: " + httpRequest .getServletPath ();
+        
+        sc.log(filterName + " | " + servletPath + " | before request ");
+        chain.doFilter(httpRequest, httpResponse);
+        sc.log(filterName + " | " + servletPath + " | after request ");
+        
+    }    
+    
+    @Override
+    public void destroy() {
+        filterConfig = null;
+    }    
+} 

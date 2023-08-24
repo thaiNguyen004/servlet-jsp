@@ -1,0 +1,138 @@
+Làm thế nào để cấu hình một filter
+Phần 1 của hình 20-3 thể hiện một tệp web.xml cho một ứng dụng cấu hình ba filter. 
+Trừ tên của lớp, cả ba filter đều chứa cùng mã code như filter được trình bày 
+trong hình 20-2. Để bắt đầu, ba phần tử filter đăng ký các lớp có tên TestFilter1, 
+TestFilter2 và TestFilter3 được lưu trong gói có tên filters. Sau đó, ba phần tử 
+filter-mapping ánh xạ ba filter đó vào một mẫu URL.
+
+Phần tử filter-mapping đầu tiên ánh xạ TestFilter1 vào tất cả các yêu cầu URL 
+trong ứng dụng hiện tại. Để làm điều đó, phần tử url-pattern sử dụng một dấu gạch 
+chéo sau đó là dấu sao (/*). Kết quả là, filter này được thực thi cho tất cả các 
+URL trong thư mục gốc.
+Phần tử filter-mapping thứ hai cũng ánh xạ TestFilter2 vào tất cả các yêu cầu URL 
+trong ứng dụng hiện tại. Tuy nhiên, phần tử này bao gồm hai phần tử dispatcher 
+cho thấy filter này sẽ được thực thi cho (1) các yêu cầu đến từ khách hàng 
+và (2) các yêu cầu được chuyển tiếp từ trong ứng dụng. 
+Trái lại, TestFilter1 chỉ được thực thi cho các yêu cầu đến từ khách hàng.
+
+Phần tử filter-mapping thứ ba sử dụng phần tử servlet-name để ánh xạ TestFilter3 
+vào tất cả các yêu cầu cho DownloadServlet. Trong tệp web.xml này, servlet này 
+chỉ được ánh xạ vào một URL (/download). Tuy nhiên, nếu servlet này được ánh xạ 
+vào nhiều URL, TestFilter3 cũng sẽ được ánh xạ vào những URL đó.
+Tệp web.xml này cho thấy việc cấu hình filter rất dễ dàng. Ví dụ, bạn có thể dễ 
+dàng tắt TestFilter1 bằng cách tạo comment cho phần tử servlet-mapping của nó. 
+Hoặc, bạn có thể thay đổi các URL gây ra việc TestFilter2 được thực thi 
+bằng cách sửa đổi phần tử url-pattern của nó. Khi đã làm điều đó, bạn không cần 
+phải biên dịch lại hay sửa đổi các lớp filter hay servlet. Kết quả là, việc thử 
+nghiệm với các filter rất dễ dàng. Quan trọng hơn, việc thêm hoặc loại bỏ các 
+tính năng áp dụng cho nhiều phần khác nhau của ứng dụng cũng rất dễ dàng.
+
+A web.xml file that contains three filters
+<?xml version="l.0" encoding="UTF-8" ?>
+    <web-app version="3.0"xmlns="http://java.sun.com/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+        http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" >
+
+<filter>
+    <filter-name>TestFilterl</filter-name>
+    <filter-class>murach.filters.TestFilterl</filter-class>
+</filter>
+<filter>
+    <filter-name>TestFilter2</filter-name>
+    <filter-class>murach.filters.TestFilter2</filter-class>
+</filter>
+<filter>
+    <filter-name>TestFilter3</filter-name>
+    <filter-class>murach.filters.TestFilter3</filter-class>
+</filter>
+
+tất cả mọi hoạt động trên trang thì đều gọi TestFileter1
+
+<filter-mapping>
+    <filter-name>TestFilterl</filter-name>
+    <url-pattern>/*</url-pattern>
+</filter-mapping>
+<filter-mapping>
+    <filter-name>TestFilter2</filter-name>
+    <url-pattern>/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+</filter-mapping>
+<filter-mapping>
+    <filter-name>TestFilter3</filter-name>
+    <servlet-name>DownloadServlet</servlet-name>
+</filter-mapping>
+<servlet>
+    <servlet-name>DownloadServlet</servlet-name>
+    <servlet-class>murach.download.DownloadServlet</ servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>DownloadServlet</servlet-name>
+    <url-pattern>/download</url-pattern>
+</servlet-mapping>
+<session-config>
+    <session-timeout>30</session-timeout>
+</session-config>
+<welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+</welcome-file-list>
+</web-app> 
+
+
+Phần 2 của hình 20-3 bắt đầu bằng việc tóm tắt các phần tử được sử dụng trong 
+tệp web.xml để ánh xạ một filter vào một mẫu URL. Nếu bạn hiểu tệp web.xml 
+được trình bày ở phần 1, bạn không nên gặp nhiều khó khăn để hiểu cách các phần 
+tử này hoạt động. Tuy nhiên, lưu ý rằng phần tử dispatcher không được giới thiệu 
+cho đến phiên bản servlet 2.4. Do đó, bạn không thể sử dụng phần tử này nếu bạn 
+đang làm việc với một container servlet thực hiện phiên bản 2.3.
+
+Dữ liệu ghi log cho yêu cầu đầu tiên thể hiện các filter được thực thi khi tệp 
+index.jsp của ứng dụng được yêu cầu. Để bắt đầu, TestFilter1 được thực thi, 
+tiếp theo là TestFilter2, sau đó là servlet cho tệp index.jsp. Ở đây, quan trọng 
+để lưu ý rằng các filter được thực thi theo thứ tự được chỉ định trong tệp web.xml. 
+Sau đó, sau khi servlet cho tệp index.jsp được thực thi, TestFilter2 được thực thi, 
+sau đó là TestFilter1. Ở đây, quan trọng để lưu ý rằng các filter được thực thi 
+theo thứ tự ngược lại.
+
+Dữ liệu ghi log cho yêu cầu thứ hai thể hiện các filter được thực thi khi 
+DownloadServlet được ánh xạ vào URL /download được yêu cầu. Để bắt đầu, 
+tất cả ba filter kiểm tra được thực thi, như bạn mong đợi. Sau đó, 
+DownloadServlet chuyển tiếp yêu cầu đến tệp register.jsp. Tại thời điểm này, vì 
+TestFilter2 là filter duy nhất xử lý yêu cầu được chuyển tiếp từ các phần khác 
+của ứng dụng, nó là filter duy nhất được thực thi. Cuối cùng, servlet cho tệp 
+register.jsp được thực thi. Sau khi servlet này được thực thi, TestFilter2 
+được thực thi lại vì nó là filter cuối cùng được thực thi. Sau đó, 
+TestFilter3 được thực thi, tiếp theo là TestFilter2, sau đó là TestFilter1.
+
+
+The filter and filter-mapping elements
+
+filter
+Thêm một filter vào ứng dụng.
+
+filter-name
+Chỉ định tên cho filter.
+
+filter-class
+Chỉ định tên đầy đủ của một class triển khai filter.
+
+filter-mapping
+Thêm phần tử filter-mapping vào ứng dụng.
+
+url-pattern
+Chỉ định các URL gây ra việc thực thi filter.
+
+servlet-name
+Chỉ định một servlet gây ra việc thực thi filter. Giá trị của phần tử này 
+nên khớp với giá trị của phần tử servlet-name cho phần tử servlet.
+
+dispatcher
+dispatcher Chỉ định loại yêu cầu gây ra việc thực thi filter.
+Các giá trị hợp lệ bao gồm REQUEST, FORWARD, ERROR và INCLUDE. 
+REQUEST (mặc định) thực thi filter trên các yêu cầu từ khách hàng. 
+FORWARD thực thi filter cho các yêu cầu chuyển tiếp từ bên trong ứng dụng. 
+INCLUDE thực thi filter khi ứng dụng sử dụng một include. Và ERROR thực thi 
+filter khi ứng dụng sử dụng bộ xử lý lỗi. Phần tử này được giới thiệu trong 
+phiên bản servlet 2.4.
+

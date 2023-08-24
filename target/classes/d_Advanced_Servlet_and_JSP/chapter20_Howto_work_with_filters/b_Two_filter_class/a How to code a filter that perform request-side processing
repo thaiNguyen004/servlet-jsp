@@ -1,0 +1,73 @@
+Hai lớp filter
+Bây giờ sau khi bạn đã tìm hiểu cách viết và cấu hình một filter đơn giản, 
+bạn đã sẵn sàng để tìm hiểu cách viết các filter thực hiện xử lý trên một phía 
+của request. Với việc xử lý phía request, việc xử lý được thực hiện trước khi 
+request đến tới servlet mục tiêu. Với việc xử lý phía response, việc xử lý 
+được thực hiện sau khi servlet được request đã được thực thi, nhưng trước khi 
+response được trả về cho khách hàng.
+
+Khi bạn viết các filter chỉ thực hiện xử lý trên một phía của request, 
+mã kết quả có thể moduler hơn và mang lại linh hoạt hơn khi bạn cấu hình filter. 
+Tuy nhiên, như bạn sẽ thấy sau trong chương này, có những thời điểm mà một filter 
+phải thực hiện cả xử lý phía request và phía response.
+
+Cách viết một filter thực hiện xử lý phía request
+Hình 20-4 cho thấy cách viết một filter có tên là LogRequestFilter thực hiện code 
+trước khi servlet request được thực thi. Nếu bạn nghiên cứu mã cho filter này, 
+bạn sẽ thấy rằng nó hoạt động tương tự như TestFilter1 được giới thiệu trong hình 20-2. 
+Tuy nhiên, có một số khác biệt.
+Trước hết, lớp LogRequestFilter bao gồm giá trị của một cookie trong dữ liệu mà 
+nó ghi vào tập tin nhật ký. Để làm điều này, mã này gọi phương thức getCookies 
+của đối tượng HttpServletRequest để lấy một mảng các đối tượng Cookie. Sau đó, 
+nó sử dụng phương thức getCookieValue của lớp CookieUtil để lấy giá trị của cookie 
+có tên là emailCookie.
+Thứ hai, lớp này không thực hiện bất kỳ xử lý nào sau khi servlet được request 
+đã được thực thi. Nói cách khác, lớp này không thực hiện xử lý phía response. 
+Để làm điều đó, toàn bộ mã cho phương thức doFilter được viết trước câu lệnh 
+gọi phương thức doFilter của đối tượng FilterChain.
+Thứ ba, vì lớp này không gọi bất kỳ phương thức nào từ đối tượng request, 
+nó không cần phải chuyển đổi đối tượng ServletResponse mà nó nhận được như tham số 
+thành đối tượng HttpServletResponse. Thay vào đó, nó chuyển đối tượng ServletResponse 
+đến phương thức doFilter của đối tượng FilterChain.
+
+
+The code for a filter that performs request-side processing
+package murach.filters;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class LogRequestFilter implements Filter {
+
+    private FilterConfig filterConfig = null;
+    
+    @Override
+    public void init(FilterConfig filterConfig) {
+        this.filterConfig = filterConfig;
+    }
+
+    @Override
+    public void doFilter(
+            ServletRequest request,
+            ServletResponse response,
+                FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        ServletContext sc = filterConfig.getServletContext();
+        String logString = filterConfig.getFilterName() + " | ";
+        logString += "Servlet path: " + httpRequest.getServletPath() + " | ";
+        Cookie[] cookies = httpRequest.getCookies();
+        String emailAddress = util.CookieUtil.getCookieValue(cookies, "emailCookie");
+        logString += "Email cookie: ";
+        if (emailAddress.length() != 0)
+            logString += emailAddress;
+        else
+            logString += "Not found ";
+            sc.log(logString);
+        chain.doFilter(httpRequest, response);
+    }
+
+    @Override
+    public void destroy() {
+        filterConfig = null;
+    }
+}
