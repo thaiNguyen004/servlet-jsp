@@ -1,0 +1,45 @@
+Cách viết thẻ inputText
+Tất nhiên, việc hiển thị dữ liệu không thực sự hữu ích nếu bạn không có cách để 
+thu thập dữ liệu từ người dùng. May mắn thay, JSF làm cho việc này gần như dễ dàng 
+như việc hiển thị dữ liệu.
+
+Hình 21-6 cho thấy cách sử dụng thẻ inputText để thu thập dữ liệu từ người dùng. 
+Để làm điều này, ví dụ đầu tiên thêm một phương thức setMessage vào lớp MessageBean. 
+Điều này cung cấp cách để thiết lập trường message.
+
+Trong trang JSF, bạn truy cập vào trường này bằng cách giống như việc truy cập 
+vào nó khi hiển thị dữ liệu. Trước tiên, bạn cung cấp tên của lớp, tiếp theo là 
+một dấu chấm và sau đó là tên của trường bạn muốn thiết lập. Tương tự như việc 
+hiển thị văn bản, bạn có thể lồng các trường càng sâu càng tốt.
+
+Thẻ inputText có thể có một số thuộc tính, nhưng ví dụ này chỉ sử dụng hai. 
+Thuộc tính đầu tiên là thuộc tính id. Thuộc tính này đặt id của hộp văn bản 
+trong DOM, giống như trong HTML. Do đó, bạn có thể sử dụng id để chọn phần tử 
+này trong CSS hoặc JavaScript.
+
+Thuộc tính thứ hai là thuộc tính value. Bạn có thể sử dụng thuộc tính này để xác định 
+trường trong managed bean tương ứng với hộp văn bản này. Nếu trường trong managed bean 
+đã chứa một giá trị, thì giá trị của trường này sẽ được hiển thị trong hộp văn bản.
+
+Khi thẻ inputText được hiển thị trong trình duyệt, nó hiển thị giá trị được 
+lưu trữ trong managed bean. Tuy nhiên, người dùng có thể chỉnh sửa giá trị đó. 
+Trong ví dụ này, ví dụ, bạn có thể chỉnh sửa thông điệp để thay đổi từ 
+"Hello, world!" thành "Hello, Mike!".
+
+Có một số thành phần văn bản khác trong thư viện JSF core. Hình này liệt kê hai 
+trong số đó. Đầu tiên, bạn có thể sử dụng thẻ inputSecret để tạo một hộp mật khẩu 
+nơi văn bản được nhập bởi người dùng không được hiển thị. Thứ hai, bạn có thể sử 
+dụng trường inputHidden để tạo một trường biểu mẫu ẩn. Cả hai thành phần này hoạt 
+động giống như thành phần inputText, vì vậy bạn không nên gặp bất kỳ vấn đề nào 
+khi sử dụng chúng khi bạn cần.
+
+How to set the message field of the MessageBean class
+<h:form>
+    <label class="pad_top ">Message:</label>
+    <h:inputText id="message" value="#{messageBean.message}"/>
+</h:form> 
+
+Component           Description
+inputText           Một hộp văn bản tiêu chuẩn.
+inputSecret         Một hộp văn bản dành cho mật khẩu mà không hiển thị các ký tự mà người dùng nhập vào.
+inputHidden         Một trường văn bản ẩn.

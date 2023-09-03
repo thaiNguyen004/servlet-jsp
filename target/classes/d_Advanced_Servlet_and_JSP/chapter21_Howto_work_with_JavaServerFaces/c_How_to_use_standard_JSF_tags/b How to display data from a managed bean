@@ -1,0 +1,88 @@
+Cách hiển thị dữ liệu từ một managed bean
+Hình 21-5 cho thấy cách bạn hiển thị dữ liệu chứa trong một managed bean. 
+Ở đây, ví dụ đầu tiên hiển thị một managed bean có phạm vi request với một trường 
+chuỗi chứa một thông điệp. Để cho phép truy cập vào thông điệp, bạn cần viết một 
+phương thức getter cho trường của nó.
+
+A simple managed bean
+@ManagedBean
+public class MessageBean {
+    private String message = "<hl>Hello, world!</hl>";
+    
+    public String getMessage() {
+        return message;
+    }
+} 
+
+Vì đây là một bean có phạm vi request, JSF sẽ tạo ra bean lần đầu tiên bạn yêu cầu 
+nó trong trang JSF. Sau khi yêu cầu hoàn thành, bean được đánh dấu để thu gom rác.
+
+
+How to display the message field of the MessageBean class
+#{messageBean.message}
+
+Để truy cập giá trị trong trang JSF, bạn cung cấp tên lớp của managed bean, 
+bắt đầu bằng một chữ thường, tiếp theo là toán tử dấu chấm và tên của trường 
+bạn muốn truy cập. Trong hình này, ví dụ thứ hai hiển thị giá trị được lưu trữ 
+trong trường message.
+
+
+
+Mặc định, bất kỳ thẻ HTML nào được nhúng trong dữ liệu đều bị thoát. Kết quả, 
+ví dụ thứ hai khiến trình duyệt hiển thị "<hl>Hello, world!</hl>" trên trang JSF 
+thay vì hiển thị "Hello, world!" với định dạng cho phần tử h1.
+
+How to display a nested field of the Emaillist class
+#{emailList.user.firstName} 
+
+Bạn có thể lồng đường dẫn đến trường bạn muốn truy cập một cách sâu tùy theo cần. 
+Trong hình này, ví dụ thứ ba truy cập trường firstName của đối tượng User có sẵn 
+từ lớp EmailList đã được giới thiệu trước đó trong chương này. Để thực hiện điều 
+này, tất nhiên, tất cả các trường phải có các phương thức get tương ứng. 
+Nói cách khác, lớp EmailList phải có một phương thức getUser trả về đối tượng User 
+và đối tượng User phải có một phương thức getFirstName trả về tên đầu tiên của 
+người dùng.
+
+
+How to turn off escaping
+<h:outputText value="#{messageBean.message}" escape="false"/> 
+
+Nếu bạn không muốn các thẻ HTML bị thoát, bạn có thể viết một câu lệnh sử dụng thẻ 
+outputText như được hiển thị trong ví dụ thứ tư. Ở đây, thuộc tính escape 
+ngăn JSF thoát thẻ mở và đóng h1. Kết quả, câu lệnh này khiến trình duyệt hiển 
+thị "Hello, world!" với định dạng cho phần tử hl.
+
+Việc sử dụng mã như trong ví dụ thứ tư có thể làm cho trang web của bạn dễ bị tấn công 
+bởi một loại tấn công được biết đến là tấn công cross-site scripting (XSS). 
+Điều này xảy ra khi bạn không chắc chắn dữ liệu bạn muốn hiển thị đến từ đâu. 
+Trong trường hợp đó, có thể một kẻ tấn công nhập mã HTML và JavaScript độc hại 
+vào một trường biểu mẫu sẽ thực thi sau trên trình duyệt của người dùng. 
+Để biết thêm thông tin về các tấn công XSS, xem chương 17.
+
+Để bảo vệ khỏi các tấn công XSS, bạn không nên đặt thuộc tính escape thành "false" 
+trừ khi bạn chắc chắn rằng nó an toàn để trình duyệt hiểu bất kỳ HTML hoặc JavaScript 
+nào được nhúng trong dữ liệu.
+
+
+Mô tả
+• Để truy cập và hiển thị dữ liệu từ một managed bean, bạn viết dấu thăng (#) 
+tiếp theo là một cặp dấu ngoặc nhọn ( { } ). Bên trong dấu ngoặc nhọn, bạn viết 
+tên lớp của managed bean, một toán tử dấu chấm, và trường mà bạn muốn truy cập.
+
+• Bạn có thể lồng các trường sâu bất kỳ độ sâu nào cần thiết.
+
+• Thẻ outputText là tùy chọn trong JSF 2, miễn là bạn muốn sử dụng hành vi 
+mặc định, tức là thoát bất kỳ HTML nhúng nào. Đây là cách an toàn nhất để 
+hiển thị văn bản.
+
+• Nếu bạn không muốn HTML nhúng bị thoát, bạn có thể sử dụng thẻ outputText 
+với thuộc tính escape được đặt thành giá trị "false". Tuy nhiên, điều này 
+có thể khiến ứng dụng của bạn dễ bị tấn công bởi một cuộc tấn công 
+cross-site scripting (XSS).
+
+• Để bảo vệ khỏi các cuộc tấn công XSS, bạn không nên bao giờ đặt thuộc tính 
+escape thành "false" khi bạn đang hiển thị dữ liệu do người dùng nhập vào, 
+trừ khi bạn chắc chắn rằng dữ liệu không chứa bất kỳ mã HTML hoặc JavaScript 
+độc hại nào.
+
+

@@ -1,0 +1,46 @@
+Góc nhìn
+
+Chương này đã giới thiệu về JSF cho bạn. Nó đã hướng dẫn bạn cách viết mã cho 
+một managed bean, cách hiển thị dữ liệu từ bean trên một trang web, cách lấy 
+dữ liệu từ một biểu mẫu và lưu trữ nó trong một bean, cách xác nhận tính hợp lệ 
+của dữ liệu và cách sử dụng một bean để xử lý dữ liệu.
+
+Tất nhiên, vẫn còn rất nhiều điều để học về JSF. Ví dụ, có nhiều thành phần 
+JSF hơn so với những thành phần đã được đề cập trong chương này, bao gồm hộp kiểm, 
+nút radio, bảng và hộp danh sách. Bây giờ bạn đã hiểu cách các thành phần JSF 
+hoạt động, bạn có thể tìm hiểu cách sử dụng những thành phần này và các thành phần 
+khác thông qua việc tìm kiếm trên Internet.
+
+Với các thành phần cơ bản của JSF như những gì được thể hiện trong chương này, 
+có thể khó thấy được sức mạnh thực sự của JSF. Để thực sự đánh giá tiềm năng của JSF, 
+chúng tôi đề xuất bạn nên tìm hiểu về một số thư viện thành phần của bên thứ ba có sẵn. 
+Chương này đã đề cập đến hai thư viện phổ biến nhất: JBoss RichFaces và PrimeFaces.
+
+Tóm tắt
+- JavaServer Faces (JSF): là một công nghệ hiển thị dựa trên thành phần, làm 
+cho việc viết ứng dụng web tương tự như viết ứng dụng trên desktop.
+- Thư viện thành phần của bên thứ ba: có thể mở rộng chức năng của JSF đáng kể 
+bằng cách cung cấp các thành phần nâng cao.
+- Managed bean: JSF sử dụng một managed bean, còn được gọi là backing bean, để 
+lưu trữ và truy xuất dữ liệu, gọi các phương thức trong ứng dụng và 
+chuyển hướng người dùng đến các trang khác trong ứng dụng.
+- Tạo managed bean: Bạn sử dụng chú thích `@ManagedBean` trước tên lớp để 
+tạo một managed bean.
+- Phạm vi của managed bean: Managed beans có bốn phạm vi khác nhau, được xác định 
+bởi chú thích trước tên lớp: `@RequestScoped`, `@SessionScoped`, `@ApplicationScoped` và `@ViewScoped`.
+- Biến thể: Biến thể thường an toàn trong các managed bean có phạm vi request, 
+session và view. Tuy nhiên, chúng không an toàn trong các managed bean có phạm vi application.
+- Chú thích `@PostConstruct`: Bạn sử dụng chú thích `@PostConstruct` để chỉ định 
+một phương thức mà bạn có thể sử dụng để khởi tạo bean. Điều này an toàn hơn so 
+với việc thực hiện khởi tạo trong constructor.
+- Hiển thị trường từ managed bean: Bạn mã hóa tên lớp của managed bean, sau đó 
+là đường dẫn đến trường bạn muốn hiển thị.
+- Mã hóa hộp văn bản trong biểu mẫu: Bạn sử dụng thẻ `inputText`. Để đảm bảo 
+người dùng nhập dữ liệu trong trường biểu mẫu, bạn có thể đặt thuộc tính `required` thành true.
+- Hiển thị thông báo lỗi khi xác nhận không thành công: Bạn có thể sử dụng thẻ `message`.
+- Xác nhận tính hợp lệ nâng cao hơn: Bạn có thể sử dụng một thành phần kiểm tra 
+tính hợp lệ như thẻ `validateLongRange`.
+- Mã hóa nút trong biểu mẫu: Bạn sử dụng thẻ `commandButton`. Sau đó, bạn có 
+thể thực hiện xử lý trên máy chủ bằng cách đặt thuộc tính `action` thành một 
+phương thức của bean. Hoặc bạn có thể chuyển hướng đến một trang web khác bằng 
+ đặt thuộc tính `action` thành tên trang, theo sau là một tham số chuyển hướng biểu mẫu.

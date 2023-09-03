@@ -1,0 +1,77 @@
+Cách sử dụng managed beans
+Một managed bean, còn được gọi là backing bean, là model và controller server-side 
+hỗ trợ một thành phần JSF.
+
+Cách tạo một managed bean
+Hình 21-2 cho thấy một managed bean đơn giản. Để khai báo rằng một bean được quản lý, 
+bạn viết một chú thích @ManagedBean phía trên tên lớp. Một managed bean đơn giản 
+chỉ là một đối tượng Java cũ thông thường (POJO). Yêu cầu duy nhất là nó phải 
+có một constructor mặc định.
+
+Lớp này cũng sử dụng các biến thể hiện (instance variables). Trong hầu hết các 
+trường hợp, điều này là an toàn đối với luồng trong JSF vì mỗi yêu cầu hoặc 
+phiên làm việc có một bản sao riêng của managed bean. Tuy nhiên, có một ngoại lệ 
+được hiển thị sau trong chương này.
+
+Để thực hiện bất kỳ khởi tạo nào trên đối tượng, bạn viết một phương thức được 
+chú thích bằng @PostConstruct. Trong hình này, ví dụ, phương thức init tạo một 
+đối tượng User mới và đặt giá trị cho trường message.
+
+Có thể bạn tự hỏi tại sao bạn không chỉ đơn giản đặt nội dung này trong constructor 
+thay vì sử dụng phương thức post construct. Lý do là vì phương thức post construct 
+được đảm bảo sẽ chạy sau khi bất kỳ dependency injection nào đã được thực hiện. 
+Constructor, ngược lại, chạy trước khi bất kỳ dependency injection nào đã được thực hiện.
+
+Trong trường hợp này, điều này không quan trọng, vì lớp này không thực hiện bất 
+kỳ dependency injection nào. Nhưng trong máy chủ Java EE, bạn có thể muốn tiêm 
+một dịch vụ truy cập cơ sở dữ liệu, ví dụ. Trong trường hợp đó, nếu bạn cố gắng 
+sử dụng dịch vụ truy cập cơ sở dữ liệu trong constructor, bạn sẽ nhận được một 
+ngoại lệ con trỏ null vì nó chưa được tiêm vào. Nhưng nếu bạn sử dụng dịch vụ 
+truy cập cơ sở dữ liệu trong phương thức post construct, dịch vụ cơ sở dữ liệu 
+được đảm bảo đã được tiêm vào.
+
+Dependency injection vượt ra ngoài phạm vi của cuốn sách này vì nó là một chủ 
+đề nâng cao của Java EE. Hiện tại, bạn chỉ cần hiểu rằng việc đặt mã khởi tạo 
+trong phương thức post construct luôn an toàn. Tuy nhiên, không phải lúc nào 
+cũng an toàn khi đặt mã khởi tạo trong constructor.
+
+Khi bạn chạy mã này, bạn có thể nhận được cảnh báo cho biết chú thích faces.ManagedBean 
+đã bị lạc hướng và bạn nên sử dụng CDI thay thế. Tại thời điểm viết này, CDI chỉ 
+được hỗ trợ bởi các máy chủ Java EE, không được hỗ trợ bởi Tomcat. Do đó, đối với 
+chương này, bạn có thể bỏ qua cảnh báo về sự lạc hướng và tiếp tục sử dụng các 
+chú thích faces.
+
+A class that creates a managed bean
+
+package murach.email;
+
+import murach.business.User;
+import javax.annotation.PostConstruct;
+import javax.faces.bean.ManagedBean;
+
+@ManagedBean
+public class EmailList {
+
+    private User user;
+    private String message;
+
+    public EmailList() { // default constructor
+    }
+    
+    @PostConstruct
+    public void init() {
+        user = new User ();
+        message = "Hello!";
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getMessage() {
+        return message;
+    }

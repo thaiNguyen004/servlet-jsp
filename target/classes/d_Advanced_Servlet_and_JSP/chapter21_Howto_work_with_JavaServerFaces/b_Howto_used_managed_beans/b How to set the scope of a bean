@@ -1,0 +1,99 @@
+Cách đặt phạm vi cho một bean
+Phạm vi của một managed bean xác định phần nào của ứng dụng mà bean có sẵn 
+và khi nào nó có sẵn. Mã được làm nổi bật trong hình 21-3 cho thấy cách sử dụng 
+Annotation để đặt phạm vi cho một bean.
+
+Một bean với phạm vi request được tạo khi có một yêu cầu HTTP được thực hiện 
+và có sẵn trong suốt yêu cầu đó. Khi yêu cầu hoàn thành, bean sẽ ra khỏi phạm vi 
+và có thể bị thu gom rác, giải phóng bộ nhớ mà nó sử dụng. Đây là phạm vi mặc 
+định nếu bạn không chỉ định phạm vi. Do đó, chú thích @RequestScoped là tùy chọn. 
+Hơn nữa, vì bean với phạm vi request được ràng buộc với một yêu cầu HTTP cụ thể, 
+nên bạn có thể an toàn sử dụng biến thể hiện trong nó.
+
+Một bean với phạm vi session được ràng buộc với một phiên người dùng. Vì vậy, 
+nó hữu ích để lưu trữ những thứ như danh sách các mặt hàng trong giỏ hàng hoặc 
+danh sách các sở thích của người dùng cho một trang web. Theo cách này, nếu bạn 
+sẽ lưu trữ dữ liệu trong một đối tượng phiên khi sử dụng JSP hoặc servlets, 
+bạn sẽ lưu trữ nó trong một bean với phạm vi session khi sử dụng JSF.
+
+Tương tự như các bean với phạm vi request, bạn có thể an toàn sử dụng biến thể 
+hiện trong các bean với phạm vi session. Điều này là do mỗi phiên người dùng sẽ 
+có một bản sao riêng của bean. Như kết quả, nếu người dùng 1 thay đổi giá trị 
+của thông báo, người dùng 2 không thấy thay đổi đó. Điều này sẽ không đúng nếu 
+bạn sử dụng biến thể hiện trong một servlet.
+
+Các bean với phạm vi session có thể tiêu tốn nhiều bộ nhớ, vì vậy bạn nên sử dụng 
+chúng cẩn thận. Ví dụ, bạn nên chỉ tạo chúng khi cần thiết. Ngoài ra, bạn nên 
+tránh tạo nhiều bean phiên cho mỗi người dùng mỗi khi có thể.
+
+Các bean với phạm vi application có thể nhìn thấy bởi toàn bộ ứng dụng web. 
+Do đó, chúng hữu ích để lưu trữ các thuộc tính cần phải có sẵn cho tất cả các 
+thành phần JSF. Ví dụ, bạn có thể sử dụng một bean với phạm vi application để 
+lưu trữ danh sách tỷ lệ thuế bán hàng.
+
+Vì họ có thể nhìn thấy bởi toàn bộ ứng dụng, các bean với phạm vi application 
+không an toàn đối với luồng. Điều này có nghĩa là bạn cần đảm bảo rằng việc 
+truy cập vào bất kỳ biến thể hiện nào trong một bean với phạm vi application 
+đã được đồng bộ hóa. Hơn nữa, vì họ có thể nhìn thấy bởi toàn bộ ứng dụng, 
+bạn thường không muốn cho phép dữ liệu mà người dùng nhập liệu thay đổi bất kỳ 
+sự thay đổi nào đối với bean với phạm vi application. Trừ khi, tất nhiên, bạn 
+thực sự muốn một sự thay đổi do người dùng thực hiện được nhìn thấy bởi toàn bộ 
+ứng dụng và do đó bởi tất cả người dùng khác yêu cầu trang. 
+
+Các bean với phạm vi view được thêm vào trong JSF 2 để giải quyết vấn đề về việc 
+sử dụng bộ nhớ với các bean phạm vi session. Bạn có thể sử dụng phạm vi view khi 
+bạn cần một bean có sẵn cho nhiều yêu cầu tới cùng một chế độ xem, nhưng không 
+dùng cho toàn bộ phiên. Một ví dụ về nơi bạn có thể sử dụng một bean với phạm vi 
+view là một biểu mẫu trực tuyến cần được gửi trong nhiều phần. Với một bean với 
+phạm vi view, bạn sẽ không mất mất dữ liệu đã nhập từ các yêu cầu trước, nhưng bạn 
+không cần phải tạo một bean phiên vẫn tồn tại và sử dụng bộ nhớ ngay cả sau khi 
+người dùng hoàn thành với biểu mẫu.
+
+Code that sets the scope of the bean
+
+package murach.email;
+
+import murach.business.User;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
+
+@ManagedBean
+@RequestScoped
+public class EmailList {
+    private User user;
+    private String message;
+    
+    public EmailList() {
+    }
+
+    // Additional code
+}
+
+Có một số phạm vi mà bạn có thể đặt cho một managed bean trong JSF:
+
+1. Request Scope (Phạm vi yêu cầu):
+   Bean được tạo khi người dùng gửi yêu cầu đến máy chủ. Sau khi phản hồi được 
+gửi đi, bean sẽ bị hủy và bất kỳ biến thể hiện nào sẽ bị mất. Đây là phạm vi 
+ngắn nhất và cũng là phạm vi mặc định. Mỗi yêu cầu tới máy chủ sẽ tạo ra một 
+bean mới. Điều này an toàn với luồng và thích hợp để sử dụng biến thể hiện.
+
+2. Session Scope (Phạm vi phiên):
+   Bean có sẵn cho một người dùng trong suốt phiên làm việc. Do đó, phạm vi này 
+có thể được sử dụng để lưu trữ dữ liệu phiên như danh sách các mặt hàng trong 
+giỏ hàng.
+
+3. Application Scope (Phạm vi ứng dụng):
+   Bean có sẵn cho toàn bộ ứng dụng web. Do đó, các biến thể hiện trong bean 
+này được chia sẻ giữa tất cả các phiên và tất cả các yêu cầu. Đây là phạm vi 
+dùng để lưu trữ các thuộc tính mà cần phải có sẵn cho tất cả các thành phần JSF.
+Và phạm vi này không an toàn với luồng.
+
+4. View Scope (Phạm vi chế độ xem):
+   Bean có sẵn qua nhiều yêu cầu miễn là chế độ xem không thay đổi. Đây có thể 
+coi như một sự kết hợp giữa phạm vi yêu cầu và phạm vi phiên. Được sử dụng khi 
+bạn cần một bean có sẵn trong nhiều yêu cầu tới cùng một chế độ xem nhưng 
+không cần cho toàn bộ phiên.
+
+Cách mà bạn đặt phạm vi cho một bean trong JSF là thông qua sử dụng các chú thích 
+như `@RequestScoped`, `@SessionScoped`, `@ApplicationScoped` và `@ViewScoped`. 
+Chú thích này được đặt phía trên khai báo của lớp managed bean.
